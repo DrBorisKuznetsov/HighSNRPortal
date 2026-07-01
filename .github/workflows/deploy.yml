@@ -43,6 +43,12 @@ jobs:
           npm ci
           npm run build
 
+      - name: Build Capacitor Tool
+        working-directory: ./capacitor_filter_tool
+        run: |
+          npm ci
+          npm run build
+
       - name: Prepare dist folder
         run: |
           # Create a root distribution folder
@@ -54,6 +60,10 @@ jobs:
           # Copy videos project to a subdirectory
           mkdir -p dist_final/videos_project
           cp -R videos_project/dist/* dist_final/videos_project/
+          
+          # Copy capacitor filter tool to a subdirectory
+          mkdir -p dist_final/capacitor_filter_tool
+          cp -R capacitor_filter_tool/dist/* dist_final/capacitor_filter_tool/
           
           # Add CNAME
           echo "highsnr.org" > dist_final/CNAME
