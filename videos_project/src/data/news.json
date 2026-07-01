@@ -1,0 +1,122 @@
+[
+  {
+    "title": "A Standalone YouTube Streaming Rig",
+    "summary": "YouTube streaming typically involves a camera with an HDMI output, a USB3 HDMI digitiser, and a suitably beefy PC to run it all. It’s quite a process, and for [Coreymillia], …read more...",
+    "link": "https://hackaday.com/2026/06/27/a-standalone-youtube-streaming-rig/",
+    "source": "Hackaday Electronics",
+    "pubDate": "Sun, 28 Jun 2026 02:00:27 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Bringing Swift To The Apple II",
+    "summary": "Swift is a relatively modern program language, appearing in 2014 as a replacement for Objective-C. Since then, it’s become a popular solution for programming apps across Apple platforms. That led …rea...",
+    "link": "https://hackaday.com/2026/06/27/bringing-swift-to-the-apple-ii/",
+    "source": "Hackaday Electronics",
+    "pubDate": "Sat, 27 Jun 2026 23:00:54 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Cramming a Mini-ITX Gaming PC into a 3D Printed Steam Machine Sized Case",
+    "summary": "The recently released Valve Steam Machine is somewhat awkward in that it uses a custom, non-standard PCB and non-standard power supply. This fact apparently has irked some people who decided …read mor...",
+    "link": "https://hackaday.com/2026/06/27/cramming-a-mini-itx-gaming-pc-into-a-3d-printed-steam-machine-sized-case/",
+    "source": "Hackaday Electronics",
+    "pubDate": "Sat, 27 Jun 2026 20:00:22 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Requiem For Long Wave, As The BBC Goes Silent",
+    "summary": "Something happened this morning which will have been unnoticed by many, but which for a certain breed of radio enthusiast marks the end of an era. The BBC stopped broadcasting …read more...",
+    "link": "https://hackaday.com/2026/06/27/requiem-for-long-wave-as-the-bbc-goes-silent/",
+    "source": "Hackaday Electronics",
+    "pubDate": "Sat, 27 Jun 2026 17:00:58 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Hacking Routers Like It’s 2008",
+    "summary": "How long have we been hacking routers? To some of you who’ve been in the Hackaday audience for a while, the answer is “nearly forever”. In the early 2000s, they …read more...",
+    "link": "https://hackaday.com/2026/06/27/hacking-routers-like-its-2008/",
+    "source": "Hackaday Electronics",
+    "pubDate": "Sat, 27 Jun 2026 14:00:11 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "A Quantum Magic 8-Ball",
+    "summary": "If you ever cracked open one of those Magic 8-Ball toys, you found little more than a polyhedron floating in some dark-colored fluid. It was a quasi-random way of asking …read more...",
+    "link": "https://hackaday.com/2026/06/27/a-quantum-magic-8-ball/",
+    "source": "Hackaday Electronics",
+    "pubDate": "Sat, 27 Jun 2026 11:00:38 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Do Metal Roofs Turn a Bird House into an Oven?",
+    "summary": "Birdhouses can be a great way to help out nesting birds in your area, but they can be a bit intensive to make. As part of a 500 birdhouse marathon, …read more...",
+    "link": "https://hackaday.com/2026/06/27/do-metal-roofs-turn-a-bird-house-into-an-oven/",
+    "source": "Hackaday Electronics",
+    "pubDate": "Sat, 27 Jun 2026 08:00:16 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Synaptics Acquisition by Onsemi Affirms Edge AI Is for Real",
+    "summary": "Here is why a power and sensing specialist has snapped AI-native compute assets to foray into the physical AI world.\nThe post Synaptics Acquisition by Onsemi Affirms Edge AI Is for Real appeared first...",
+    "link": "https://www.eetimes.com/synaptics-acquisition-by-onsemi-affirms-edge-ai-is-for-real/",
+    "source": "EE Times",
+    "pubDate": "Fri, 26 Jun 2026 14:41:31 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "The PQC Silicon Is Here Today for Tomorrow’s Quantum Threats",
+    "summary": "Two new security chips aim to future-proof devices for the quantum era by integrating hardware accelerators that support PQC algorithms.\nThe post The PQC Silicon Is Here Today for Tomorrow’s Quantum T...",
+    "link": "https://www.eetimes.com/the-pqc-silicon-is-here-today-for-tomorrows-quantum-threats/",
+    "source": "EE Times",
+    "pubDate": "Fri, 26 Jun 2026 08:38:45 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Next‑Gen ADAS/AD Architectures: Power, Networking, Safety & Sensors",
+    "summary": "Join this webinar and learn how high‑performance semiconductor technologies support centralized sensor fusion and reliable ADAS systems.\nThe post Next‑Gen ADAS/AD Architectures: Power, Networking, Saf...",
+    "link": "https://www.eetimes.com/next%e2%80%91gen-adas-ad-architectures-power-networking-safety-sensors/",
+    "source": "EE Times",
+    "pubDate": "Fri, 26 Jun 2026 08:13:23 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Jim Keller: ‘AI Still Obeys the Old Laws of Compute’",
+    "summary": "Invoking Rent's Rule and Amdahl's Law, Keller argues that memory and communication, not bigger processors, will define the future of AI infrastructure\nThe post Jim Keller: ‘AI Still Obeys the Old Laws...",
+    "link": "https://www.eetimes.com/jim-keller-on-tenstorrents-blackhole-scaling-and-ipo-ambitions/",
+    "source": "EE Times",
+    "pubDate": "Thu, 25 Jun 2026 22:00:00 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "OpenAI’s Jalapeño Will Be Spicy, But the Real Sizzle Is Its Chip Design AI",
+    "summary": "The custom inference accelerator follows the hyperscaler playbook, but the AI-automated chip design process could prove the more consequential announcement.\nThe post OpenAI’s Jalapeño Will Be Spicy, B...",
+    "link": "https://www.eetimes.com/openai-jalapeno-will-be-spicy-but-the-real-sizzle-is-its-chip-design-ai/",
+    "source": "EE Times",
+    "pubDate": "Thu, 25 Jun 2026 15:59:00 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Vicfuse Introduces UL Class Fuse Series for Modern AI Infrastructure and Industrial Protection",
+    "summary": "Vicfuse introduces its UL Class fuse series, an industrial circuit-protection portfolio designed for AC and DC applications.\nThe post Vicfuse Introduces UL Class Fuse Series for Modern AI Infrastructu...",
+    "link": "https://www.eetimes.com/vicfuse-introduces-ul-class-fuse-series-for-modern-ai-infrastructure-and-industrial-protection/",
+    "source": "EE Times",
+    "pubDate": "Thu, 25 Jun 2026 13:00:00 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "IBM Shows Sub-1-nm Chips, Targeting Production in 5 Years",
+    "summary": "IBM unveils 0.7-nm nanostack chips promising 100 billion transistors, denser SRAM, and production within five years.\nThe post IBM Shows Sub-1-nm Chips, Targeting Production in 5 Years appeared first o...",
+    "link": "https://www.eetimes.com/ibm-shows-sub-1-nm-chips-targeting-production-in-5-years/",
+    "source": "EE Times",
+    "pubDate": "Thu, 25 Jun 2026 10:00:00 +0000",
+    "lang": "en"
+  },
+  {
+    "title": "Qualcomm Forecasts Billions in Additional Revenue from New Data Center Solutions",
+    "summary": "Qualcomm takes the data center by storm with networking, AI accelerators, and both custom and standard CPUs.\nThe post Qualcomm Forecasts Billions in Additional Revenue from New Data Center Solutions a...",
+    "link": "https://www.eetimes.com/qualcomm-forecasts-billions-in-additional-revenue-from-new-data-center-solutions/",
+    "source": "EE Times",
+    "pubDate": "Thu, 25 Jun 2026 07:52:39 +0000",
+    "lang": "en"
+  }
+]

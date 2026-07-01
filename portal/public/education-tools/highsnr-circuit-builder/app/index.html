@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HighSNR Circuit Builder</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        :root {
+            --bg: #0f172a;
+            --panel-bg: rgba(30, 41, 59, 0.85);
+            --accent: #38bdf8;
+            --text: #f8fafc;
+        }
+        body {
+            margin: 0; padding: 0; background: var(--bg); color: var(--text);
+            font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+            user-select: none;
+        }
+        #header {
+            height: 64px; display: flex; align-items: center; padding: 0 24px;
+            background: var(--panel-bg); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08); justify-content: space-between; z-index: 20;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        #main-wrapper {
+            display: flex; flex-grow: 1; position: relative; overflow: hidden; background-color: var(--bg);
+        }
+        .main-view { display: none; flex-grow: 1; position: relative; overflow: hidden; }
+        .main-view.active { display: flex; }
+        #view-editor { background-color: #ffffff; }
+        #sidebar {
+            position: absolute; left: 20px; top: 20px; bottom: 20px; width: 280px;
+            border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column;
+            background: var(--panel-bg); backdrop-filter: blur(12px); padding: 20px; z-index: 10;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        }
+        
+        h2 { margin-top: 0; font-weight: 600; font-size: 1.1rem; color: var(--accent); margin-bottom: 16px;}
+        .tools-scroll {
+            overflow-y: auto; flex-grow: 1; padding-right: 5px;
+        }
+        .tools-scroll::-webkit-scrollbar { width: 4px; }
+        .tools-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        
+        .tools-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;
+        }
+        .tool-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #cbd5e1;
+            padding: 12px 8px; border-radius: 10px; cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-align: center; font-size: 0.8rem; font-weight: 500;
+        }
+        .tool-btn:hover { 
+            background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.3); color: white;
+            transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .tool-btn.active { 
+            background: var(--accent); color: #020617; font-weight: 600; 
+            border-color: var(--accent); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
+        }
+        #canvas-container {
+            position: absolute; inset: 0; z-index: 1;
+        }
+        svg {
+            background: transparent;
+            cursor: crosshair;
+            display: block;
+        }
+        
+        
+        #code-panel {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--panel-bg);
+            backdrop-filter: blur(16px); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15);
+            padding: 24px; width: 500px; display: none; flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); z-index: 100;
+        }
+        textarea {
+            background: #020617; color: #a5b4fc; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 16px; height: 250px; font-family: 'Consolas', monospace; 
+            resize: none; margin-bottom: 20px; font-size: 0.9rem; outline: none; line-height: 1.5;
+        }
+        textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+        .primary-btn {
+            background: var(--accent); color: #020617; border: none; padding: 10px 16px; border-radius: 8px;
+            cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: transform 0.1s, box-shadow 0.2s;
+        }
+        .primary-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
+        .primary-btn:active { transform: translateY(0); }
+        .portal-link {
+            display: inline-flex; align-items: center; justify-content: center;
+            color: #cbd5e1; text-decoration: none; font-weight: 600; font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06);
+            border-radius: 8px; padding: 10px 14px; transition: all 0.2s;
+        }
+        .portal-link:hover {
+            color: white; border-color: rgba(56, 189, 248, 0.45);
+            background: rgba(56, 189, 248, 0.12);
+        }
+
+        /* Tabs */
+        .header-tabs {
+            display: flex; gap: 4px; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
+        }
+        .tab-btn {
+            background: transparent; border: none; color: #94a3b8; padding: 6px 16px; border-radius: 8px;
+            cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;
+        }
+        .tab-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+        .tab-btn.active { background: var(--accent); color: #020617; font-weight: 600; box-shadow: 0 2px 8px rgba(56,189,248,0.3); }
+
+        /* Banners */
+        .banner-container {
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            background: rgba(0,0,0,0.2); border: 1px dashed rgba(255,255,255,0.15);
+            border-radius: 12px; color: rgba(255,255,255,0.2); font-size: 0.75rem; letter-spacing: 1px;
+            text-transform: uppercase; overflow: hidden; flex-shrink: 0;
+            transition: all 0.3s;
+        }
+        .banner-container:hover { background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.4); }
+        
+        /* Centered views */
+        .centered-view { justify-content: center; align-items: center; background: var(--bg); }
+        .info-panel {
+            width: 600px; max-width: 90%; background: var(--panel-bg); backdrop-filter: blur(12px);
+            padding: 32px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25); display: flex; flex-direction: column; max-height: 80vh;
+        }
+
+        /* Info Tab Content */
+        .hotkey-list {
+            display: flex; flex-direction: column; gap: 8px; overflow-y: auto; padding-right: 4px; margin-top: 16px;
+        }
+        .hotkey-item {
+            display: flex; flex-direction: column; gap: 6px;
+            background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .hotkey-key {
+            display: inline-block; background: #020617; color: var(--accent); padding: 4px 8px; border-radius: 6px; font-family: monospace; font-size: 0.75rem; font-weight: bold;
+            border: 1px solid rgba(56,189,248,0.3); align-self: flex-start;
+        }
+        .hotkey-desc { font-size: 0.8rem; color: #cbd5e1; line-height: 1.4; }
+
+        /* About Tab Content */
+        .about-content {
+            font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 12px; height: 100%; margin-top: 16px;
+        }
+        .about-content a { color: var(--accent); text-decoration: none; }
+        .about-content a:hover { text-decoration: underline; }
+    </style>
+
+</head>
+<body>
+    <div id="header">
+        <a href="https://www.youtube.com/@High_SNR_Channel" target="_blank" style="text-decoration: none; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+            <img src="highsnr_logo.png" alt="HighSNR Logo" style="height: 36px; object-fit: contain;">
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 600; color: white; font-size: 1.1rem; letter-spacing: 0.5px;">HighSNR</span>
+                <span style="font-size: 0.7rem; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">Circuit Builder</span>
+            </div>
+        </a>
+
+        <div class="header-tabs">
+            <button class="tab-btn active" data-target="view-editor">Editor</button>
+            <button class="tab-btn" data-target="view-info">Hotkeys</button>
+            <button class="tab-btn" data-target="view-about">About</button>
+        </div>
+        
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <a class="portal-link" href="/education-tools">Back to Portal</a>
+            <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.1);"></div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="scale-input" style="font-size: 0.85rem; color: #94a3b8; font-weight: 500;">Scale:</label>
+                <input type="number" id="scale-input" value="1.0" step="0.1" style="width: 50px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px; text-align: center; font-size: 0.85rem; outline: none;">
+            </div>
+            <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.1);"></div>
+            <button class="primary-btn" id="btn-save" style="background: rgba(255,255,255,0.1); color: white;">Save</button>
+            <button class="primary-btn" id="btn-load" style="background: rgba(255,255,255,0.1); color: white;">Load</button>
+            <input type="file" id="file-input" accept=".json" style="display: none;">
+            <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.1);"></div>
+            <button class="primary-btn" id="btn-export">Export to Manim</button>
+            <button class="primary-btn" id="btn-download-lib" style="background: #0ea5e9; color: white;">Download Lib</button>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+        <div id="view-editor" class="main-view active">
+            <div id="sidebar">
+                <div class="tools-scroll" style="display: flex; flex-direction: column;">
+                    <h2>Components</h2>
+                    <div class="tools-grid">
+                        <button class="tool-btn active" data-tool="cursor">Pointer</button>
+                        <button class="tool-btn" data-tool="Wire">Wire</button>
+                        <button class="tool-btn" data-tool="WireCorner">Corner</button>
+                        <button class="tool-btn" data-tool="Junction">Junction</button>
+                        <button class="tool-btn" data-tool="Resistor">Resistor</button>
+                        <button class="tool-btn" data-tool="Capacitor">Capacitor</button>
+                        <button class="tool-btn" data-tool="Inductor">Inductor</button>
+                        <button class="tool-btn" data-tool="Diode">Diode</button>
+                        <button class="tool-btn" data-tool="NMOS">NMOS</button>
+                        <button class="tool-btn" data-tool="Switch">Switch</button>
+                        <button class="tool-btn" data-tool="Source">Source</button>
+                        <button class="tool-btn" data-tool="Ground">GND</button>
+                        <button class="tool-btn" data-tool="SignalGND">Tri GND</button>
+                        <button class="tool-btn" data-tool="OpAmp">Op-Amp</button>
+                        <button class="tool-btn" data-tool="Label">Text</button>
+                    </div>
+                    
+                    <h2 style="margin-top: 10px;">Shapes</h2>
+                    <div class="tools-grid" style="margin-bottom: 0;">
+                        <button class="tool-btn" data-tool="Rectangle">Rect</button>
+                        <button class="tool-btn" data-tool="Circle">Circle</button>
+                        <button class="tool-btn" data-tool="Ellipse">Ellipse</button>
+                        <button class="tool-btn" data-tool="Pentagon">Pentagon</button>
+                    </div>
+                
+                    <h2 style="margin-top: 20px;">Properties</h2>
+                    <div style="background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 16px 0; color: #a5b4fc; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Shape Style</h4>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <label style="font-size: 0.8rem; color: #94a3b8; display: block; margin-bottom: 8px;">Layer:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 6px; cursor: pointer; color: white;">
+                                    <input type="radio" name="shape-layer" value="under" checked> Under
+                                </label>
+                                <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 6px; cursor: pointer; color: white;">
+                                    <input type="radio" name="shape-layer" value="over"> Over
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <label style="font-size: 0.85rem; color: #94a3b8;">Fill Color:</label>
+                            <input type="color" id="shape-fill" value="#38bdf8" style="background: none; border: none; cursor: pointer; width: 32px; height: 32px; padding: 0; border-radius: 4px;">
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <label style="font-size: 0.85rem; color: #94a3b8;">Opacity:</label>
+                            <input type="range" id="shape-opacity" min="0" max="1" step="0.1" value="0.5" style="width: 80px; accent-color: var(--accent);">
+                        </div>
+                        
+                        <div id="pentagon-controls" style="display: none; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <label style="font-size: 0.85rem; color: #94a3b8;">Point Size:</label>
+                            <input type="range" id="shape-point" min="0" max="1" step="0.05" value="0.25" style="width: 80px; accent-color: var(--accent);">
+                        </div>
+                    </div>
+
+                    <div style="flex-grow: 1;"></div>
+                    <div class="banner-container" style="min-height: 120px; width: 100%; margin-top: 20px;">
+                        Banner<br>240 x 120
+                    </div>
+                </div>
+            </div>
+
+
+
+        <div id="canvas-container">
+            <svg id="schematic" width="100%" height="100%" viewBox="-7 -4 14 8" preserveAspectRatio="xMidYMid slice" oncontextmenu="return false;"></svg>
+        </div>
+
+
+
+        
+
+        <div id="code-panel">
+            <div id="code-panel-header" style="cursor: move; padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; user-select: none;">
+                <h3 style="margin:0; color:var(--accent); font-size: 1.2rem; font-weight: 600;">Manim Python Script</h3>
+                <span style="font-size: 0.8rem; color: #64748b;">(Drag to move)</span>
+            </div>
+            <textarea id="code-output" readonly></textarea>
+            <div style="display:flex; gap:12px;">
+                <button class="primary-btn" id="btn-copy" style="flex:1;">Copy Code</button>
+                <button class="primary-btn" id="btn-close" style="background: rgba(255,255,255,0.1); color:white; flex: 1;">Close</button>
+            </div>
+            </div>
+        </div> <!-- End of view-editor -->
+
+        <div id="view-info" class="main-view centered-view">
+            <div class="info-panel">
+                <h2 style="margin-bottom: 12px;">About HighSNR Circuit Builder</h2>
+                <div style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 24px;">
+                    <p style="margin-top:0;"><strong>HighSNR Circuit Builder</strong> is an intuitive web-based tool designed to easily sketch electronic schematics and shapes, and seamlessly export them to <a href="https://www.manim.community/" target="_blank" style="color: var(--accent); text-decoration: none;">Manim</a> Python scripts.</p>
+                    <p style="margin-bottom:0;">It allows for rapid prototyping of visual circuits which can be directly animated using the provided <code>circuit_lib.py</code> library.</p>
+                </div>
+                
+                <h2 style="margin-bottom: 12px;">Hotkeys & Controls</h2>
+                <div class="hotkey-list tools-scroll">
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Left Click</span>
+                        <span class="hotkey-desc">Place component, or Select/Drag in Pointer mode.</span>
+                    </div>
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Right Click</span>
+                        <span class="hotkey-desc">Rotate selected component. In Corner mode, flip corner direction.</span>
+                    </div>
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Mid-Click / Shift+Drag</span>
+                        <span class="hotkey-desc">Pan the canvas.</span>
+                    </div>
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Mouse Wheel</span>
+                        <span class="hotkey-desc">Zoom in / Zoom out.</span>
+                    </div>
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Delete / Backspace</span>
+                        <span class="hotkey-desc">Delete the currently selected component.</span>
+                    </div>
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Ctrl + Z</span>
+                        <span class="hotkey-desc">Undo the last placed component.</span>
+                    </div>
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Escape</span>
+                        <span class="hotkey-desc">Switch back to Pointer tool and deselect.</span>
+                    </div>
+                    <div class="hotkey-item">
+                        <span class="hotkey-key">Double Click</span>
+                        <span class="hotkey-desc">Double click on a text label to edit its content.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-about" class="main-view centered-view">
+            <div class="info-panel">
+                <h2 style="margin-bottom: 16px;">About the Project & Author</h2>
+                <div class="about-content tools-scroll">
+                    <h3 style="color: white; margin: 12px 0 8px 0; font-size: 1rem;">Author Profile</h3>
+                    <p><strong>Boris Kuznetsov</strong> is a Professor and Electronics Engineer specializing in precision measurement systems and embedded electronics. His work focuses on analog and mixed-signal circuit design, high-speed PCB design, digital signal processing, and instrumentation systems.</p>
+                    <p>He is also the creator of the YouTube channel <strong>@High_SNR_Channel</strong>, where he shares educational content on electronics, circuit design, and hardware development.</p>
+                    
+                    <h3 style="color: white; margin: 20px 0 8px 0; font-size: 1rem;">Official Profiles & Socials</h3>
+                    <ul style="list-style-type: none; padding-left: 0; margin-top: 0; display: flex; flex-direction: column; gap: 6px;">
+                        <li><strong>YouTube Channel:</strong> <a href="https://youtube.com/@High_SNR_Channel" target="_blank">youtube.com/@High_SNR_Channel</a></li>
+                        <li><strong>GitHub Profile:</strong> <a href="https://github.com/DrBorisKuznetsov" target="_blank">github.com/DrBorisKuznetsov</a></li>
+                        <li><strong>LinkedIn Profile:</strong> <a href="https://kg.linkedin.com/in/kuznetsovbf" target="_blank">linkedin.com/in/kuznetsovbf</a></li>
+                    </ul>
+
+                    <h3 style="color: white; margin: 20px 0 8px 0; font-size: 1rem;">Contacts</h3>
+                    <p style="margin-top: 0;"><strong>Email:</strong> <a href="mailto:info@highsnr.org">info@highsnr.org</a></p>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End of main-wrapper -->
+    <script>
+        // Tab switching logic
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.main-view').forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.target).classList.add('active');
+            });
+        });
+
+        const svg = document.getElementById('schematic');
+        let currentTool = 'cursor';
+        let items = []; 
+        let activeWireStart = null;
+        let activeShapeStart = null;
+        let previewElem = null;
+
+        let selectedIndex = -1;
+        let draggedItemIndex = -1;
+        let dragOffset = {x: 0, y: 0, x2: 0, y2: 0};
+
+
+
+        function updatePropertiesPanel() {
+            if (selectedIndex !== -1) {
+                let item = items[selectedIndex];
+                if (['Rectangle', 'Circle', 'Ellipse', 'Pentagon'].includes(item.type)) {
+                    document.getElementById('shape-fill').value = item.fill;
+                    document.getElementById('shape-opacity').value = item.opacity;
+                    const r = document.querySelector(`input[name="shape-layer"][value="${item.layer}"]`);
+                    if (r) r.checked = true;
+                    if (item.type === 'Pentagon') {
+                        document.getElementById('pentagon-controls').style.display = 'flex';
+                        document.getElementById('shape-point').value = item.pointRatio !== undefined ? item.pointRatio : 0.25;
+                    } else {
+                        document.getElementById('pentagon-controls').style.display = 'none';
+                    }
+                } else {
+                    document.getElementById('pentagon-controls').style.display = 'none';
+                }
+            }
+        }
+
+        ['shape-fill', 'shape-opacity', 'shape-point'].forEach(id => {
+            document.getElementById(id).addEventListener('input', (e) => {
+                if (selectedIndex !== -1 && ['Rectangle', 'Circle', 'Ellipse', 'Pentagon'].includes(items[selectedIndex].type)) {
+                    if (id === 'shape-fill') items[selectedIndex].fill = e.target.value;
+                    if (id === 'shape-opacity') items[selectedIndex].opacity = e.target.value;
+                    if (id === 'shape-point' && items[selectedIndex].type === 'Pentagon') items[selectedIndex].pointRatio = parseFloat(e.target.value);
+                    renderAll();
+                }
+            });
+        });
+
+        document.querySelectorAll('input[name="shape-layer"]').forEach(el => {
+            el.addEventListener('change', (e) => {
+                if (selectedIndex !== -1 && ['Rectangle', 'Circle', 'Ellipse', 'Pentagon'].includes(items[selectedIndex].type)) {
+                    items[selectedIndex].layer = e.target.value;
+                    renderAll();
+                }
+            });
+        });
+
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTool = btn.dataset.tool;
+                activeWireStart = null;
+                activeShapeStart = null;
+                selectedIndex = -1;
+                updatePropertiesPanel();
+                if(previewElem) { previewElem.remove(); previewElem = null; }
+                interactiveLayer.innerHTML = ''; 
+                renderAll();
+            });
+        });
+
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        defs.innerHTML = `
+            <pattern id="grid" width="0.1" height="0.1" patternUnits="userSpaceOnUse">
+                <path d="M 0.1 0 L 0 0 0 0.1" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="0.01"/>
+            </pattern>
+        `;
+        svg.appendChild(defs);
+
+        const bgGrid = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        bgGrid.setAttribute("width", "1000");
+        bgGrid.setAttribute("height", "1000");
+        bgGrid.setAttribute("x", "-500");
+        bgGrid.setAttribute("y", "-500");
+        bgGrid.setAttribute("fill", "url(#grid)");
+        svg.appendChild(bgGrid);
+
+        const axes = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        axes.innerHTML = `
+            <line x1="-100" y1="0" x2="100" y2="0" stroke="rgba(0,0,0,0.1)" stroke-width="0.02"/>
+            <line x1="0" y1="-100" x2="0" y2="100" stroke="rgba(0,0,0,0.1)" stroke-width="0.02"/>
+        `;
+        svg.appendChild(axes);
+
+        const renderLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        const interactiveLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        svg.appendChild(renderLayer);
+        svg.appendChild(interactiveLayer);
+
+        function getMouseCoords(e) {
+            const pt = svg.createSVGPoint();
+            pt.x = e.clientX; pt.y = e.clientY;
+            const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+            return { x: Math.round(svgP.x * 10) / 10, y: Math.round(svgP.y * 10) / 10 };
+        }
+
+        function getSVGShape(type) {
+            let s = '';
+            if (type === 'Resistor') {
+                s = `<polyline points="-1.0,0 -0.35,0 -0.25,-0.16 -0.15,0.16 -0.05,-0.16 0.05,0.16 0.15,-0.16 0.25,0.16 0.35,0 1.0,0" fill="none" stroke="#000" stroke-width="0.02" stroke-linejoin="round"/>`;
+            } else if (type === 'Capacitor') {
+                s = `<line x1="-1.0" y1="0" x2="-0.08" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-0.08" y1="-0.3" x2="-0.08" y2="0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.08" y1="-0.3" x2="0.08" y2="0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.08" y1="0" x2="1.0" y2="0" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'Ground') {
+                s = `<line x1="0" y1="0" x2="0" y2="0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-0.3" y1="0.3" x2="0.3" y2="0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-0.2" y1="0.4" x2="0.2" y2="0.4" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-0.1" y1="0.5" x2="0.1" y2="0.5" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'NMOS') {
+                s = `<line x1="-1.0" y1="0" x2="-0.1" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-0.1" y1="-0.4" x2="-0.1" y2="0.4" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.1" y1="-0.4" x2="0.1" y2="0.4" stroke="#000" stroke-width="0.06"/>
+                     <line x1="0.1" y1="-0.3" x2="0.5" y2="-0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.5" y1="-0.3" x2="0.5" y2="-1.0" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.1" y1="0.3" x2="0.5" y2="0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.5" y1="0.3" x2="0.5" y2="1.0" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'Junction') {
+                s = `<circle cx="0" cy="0" r="0.1" fill="#000"/>`;
+            } else if (type === 'Switch') {
+                s = `<line x1="-1.0" y1="0" x2="-0.3" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <circle cx="-0.26" cy="0" r="0.04" fill="none" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-0.26" y1="-0.04" x2="0.22" y2="-0.4" stroke="#000" stroke-width="0.02"/>
+                     <circle cx="0.26" cy="0" r="0.04" fill="none" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.3" y1="0" x2="1.0" y2="0" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'Diode') {
+                s = `<line x1="-1.0" y1="0" x2="-0.25" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-0.25" y1="0" x2="0.25" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <polygon points="-0.25,-0.25 -0.25,0.25 0.25,0" fill="none" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.25" y1="-0.25" x2="0.25" y2="0.25" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.25" y1="0" x2="1.0" y2="0" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'Inductor') {
+                s = `<line x1="-1.0" y1="0" x2="-0.6" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <path d="M -0.6 0 A 0.2 0.2 0 0 0 -0.2 0 A 0.2 0.2 0 0 0 0.2 0 A 0.2 0.2 0 0 0 0.6 0" fill="none" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.6" y1="0" x2="1.0" y2="0" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'Source') {
+                s = `<line x1="-1.0" y1="0" x2="-0.4" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <circle cx="0" cy="0" r="0.4" fill="none" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.4" y1="0" x2="1.0" y2="0" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'SignalGND') {
+                s = `<line x1="0" y1="0" x2="0" y2="0.3" stroke="#000" stroke-width="0.02"/>
+                     <polygon points="-0.25,0.3 0.25,0.3 0,0.6" fill="none" stroke="#000" stroke-width="0.02"/>`;
+            } else if (type === 'OpAmp') {
+                s = `<polygon points="-0.5,-0.6 -0.5,0.6 0.5,0" fill="none" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-1.0" y1="-0.3" x2="-0.5" y2="-0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="-1.0" y1="0.3" x2="-0.5" y2="0.3" stroke="#000" stroke-width="0.02"/>
+                     <line x1="0.5" y1="0" x2="1.0" y2="0" stroke="#000" stroke-width="0.02"/>
+                     <text x="-0.35" y="-0.3" font-size="0.15" text-anchor="middle" dominant-baseline="central">+</text>
+                     <text x="-0.35" y="0.3" font-size="0.15" text-anchor="middle" dominant-baseline="central">-</text>`;
+            }
+            return s;
+        }
+
+        function renderAll() {
+            renderLayer.innerHTML = '';
+            const underLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            const overLayer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            renderLayer.appendChild(underLayer);
+            renderLayer.appendChild(overLayer);
+
+            items.forEach((item, i) => {
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                const isSelected = (i === selectedIndex);
+                const color = isSelected ? '#38bdf8' : '#000';
+                const sw = isSelected ? '0.04' : '0.02';
+
+                if (item.type === 'Wire') {
+                    g.innerHTML = `
+                        <line x1="${item.x1}" y1="${item.y1}" x2="${item.x2}" y2="${item.y2}" stroke="transparent" stroke-width="0.3"/>
+                        <line x1="${item.x1}" y1="${item.y1}" x2="${item.x2}" y2="${item.y2}" stroke="${color}" stroke-width="${sw}"/>
+                    `;
+                } else if (item.type === 'WireCorner') {
+                    let cx = item.verticalFirst ? item.x1 : item.x2;
+                    let cy = item.verticalFirst ? item.y2 : item.y1;
+                    g.innerHTML = `
+                        <polyline points="${item.x1},${item.y1} ${cx},${cy} ${item.x2},${item.y2}" fill="none" stroke="transparent" stroke-width="0.3"/>
+                        <polyline points="${item.x1},${item.y1} ${cx},${cy} ${item.x2},${item.y2}" fill="none" stroke="${color}" stroke-width="${sw}"/>
+                    `;
+                } else if (item.type === 'Rectangle') {
+                    const w = Math.abs(item.x2 - item.x1);
+                    const h = Math.abs(item.y2 - item.y1);
+                    const minX = Math.min(item.x1, item.x2);
+                    const minY = Math.min(item.y1, item.y2);
+                    const cx = (minX + w/2).toFixed(2);
+                    const cy = (minY + h/2).toFixed(2);
+                    let rot = item.angle ? `transform="rotate(${item.angle}, ${cx}, ${cy})"` : '';
+                    g.innerHTML = `<rect x="${minX}" y="${minY}" width="${w}" height="${h}" fill="${item.fill}" fill-opacity="${item.opacity}" stroke="${color}" stroke-width="${sw}" ${rot}/>`;
+                } else if (item.type === 'Circle') {
+                    const r = Math.hypot(item.x2 - item.x1, item.y2 - item.y1);
+                    g.innerHTML = `<circle cx="${item.x1}" cy="${item.y1}" r="${r}" fill="${item.fill}" fill-opacity="${item.opacity}" stroke="${color}" stroke-width="${sw}"/>`;
+                } else if (item.type === 'Ellipse') {
+                    const rx = Math.abs(item.x2 - item.x1);
+                    const ry = Math.abs(item.y2 - item.y1);
+                    const cx = ((item.x1 + item.x2) / 2).toFixed(2);
+                    const cy = ((item.y1 + item.y2) / 2).toFixed(2);
+                    let rot = item.angle ? `transform="rotate(${item.angle}, ${cx}, ${cy})"` : '';
+                    g.innerHTML = `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${item.fill}" fill-opacity="${item.opacity}" stroke="${color}" stroke-width="${sw}" ${rot}/>`;
+                } else if (item.type === 'Pentagon') {
+                    const minX = Math.min(item.x1, item.x2);
+                    const maxX = Math.max(item.x1, item.x2);
+                    const minY = Math.min(item.y1, item.y2);
+                    const maxY = Math.max(item.y1, item.y2);
+                    const w = maxX - minX;
+                    const h = maxY - minY;
+                    const cx = (minX + w/2).toFixed(2);
+                    const cy = (minY + h/2).toFixed(2);
+                    const pr = item.pointRatio !== undefined ? item.pointRatio : 0.25;
+                    const pts = `${minX},${minY} ${maxX - w*pr},${minY} ${maxX},${minY + h/2} ${maxX - w*pr},${maxY} ${minX},${maxY}`;
+                    let rot = item.angle ? `transform="rotate(${item.angle}, ${cx}, ${cy})"` : '';
+                    g.innerHTML = `<polygon points="${pts}" fill="${item.fill}" fill-opacity="${item.opacity}" stroke="${color}" stroke-width="${sw}" ${rot}/>`;
+                } else if (item.type === 'Label') {
+                    g.setAttribute("transform", `translate(${item.x}, ${item.y})`);
+                    g.innerHTML = `
+                        <rect x="-0.5" y="-0.2" width="1.0" height="0.4" fill="transparent"/>
+                        <text x="0" y="0" fill="${color}" font-size="0.3" font-family="monospace" text-anchor="middle" dominant-baseline="central">${item.text}</text>
+                    `;
+                } else {
+                    g.setAttribute("transform", `translate(${item.x}, ${item.y}) rotate(${item.angle})`);
+                    let shapeHtml = getSVGShape(item.type);
+                    if (isSelected) {
+                        shapeHtml = shapeHtml.replace(/stroke="#000"/g, `stroke="${color}"`);
+                        shapeHtml = shapeHtml.replace(/stroke-width="0.02"/g, `stroke-width="${sw}"`);
+                        shapeHtml = shapeHtml.replace(/fill="#000"/g, `fill="${color}"`);
+                    }
+                    g.innerHTML = `
+                        <circle cx="0" cy="0" r="0.4" fill="transparent"/>
+                        ${shapeHtml}
+                    `;
+                }
+
+                g.style.cursor = currentTool === 'cursor' ? 'move' : 'crosshair';
+                
+                g.addEventListener('mousedown', (e) => {
+                    if (currentTool !== 'cursor') return;
+                    e.stopPropagation();
+                    
+                    if (e.button === 2) { // Right click -> rotate
+                        if (item.angle === undefined) item.angle = 0;
+                        item.angle = (item.angle - 90) % 360;
+                        renderAll();
+                        return;
+                    }
+                    
+                    selectedIndex = i;
+                    draggedItemIndex = i;
+                    const {x, y} = getMouseCoords(e);
+                    
+                    if (['Wire', 'WireCorner', 'Rectangle', 'Circle', 'Ellipse', 'Pentagon'].includes(item.type)) {
+                        dragOffset = {x: item.x1 - x, y: item.y1 - y, x2: item.x2 - x, y2: item.y2 - y};
+                    } else {
+                        dragOffset = {x: item.x - x, y: item.y - y};
+                    }
+                    
+                    updatePropertiesPanel();
+                    renderAll();
+                });
+
+                if (item.type === 'Label') {
+                    g.addEventListener('dblclick', (e) => {
+                        e.stopPropagation();
+                        let newText = prompt("Редактировать текст:", item.text);
+                        if (newText !== null) {
+                            let val = newText.trim();
+                            if (val !== "") {
+                                item.text = val;
+                                renderAll();
+                            }
+                        }
+                    });
+                }
+
+                if (item.layer === 'under') {
+                    underLayer.appendChild(g);
+                } else {
+                    overLayer.appendChild(g); // Default for shapes and circuits
+                }
+            });
+
+            // Auto-save to localStorage
+            try {
+                localStorage.setItem('manim_circuit_autosave', JSON.stringify(items));
+            } catch (e) {}
+        }
+
+        // --- PAN AND ZOOM LOGIC ---
+        let isPanning = false;
+        let startPanPt = {x: 0, y: 0};
+
+        svg.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const pt = svg.createSVGPoint();
+            pt.x = e.clientX; pt.y = e.clientY;
+            const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+            const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
+            const viewBoxStr = svg.getAttribute('viewBox');
+            let [vx, vy, vw, vh] = viewBoxStr.split(/[\s,]+/).filter(Boolean).map(Number);
+
+            const newW = vw * zoomFactor;
+            const newH = vh * zoomFactor;
+
+            // Keep mouse stationary
+            const newX = svgP.x - (svgP.x - vx) * (newW / vw);
+            const newY = svgP.y - (svgP.y - vy) * (newH / vh);
+
+            svg.setAttribute('viewBox', `${newX} ${newY} ${newW} ${newH}`);
+        }, {passive: false});
+
+        window.addEventListener('mouseup', (e) => {
+            if (e.button === 1 || (e.button === 0 && e.shiftKey)) {
+                isPanning = false;
+                svg.style.cursor = 'crosshair';
+            }
+            if (draggedItemIndex !== -1) {
+                draggedItemIndex = -1;
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (draggedItemIndex !== -1) {
+                const {x, y} = getMouseCoords(e);
+                let item = items[draggedItemIndex];
+                
+                if (['Wire', 'WireCorner', 'Rectangle', 'Circle', 'Ellipse', 'Pentagon'].includes(item.type)) {
+                    item.x1 = Math.round((x + dragOffset.x) * 10) / 10;
+                    item.y1 = Math.round((y + dragOffset.y) * 10) / 10;
+                    item.x2 = Math.round((x + dragOffset.x2) * 10) / 10;
+                    item.y2 = Math.round((y + dragOffset.y2) * 10) / 10;
+                } else {
+                    item.x = Math.round((x + dragOffset.x) * 10) / 10;
+                    item.y = Math.round((y + dragOffset.y) * 10) / 10;
+                }
+                renderAll();
+                return;
+            }
+
+            if (isPanning) {
+                const dx = e.clientX - startPanPt.x;
+                const dy = e.clientY - startPanPt.y;
+                startPanPt = {x: e.clientX, y: e.clientY};
+
+                const viewBoxStr = svg.getAttribute('viewBox');
+                let [vx, vy, vw, vh] = viewBoxStr.split(/[\s,]+/).filter(Boolean).map(Number);
+                const rect = svg.getBoundingClientRect();
+                const scaleX = vw / rect.width;
+                const scaleY = vh / rect.height;
+
+                svg.setAttribute('viewBox', `${vx - dx * scaleX} ${vy - dy * scaleY} ${vw} ${vh}`);
+                return;
+            }
+        });
+
+        svg.addEventListener('mousemove', (e) => {
+            const {x, y} = getMouseCoords(e);
+            interactiveLayer.innerHTML = ''; // clear preview
+
+            if (currentTool === 'cursor') return;
+
+            if (currentTool === 'Wire' || currentTool === 'WireCorner') {
+                if (activeWireStart) {
+                    if (currentTool === 'Wire') {
+                        interactiveLayer.innerHTML = `<line x1="${activeWireStart.x}" y1="${activeWireStart.y}" x2="${x}" y2="${y}" stroke="rgba(0,0,0,0.4)" stroke-width="0.02" stroke-dasharray="0.1,0.1"/>`;
+                    } else {
+                        let cx = activeWireStart.verticalFirst ? activeWireStart.x : x;
+                        let cy = activeWireStart.verticalFirst ? y : activeWireStart.y;
+                        interactiveLayer.innerHTML = `<polyline points="${activeWireStart.x},${activeWireStart.y} ${cx},${cy} ${x},${y}" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="0.02" stroke-dasharray="0.1,0.1"/>`;
+                    }
+                } else {
+                    interactiveLayer.innerHTML = `<circle cx="${x}" cy="${y}" r="0.03" fill="rgba(0,0,0,0.4)"/>`;
+                }
+            } else if (currentTool === 'Rectangle' || currentTool === 'Circle' || currentTool === 'Ellipse' || currentTool === 'Pentagon') {
+                const fill = document.getElementById('shape-fill').value;
+                const op = document.getElementById('shape-opacity').value;
+                const pr = document.getElementById('shape-point') ? document.getElementById('shape-point').value : 0.25;
+                
+                if (activeShapeStart) {
+                    if (currentTool === 'Rectangle') {
+                        const w = Math.abs(x - activeShapeStart.x);
+                        const h = Math.abs(y - activeShapeStart.y);
+                        const minX = Math.min(activeShapeStart.x, x);
+                        const minY = Math.min(activeShapeStart.y, y);
+                        interactiveLayer.innerHTML = `<rect x="${minX}" y="${minY}" width="${w}" height="${h}" fill="${fill}" fill-opacity="${op}" stroke="#000" stroke-width="0.02" stroke-dasharray="0.1,0.1"/>`;
+                    } else if (currentTool === 'Circle') {
+                        const r = Math.hypot(x - activeShapeStart.x, y - activeShapeStart.y);
+                        interactiveLayer.innerHTML = `<circle cx="${activeShapeStart.x}" cy="${activeShapeStart.y}" r="${r}" fill="${fill}" fill-opacity="${op}" stroke="#000" stroke-width="0.02" stroke-dasharray="0.1,0.1"/>`;
+                    } else if (currentTool === 'Ellipse') {
+                        const rx = Math.abs(x - activeShapeStart.x);
+                        const ry = Math.abs(y - activeShapeStart.y);
+                        interactiveLayer.innerHTML = `<ellipse cx="${activeShapeStart.x}" cy="${activeShapeStart.y}" rx="${rx}" ry="${ry}" fill="${fill}" fill-opacity="${op}" stroke="#000" stroke-width="0.02" stroke-dasharray="0.1,0.1"/>`;
+                    } else if (currentTool === 'Pentagon') {
+                        const minX = Math.min(activeShapeStart.x, x);
+                        const maxX = Math.max(activeShapeStart.x, x);
+                        const minY = Math.min(activeShapeStart.y, y);
+                        const maxY = Math.max(activeShapeStart.y, y);
+                        const w = maxX - minX;
+                        const h = maxY - minY;
+                        const pts = `${minX},${minY} ${maxX - w*pr},${minY} ${maxX},${minY + h/2} ${maxX - w*pr},${maxY} ${minX},${maxY}`;
+                        interactiveLayer.innerHTML = `<polygon points="${pts}" fill="${fill}" fill-opacity="${op}" stroke="#000" stroke-width="0.02" stroke-dasharray="0.1,0.1"/>`;
+                    }
+                } else {
+                    interactiveLayer.innerHTML = `<circle cx="${x}" cy="${y}" r="0.03" fill="rgba(0,0,0,0.4)"/>`;
+                }
+            } else if (currentTool === 'Label') {
+                interactiveLayer.innerHTML = `<text x="${x}" y="${y}" fill="rgba(0,0,0,0.5)" font-size="0.3" text-anchor="middle" dominant-baseline="central">Text...</text>`;
+            } else {
+                let angle = previewElem ? previewElem.angle : 0;
+                interactiveLayer.innerHTML = `<g transform="translate(${x}, ${y}) rotate(${angle})" opacity="0.6">${getSVGShape(currentTool)}</g>`;
+                previewElem = {x, y, angle};
+            }
+        });
+
+        svg.addEventListener('mousedown', (e) => {
+            if (currentTool === 'cursor' && e.button !== 1 && !(e.button === 0 && e.shiftKey)) {
+                selectedIndex = -1;
+                updatePropertiesPanel();
+                renderAll();
+            }
+
+            // Pan logic
+            if (e.button === 1 || (e.button === 0 && e.shiftKey)) { 
+                isPanning = true;
+                startPanPt = {x: e.clientX, y: e.clientY};
+                svg.style.cursor = 'grab';
+                return;
+            }
+
+            if (e.button === 2) { // Right click
+                if (currentTool === 'WireCorner' && activeWireStart) {
+                    activeWireStart.verticalFirst = !activeWireStart.verticalFirst;
+                    svg.dispatchEvent(new MouseEvent('mousemove', e));
+                    return;
+                }
+                if (previewElem && currentTool !== 'Label') { 
+                    previewElem.angle = (previewElem.angle + 90) % 360; 
+                    renderAll(); 
+                    svg.dispatchEvent(new MouseEvent('mousemove', e)); 
+                }
+                return;
+            }
+            if (e.button !== 0) return; // Only Left click
+
+            const {x, y} = getMouseCoords(e);
+
+            if (currentTool === 'Wire' || currentTool === 'WireCorner') {
+                if (!activeWireStart) {
+                    activeWireStart = {x, y, verticalFirst: true};
+                } else {
+                    if (activeWireStart.x !== x || activeWireStart.y !== y) {
+                        if (currentTool === 'Wire') {
+                            items.push({type: 'Wire', x1: activeWireStart.x, y1: activeWireStart.y, x2: x, y2: y});
+                        } else {
+                            items.push({
+                                type: 'WireCorner', 
+                                x1: activeWireStart.x, y1: activeWireStart.y, 
+                                x2: x, y2: y, 
+                                verticalFirst: activeWireStart.verticalFirst
+                            });
+                        }
+                        renderAll();
+                    }
+                    activeWireStart = null;
+                    interactiveLayer.innerHTML = '';
+                }
+            } else if (currentTool === 'Rectangle' || currentTool === 'Circle' || currentTool === 'Ellipse' || currentTool === 'Pentagon') {
+                if (!activeShapeStart) {
+                    activeShapeStart = {x, y};
+                } else {
+                    if (activeShapeStart.x !== x || activeShapeStart.y !== y) {
+                        const fill = document.getElementById('shape-fill').value;
+                        const op = document.getElementById('shape-opacity').value;
+                        const pr = parseFloat(document.getElementById('shape-point').value) || 0.25;
+                        const layer = document.querySelector('input[name="shape-layer"]:checked').value;
+                        items.push({
+                            type: currentTool, 
+                            x1: activeShapeStart.x, y1: activeShapeStart.y, 
+                            x2: x, y2: y, 
+                            fill: fill, opacity: op, layer: layer, pointRatio: pr,
+                            angle: 0
+                        });
+                        renderAll();
+                    }
+                    activeShapeStart = null;
+                    interactiveLayer.innerHTML = '';
+                }
+            } else if (currentTool === 'Label') {
+                let txt = prompt("Enter text:");
+                if (txt) {
+                    items.push({type: 'Label', text: txt, x, y, angle: 0});
+                    renderAll();
+                }
+            } else if (currentTool !== 'cursor') {
+                items.push({type: currentTool, x, y, angle: previewElem ? previewElem.angle : 0});
+                renderAll();
+            }
+        });
+
+         window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelector('.tool-btn[data-tool="cursor"]').click();
+            }
+            if (e.key === 'z' && e.ctrlKey) {
+                e.preventDefault();
+                items.pop();
+                selectedIndex = -1;
+                updatePropertiesPanel();
+                renderAll();
+            }
+            if ((e.key === 'Delete' || e.key === 'Backspace') && selectedIndex !== -1) {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    items.splice(selectedIndex, 1);
+                    selectedIndex = -1;
+                    updatePropertiesPanel();
+                    renderAll();
+                }
+            }
+        });
+
+        document.getElementById('btn-save').addEventListener('click', () => {
+            let filename = prompt("Введите имя файла для сохранения:", "circuit");
+            if (filename === null) return;
+            filename = filename.trim();
+            if (!filename) filename = "circuit";
+            if (!filename.endsWith(".json")) filename += ".json";
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(items, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", filename);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        });
+
+        document.getElementById('btn-load').addEventListener('click', () => {
+            document.getElementById('file-input').click();
+        });
+
+        document.getElementById('file-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (Array.isArray(parsed)) {
+                        items = parsed;
+                        selectedIndex = -1;
+                        updatePropertiesPanel();
+                        renderAll();
+                    } else {
+                        alert("Invalid file format.");
+                    }
+                } catch (err) {
+                    alert("Error loading file: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = ''; // reset so the same file can be loaded again if needed
+        });
+
+        document.getElementById('btn-export').addEventListener('click', () => {
+            let scale = parseFloat(document.getElementById('scale-input').value) || 1.0;
+            let out = "from manim import *\nfrom circuit_lib import Resistor, Capacitor, Ground, NMOS, Switch, Diode, Inductor, Wire, WireCorner, Junction, Source, SignalGND, OpAmp\n\nclass CustomCircuit(Scene):\n    def construct(self):\n        components = VGroup()\n        wires = VGroup()\n        shapes_under = VGroup()\n        shapes_over = VGroup()\n\n";
+            
+            items.forEach((c, i) => {
+                if (c.type === 'Wire') {
+                    let mx1 = c.x1.toFixed(2), my1 = (-c.y1).toFixed(2);
+                    let mx2 = c.x2.toFixed(2), my2 = (-c.y2).toFixed(2);
+                    out += `        wire_${i} = Wire([${mx1}, ${my1}, 0], [${mx2}, ${my2}, 0], color=BLACK)\n`;
+                    out += `        wires.add(wire_${i})\n`;
+                } else if (c.type === 'WireCorner') {
+                    let mx1 = c.x1.toFixed(2), my1 = (-c.y1).toFixed(2);
+                    let mx2 = c.x2.toFixed(2), my2 = (-c.y2).toFixed(2);
+                    let vf = c.verticalFirst ? 'True' : 'False';
+                    out += `        wire_${i} = WireCorner([${mx1}, ${my1}, 0], [${mx2}, ${my2}, 0], vertical_first=${vf}, color=BLACK)\n`;
+                    out += `        wires.add(wire_${i})\n`;
+                } else if (c.type === 'Rectangle') {
+                    let name = "rect_" + i;
+                    let w = Math.abs(c.x2 - c.x1).toFixed(2);
+                    let h = Math.abs(c.y2 - c.y1).toFixed(2);
+                    let mx = ((c.x1 + c.x2) / 2).toFixed(2);
+                    let my = (-(c.y1 + c.y2) / 2).toFixed(2); // Invert Y
+                    out += `        ${name} = Rectangle(width=${w}, height=${h}, color=BLACK, fill_color="${c.fill}", fill_opacity=${c.opacity})\n`;
+                    out += `        ${name}.move_to(RIGHT * ${mx} + UP * ${my})\n`;
+                    if (c.angle) out += `        ${name}.rotate(${-c.angle} * DEGREES)\n`;
+                    if (c.layer === 'under') out += `        shapes_under.add(${name})\n`;
+                    else out += `        shapes_over.add(${name})\n`;
+                } else if (c.type === 'Circle') {
+                    let name = "circle_" + i;
+                    let r = Math.hypot(c.x2 - c.x1, c.y2 - c.y1).toFixed(2);
+                    let mx = c.x1.toFixed(2), my = (-c.y1).toFixed(2);
+                    out += `        ${name} = Circle(radius=${r}, color=BLACK, fill_color="${c.fill}", fill_opacity=${c.opacity})\n`;
+                    out += `        ${name}.move_to(RIGHT * ${mx} + UP * ${my})\n`;
+                    if (c.layer === 'under') out += `        shapes_under.add(${name})\n`;
+                    else out += `        shapes_over.add(${name})\n`;
+                } else if (c.type === 'Ellipse') {
+                    let name = "ellipse_" + i;
+                    let rx = Math.abs(c.x2 - c.x1).toFixed(2);
+                    let ry = Math.abs(c.y2 - c.y1).toFixed(2);
+                    let mx = c.x1.toFixed(2), my = (-c.y1).toFixed(2);
+                    out += `        ${name} = Ellipse(width=${rx*2}, height=${ry*2}, color=BLACK, fill_color="${c.fill}", fill_opacity=${c.opacity})\n`;
+                    out += `        ${name}.move_to(RIGHT * ${mx} + UP * ${my})\n`;
+                    if (c.angle) out += `        ${name}.rotate(${-c.angle} * DEGREES)\n`;
+                    if (c.layer === 'under') out += `        shapes_under.add(${name})\n`;
+                    else out += `        shapes_over.add(${name})\n`;
+                } else if (c.type === 'Pentagon') {
+                    let name = "pentagon_" + i;
+                    let minX = Math.min(c.x1, c.x2);
+                    let maxX = Math.max(c.x1, c.x2);
+                    let minY = Math.min(c.y1, c.y2);
+                    let maxY = Math.max(c.y1, c.y2);
+                    let w = maxX - minX;
+                    let h = maxY - minY;
+                    let pr = c.pointRatio !== undefined ? c.pointRatio : 0.25;
+                    let p1 = `[${minX.toFixed(2)}, ${(-minY).toFixed(2)}, 0]`;
+                    let p2 = `[${(maxX - w*pr).toFixed(2)}, ${(-minY).toFixed(2)}, 0]`;
+                    let p3 = `[${maxX.toFixed(2)}, ${(-(minY + h/2)).toFixed(2)}, 0]`;
+                    let p4 = `[${(maxX - w*pr).toFixed(2)}, ${(-maxY).toFixed(2)}, 0]`;
+                    let p5 = `[${minX.toFixed(2)}, ${(-maxY).toFixed(2)}, 0]`;
+                    out += `        ${name} = Polygon(${p1}, ${p2}, ${p3}, ${p4}, ${p5}, color=BLACK, fill_color="${c.fill}", fill_opacity=${c.opacity})\n`;
+                    let mx = ((minX + maxX)/2).toFixed(2);
+                    let my = (-(minY + maxY)/2).toFixed(2);
+                    if (c.angle) {
+                        out += `        ${name}.move_to(RIGHT * ${mx} + UP * ${my})\n`;
+                        out += `        ${name}.rotate(${-c.angle} * DEGREES)\n`;
+                    }
+                    if (c.layer === 'under') out += `        shapes_under.add(${name})\n`;
+                    else out += `        shapes_over.add(${name})\n`;
+                } else if (c.type === 'Label') {
+                    let name = "label_" + i;
+                    let mx = c.x.toFixed(2), my = (-c.y).toFixed(2);
+                    out += `        ${name} = Text('${c.text}', font_size=24, color=BLACK)\n`;
+                    out += `        ${name}.move_to(RIGHT * ${mx} + UP * ${my})\n`;
+                    out += `        components.add(${name})\n`;
+                } else {
+                    let name = c.type.toLowerCase() + "_" + i;
+                    let mx = c.x.toFixed(2), my = (-c.y).toFixed(2);
+                    out += `        ${name} = ${c.type}(color=BLACK)\n`;
+                    if (c.angle !== 0) out += `        ${name}.rotate(${-c.angle} * DEGREES)\n`;
+                    
+                    if (c.type === 'Ground' || c.type === 'SignalGND') out += `        ${name}.move_to(RIGHT * ${mx} + UP * ${my}, aligned_edge=UP)\n`;
+                    else out += `        ${name}.move_to(RIGHT * ${mx} + UP * ${my})\n`;
+                    
+                    out += `        components.add(${name})\n`;
+                }
+            });
+            
+            out += "\n        all_circuit = VGroup(shapes_under, wires, components, shapes_over)\n";
+            if (scale !== 1.0) {
+                out += `        all_circuit.scale(${scale})\n`;
+            }
+            
+            out += "\n        if len(shapes_under) > 0: self.play(Create(shapes_under))\n";
+            out += "        self.play(Create(wires))\n";
+            out += "        self.play(Create(components))\n";
+            out += "        if len(shapes_over) > 0: self.play(Create(shapes_over))\n";
+            out += "        self.wait(3)\n";
+            
+            document.getElementById('code-output').value = out;
+            document.getElementById('code-panel').style.display = 'flex';
+        });
+
+        document.getElementById('btn-download-lib').addEventListener('click', () => {
+            const a = document.createElement('a');
+            a.href = 'circuit_lib.py';
+            a.download = 'circuit_lib.py';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+
+        document.getElementById('btn-close').addEventListener('click', () => { document.getElementById('code-panel').style.display = 'none'; });
+        document.getElementById('btn-copy').addEventListener('click', () => {
+            const ta = document.getElementById('code-output');
+            navigator.clipboard.writeText(ta.value).then(() => {
+                const btn = document.getElementById('btn-copy');
+                btn.textContent = "Copied!"; btn.style.background = "#4ade80";
+                setTimeout(() => { btn.textContent = "Copy Code"; btn.style.background = "var(--accent)"; }, 2000);
+            }).catch(err => {
+                console.error("Could not copy text: ", err);
+                ta.select(); document.execCommand('copy');
+                const btn = document.getElementById('btn-copy');
+                btn.textContent = "Copied!"; btn.style.background = "#4ade80";
+                setTimeout(() => { btn.textContent = "Copy Code"; btn.style.background = "var(--accent)"; }, 2000);
+            });
+        });
+
+        dragElement(document.getElementById("code-panel"));
+
+        function dragElement(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const header = document.getElementById(elmnt.id + "-header");
+            if (header) {
+                header.onmousedown = dragMouseDown;
+            } else {
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                if (e.button !== 0) return;
+                if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                let newTop = elmnt.offsetTop - pos2;
+                let newLeft = elmnt.offsetLeft - pos1;
+                elmnt.style.top = newTop + "px";
+                elmnt.style.left = newLeft + "px";
+                elmnt.style.bottom = "auto";
+                elmnt.style.right = "auto";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        // Initialize from localStorage
+        try {
+            const saved = localStorage.getItem('manim_circuit_autosave');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    items = parsed;
+                    renderAll();
+                }
+            }
+        } catch (e) {
+            console.error("Autoload failed", e);
+        }
+    </script>
+</body>
+</html>

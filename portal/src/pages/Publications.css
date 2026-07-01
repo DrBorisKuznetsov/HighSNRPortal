@@ -1,0 +1,124 @@
+.publication-list {
+  display: grid;
+  border-top: 1px solid var(--border-base);
+}
+
+.publication-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 32px;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--border-base);
+}
+
+.publication-main h3 {
+  max-width: 760px;
+  margin-bottom: 0.4rem;
+  font-size: 1.18rem;
+  line-height: 1.35;
+}
+
+.publication-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.85rem;
+  margin-bottom: 0.65rem;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.publication-subtitle,
+.publication-authors,
+.publication-summary {
+  max-width: 780px;
+}
+
+.publication-subtitle {
+  margin-bottom: 0.35rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.publication-authors {
+  margin-bottom: 0.7rem;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.publication-summary {
+  margin-bottom: 1rem;
+  font-size: 0.98rem;
+}
+
+.publication-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.publication-topics span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.publication-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding-top: 1.8rem;
+}
+
+.publication-actions a,
+.publication-related-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.publication-actions a:hover,
+.publication-related-link:hover {
+  color: var(--accent-color);
+}
+
+.publication-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  background-color: var(--border-base);
+}
+
+.publication-related-link {
+  min-height: 56px;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  background-color: var(--bg-surface);
+}
+
+@media (max-width: 760px) {
+  .publication-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .publication-actions {
+    padding-top: 0;
+  }
+}

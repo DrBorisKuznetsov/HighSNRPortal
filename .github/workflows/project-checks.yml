@@ -1,0 +1,53 @@
+name: Project checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  frontend:
+    name: Portal and video builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            portal/package-lock.json
+            videos_project/package-lock.json
+
+      - name: Install portal dependencies
+        run: npm ci --prefix portal
+
+      - name: Check portal
+        run: npm run check:portal
+
+      - name: Install video catalog dependencies
+        run: npm ci --prefix videos_project
+
+      - name: Check video catalog
+        run: npm run check:videos
+
+  adc-tool:
+    name: ADC model tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ADC dependencies
+        run: pip install -r adc_tool/requirements.txt
+
+      - name: Run ADC tests
+        run: python -m unittest discover -s tests
+        working-directory: adc_tool

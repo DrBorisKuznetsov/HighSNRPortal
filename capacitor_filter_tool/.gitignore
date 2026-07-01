@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.vite/
+.env
+.env.local
+coverage/
+*.log
+__pycache__/
+*.pyc

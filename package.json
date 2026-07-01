@@ -1,0 +1,11 @@
+{
+  "name": "highsnr-lab-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "check": "npm run check:portal && npm run check:videos && npm run check:adc",
+    "check:portal": "npm --prefix portal run lint && npm --prefix portal run build",
+    "check:videos": "npm --prefix videos_project run lint && npm --prefix videos_project run build",
+    "check:adc": "cd adc_tool && python -m unittest discover -s tests"
+  }
+}

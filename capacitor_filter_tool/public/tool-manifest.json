@@ -1,0 +1,53 @@
+{
+  "id": "passive-filter-distortion-analyzer",
+  "slug": "capacitor-distortion-analyzer",
+  "title": "Passive Filter Distortion Analyzer",
+  "shortTitle": "Passive Filter Tool",
+  "category": "Engineering Tools",
+  "status": "in-development",
+  "portalRoute": "/tools/capacitor-distortion-analyzer",
+  "localUrl": "http://localhost:5175/",
+  "productionUrl": "https://filters.highsnr.org",
+  "recommendedSubdomain": "filters.highsnr.org",
+  "summary": "Analyze how voltage-dependent capacitance and passive component non-idealities affect filter response and harmonic distortion.",
+  "primaryResearchRoute": "/research",
+  "relatedRoutes": [
+    "/publications",
+    "/lab-notes",
+    "/tools/adc-enob-loss-calculator"
+  ],
+  "tags": [
+    "MLCC",
+    "capacitor nonlinearity",
+    "RC filters",
+    "RLC filters",
+    "harmonic distortion",
+    "THD",
+    "charge-conserving model"
+  ],
+  "mvpModes": [
+    "linear-ac-analysis",
+    "linear-non-ideal-analysis",
+    "nonlinear-distortion-analysis"
+  ],
+  "mvpTopologies": [
+    "rc-low-pass",
+    "rc-high-pass",
+    "rc-band-pass",
+    "rc-band-stop",
+    "rlc-band-pass",
+    "rlc-band-stop"
+  ],
+  "docs": {
+    "technicalSpec": "docs/technical-spec.md",
+    "architecture": "docs/architecture.md",
+    "portalIntegration": "docs/portal-integration.md",
+    "agentBrief": "docs/agent-brief.md",
+    "roadmap": "docs/roadmap.md"
+  },
+  "launchPolicy": {
+    "openInNewTab": true,
+    "showLaunchButtonWhen": "minimal-working-ui-exists",
+    "developmentPort": 5175
+  }
+}

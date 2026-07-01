@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "visual-circuit-editor-for-manim",
+    "title": "A Visual Circuit Editor for Manim",
+    "date": "2026-06-28T04:43:02.000Z",
+    "excerpt": "A visual web-based circuit editor for drawing circuits and exporting ready-to-use Python descriptions for your Manim animations.",
+    "author": "Boris Kuznetsov",
+    "content": "\n# A Visual Circuit Editor for Manim\n\nIt finally happened: I have nearly completed my visual circuit editor for the Manim library.\n\nMany of you are probably familiar with Manim. It is a powerful and very convenient tool for creating clear technical animations. However, when it comes to working with electrical circuits, things can quickly become more complicated. Writing circuit descriptions by hand in Python takes a lot of time, especially when the schematic includes many components and connections.\n\nThat is why I created a visual web-based circuit editor for my own workflow. With this tool, you can draw a circuit directly in the browser and then export a ready-to-use Python description of the schematic for your Manim animation.\n\nThe editor is already fully functional, and I have used it myself to create several videos for the HighSNR channel. Now I am making it available as a free web tool for anyone who wants to use it.\n\nOne important note: to use the exported code correctly, make sure to download the companion Python class library as well. It contains the definitions for all the components available in the editor.\n\nI hope this tool will be useful for your own animations, experiments, and technical videos.\n\nGive it a try, and let me know what you think. I’ll be glad to hear your feedback, suggestions, and ideas for future improvements.\n"
+  },
+  {
+    "slug": "frequency-dependent-distortion-in-class-ii-ceramic-capacitors",
+    "title": "Theory Paper: Frequency-Dependent Distortion in Class II Ceramic Capacitors: Physics and Simulation Traps",
+    "date": "2026-06-27T13:09:38+06:00",
+    "excerpt": "A short theoretical review examining signal distortion in RC networks using Class II ceramic capacitors, and its impact on ADC front-end design.",
+    "author": "Boris Kuznetsov",
+    "content": "\nWhile working on the next video in my series on analog-to-digital converters, I took a closer look at ADC input networks. During that work, I realized that many practical aspects of using RC networks at the input of an ADC are not always described in enough detail. This is especially true when these networks are discussed specifically in the context of ADC front-end design.\n\nOne particularly interesting case is an RC network that uses Class II ceramic capacitors. These capacitors are widely used in electronics, but their behavior can depend on frequency, voltage, and operating conditions. As a result, they can introduce subtle signal distortion that may not be obvious during the initial design stage, but can become important in ADC input filters, anti-aliasing networks, and signal-conditioning circuits.\n\nI prepared a short theoretical review to examine what actually happens to the signal in these RC networks. The results of this analysis are presented in my paper:\n\n**Theory Paper: Frequency-Dependent Distortion in Class II Ceramic Capacitors: Physics and Simulation Traps**\nDOI: **[10.31224/7436](https://doi.org/10.31224/7436)**\n\nI hope this material will be useful for engineers working on ADC front ends, precision measurement circuits, embedded signal acquisition, or analog signal processing. If you have ever seen measurement instability, unexpected distortion, or a mismatch between simulation results and the real behavior of an ADC input network, this paper may help clarify the underlying physics and point out several common design and simulation traps.\n"
+  },
+  {
+    "slug": "welcome-to-high-snr",
+    "title": "Welcome to High SNR Channel",
+    "date": "2026-05-31T12:00:00.000Z",
+    "excerpt": "Introducing the brand new High SNR website and our goals for technical content delivery.",
+    "author": "Boris Kuznetsov",
+    "content": "\n# Welcome to High SNR Channel\n\nHello and welcome! This is the official home page for **High SNR Channel**. \n\nOur primary mission is to explore high-precision electronics, hardware development, signal processing, and visual animations using Manim. Here, we prioritize high signal quality, low noise, and clean engineering.\n\n## What is \"High SNR\"?\nIn engineering, **Signal-to-Noise Ratio (SNR)** compares the level of a desired signal to the level of background noise. A high SNR means the signal is clear and free from distortion. We apply this philosophy to our content:\n- **High Signal:** Rich, informative, and mathematically rigorous content.\n- **Low Noise:** Clean visuals, direct presentation, and no fluff.\n\nStay tuned for articles, video updates, and interactive design tools!\n"
+  }
+]
