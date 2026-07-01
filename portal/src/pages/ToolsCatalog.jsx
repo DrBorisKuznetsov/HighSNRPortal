@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Activity, ArrowRight, ExternalLink, Zap, Calculator } from 'lucide-react';
 import adcScreenshot from '../assets/adc-screenshot.png';
+import capacitorScreenshot from '../assets/capacitor-screenshot.png';
 import './ToolsCatalog.css';
 
 export default function ToolsCatalog() {
@@ -138,10 +139,17 @@ export default function ToolsCatalog() {
         </div>
 
         <div className="featured-tool-preview">
-          <div className="editor-mockup screenshot-mockup" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-secondary)', height: '100%', minHeight: '300px', borderRadius: '8px' }}>
-            <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-              <Activity size={48} style={{ opacity: 0.5, marginBottom: '1rem' }} />
-              <div>Filter Analyzer<br/>Interactive Workspace</div>
+          <div className="editor-mockup screenshot-mockup">
+            <div className="mockup-header">
+              <span>passive-filter-analyzer v0.1</span>
+              <span style={{ color: 'var(--accent-color)' }}>LIVE</span>
+            </div>
+            <div className="mockup-image-container">
+              <img 
+                src={capacitorScreenshot} 
+                alt="Passive Filter Analyzer Interface" 
+                className="tool-screenshot"
+              />
             </div>
           </div>
         </div>
