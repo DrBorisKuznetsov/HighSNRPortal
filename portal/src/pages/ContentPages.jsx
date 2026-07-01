@@ -319,11 +319,11 @@ export function CapacitorToolPage() {
           <div className="detail-row"><span className="bullet-indicator"></span><span>Prepared as a separate application workspace with planned launch on filters.highsnr.org.</span></div>
         </div>
         <div className="cta-row">
-          <Link className="btn btn-primary" to="/research">
+          <a className="btn btn-primary" href="/capacitor_filter_tool/" target="_blank" rel="noopener noreferrer">
+            Launch Analyzer <ExternalLink size={18} />
+          </a>
+          <Link className="btn btn-secondary" to="/research">
             Read Related Research
-          </Link>
-          <Link className="btn btn-secondary" to="/tools">
-            Back to Tools
           </Link>
         </div>
       </Section>
@@ -571,7 +571,7 @@ export function About() {
 export function Subscribe() {
   return (
     <PageShell
-      title="HighSNR Lab Notes"
+      title="Subscribe to HighSNR Lab Notes"
       summary="Research updates, model changes, tool releases, open questions, and engineering notes for precision electronics."
     >
       <Section title="Subscription Status">
