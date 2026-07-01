@@ -57,6 +57,9 @@ jobs:
           # Copy portal to root
           cp -R portal/dist/* dist_final/
           
+          # Add SPA fallback for GitHub Pages (so refresh works)
+          cp dist_final/index.html dist_final/404.html
+          
           # Copy videos project to a subdirectory
           mkdir -p dist_final/videos_project
           cp -R videos_project/dist/* dist_final/videos_project/

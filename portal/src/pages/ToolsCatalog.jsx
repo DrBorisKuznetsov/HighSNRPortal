@@ -87,21 +87,70 @@ export default function ToolsCatalog() {
         </div>
       </div>
 
+      {/* Feature: Passive Filter Distortion Analyzer */}
+      <div className="featured-tool-card glass-card" style={{ marginTop: '3rem' }}>
+        <div className="featured-tool-info">
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', backgroundColor: 'var(--accent-light)', color: 'var(--accent-color)', padding: '0.25rem 0.75rem', borderRadius: '1rem', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1rem' }}>
+            <Activity size={12} />
+            <span>Active Analyzer</span>
+          </div>
+          
+          <h2 className="tool-title">Passive Filter Distortion Analyzer</h2>
+          <p className="tool-desc">
+            Analyze passive filters with real capacitors: ideal response, ESR/ESL/leakage, and nonlinear MLCC distortion.
+          </p>
+
+          <div className="tool-features-list">
+            <div className="tool-feature-item">
+              <span className="bullet-indicator"></span>
+              <strong>Linear AC analysis:</strong> RC and RLC passive filter topologies.
+            </div>
+            <div className="tool-feature-item">
+              <span className="bullet-indicator"></span>
+              <strong>Non-ideal component effects:</strong> ESR, ESL, leakage, source resistance, load resistance.
+            </div>
+            <div className="tool-feature-item">
+              <span className="bullet-indicator"></span>
+              <strong>Charge-conserving models:</strong> Harmonic distortion and THD estimates for MLCC Class II.
+            </div>
+          </div>
+
+          <div className="tool-actions mt-4">
+            <a 
+              href={import.meta.env.DEV ? "http://localhost:8001/" : "https://filters.highsnr.org"} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn btn-primary"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              Launch Analyzer
+              <ExternalLink size={18} />
+            </a>
+            <Link
+              to="/tools/capacitor-distortion-analyzer"
+              className="btn btn-secondary"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              Model Page
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
+
+        <div className="featured-tool-preview">
+          <div className="editor-mockup screenshot-mockup" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-secondary)', height: '100%', minHeight: '300px', borderRadius: '8px' }}>
+            <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
+              <Activity size={48} style={{ opacity: 0.5, marginBottom: '1rem' }} />
+              <div>Filter Analyzer<br/>Interactive Workspace</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* In-development Utilities (Coming Soon Grid) */}
       <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', marginTop: '5rem' }}>Utilities Under Development</h3>
       
       <div className="tools-dev-grid">
-        {/* Capacitor Analyzer */}
-        <Link to="/tools/capacitor-distortion-analyzer" className="dev-tool-card card" style={{ borderStyle: 'dashed', textDecoration: 'none', color: 'inherit' }}>
-          <div className="dev-tool-header">
-            <Activity className="text-secondary" size={24} />
-            <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--border-base)', padding: '0.1rem 0.5rem', borderRadius: '1rem', color: 'var(--text-secondary)' }}>In development</span>
-          </div>
-          <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Passive Filter Distortion Analyzer</h4>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-            Analyze passive filters with real capacitors: ideal response, ESR/ESL/leakage, and nonlinear MLCC distortion.
-          </p>
-        </Link>
 
         {/* SNR & ENOB Converter */}
         <div className="dev-tool-card card" style={{ borderStyle: 'dashed' }}>
