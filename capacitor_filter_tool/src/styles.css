@@ -120,6 +120,47 @@ button:disabled {
   text-transform: uppercase;
 }
 
+.portal-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 36px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-decoration: none;
+  transition:
+    border-color 0.16s ease,
+    color 0.16s ease,
+    background 0.16s ease;
+}
+
+.portal-link svg {
+  flex: 0 0 auto;
+  color: var(--accent-blue);
+}
+
+.portal-link span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portal-link:hover,
+.portal-link:focus-visible {
+  border-color: rgba(36, 104, 169, 0.45);
+  background: #f8fafc;
+  color: var(--accent-blue);
+  outline: none;
+}
+
 .input-section {
   display: flex;
   flex-direction: column;

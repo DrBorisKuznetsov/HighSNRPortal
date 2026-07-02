@@ -5,6 +5,7 @@ import {
   CircleHelp,
   Database,
   Download,
+  Home,
   RadioTower,
   RotateCcw,
   SlidersHorizontal,
@@ -483,6 +484,11 @@ export function App() {
             <span className="logo-sub">Simulation Tool</span>
           </div>
         </div>
+
+        <a className="portal-link" href="https://highsnr.org/">
+          <Home size={15} />
+          <span>HighSNR Portal</span>
+        </a>
 
         <section className="input-section">
           <div className="section-title">
