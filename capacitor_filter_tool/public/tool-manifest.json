@@ -7,7 +7,7 @@
   "status": "in-development",
   "portalRoute": "/tools/capacitor-distortion-analyzer",
   "localUrl": "http://localhost:5175/",
-  "productionUrl": "https://filters.highsnr.org",
+  "productionUrl": "https://filters.highsnr.org/",
   "recommendedSubdomain": "filters.highsnr.org",
   "summary": "Analyze how voltage-dependent capacitance and passive component non-idealities affect filter response and harmonic distortion.",
   "primaryResearchRoute": "/research",

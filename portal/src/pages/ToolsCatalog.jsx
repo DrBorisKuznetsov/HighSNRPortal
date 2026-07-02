@@ -118,7 +118,7 @@ export default function ToolsCatalog() {
 
           <div className="tool-actions mt-4">
             <a 
-              href={import.meta.env.DEV ? "http://localhost:8001/" : "https://filters.highsnr.org"} 
+              href={import.meta.env.DEV ? "http://localhost:5175/" : "https://filters.highsnr.org"} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn btn-primary"

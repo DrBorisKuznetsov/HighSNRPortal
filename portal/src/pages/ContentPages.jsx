@@ -6,6 +6,7 @@ import './EducationTools.css';
 import './Publications.css';
 
 const adcToolHref = import.meta.env.DEV ? 'http://localhost:8000/' : 'https://adc.highsnr.org';
+const filtersToolHref = import.meta.env.DEV ? 'http://localhost:5175/' : 'https://filters.highsnr.org';
 const circuitBuilderHref = '/education-tools/highsnr-circuit-builder/app/index.html';
 const highSnrEmail = 'info@highsnr.org';
 
@@ -316,10 +317,10 @@ export function CapacitorToolPage() {
           <div className="detail-row"><span className="bullet-indicator"></span><span>Linear AC analysis for RC and RLC passive filter topologies.</span></div>
           <div className="detail-row"><span className="bullet-indicator"></span><span>Non-ideal component effects: ESR, ESL, leakage, source resistance, load resistance, and tolerances.</span></div>
           <div className="detail-row"><span className="bullet-indicator"></span><span>Charge-conserving nonlinear capacitor model for harmonic distortion and THD estimates.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Prepared as a separate application workspace with planned launch on filters.highsnr.org.</span></div>
+          <div className="detail-row"><span className="bullet-indicator"></span><span>Prepared as a separate application workspace launched on filters.highsnr.org.</span></div>
         </div>
         <div className="cta-row">
-          <a className="btn btn-primary" href="/capacitor_filter_tool/" target="_blank" rel="noopener noreferrer">
+          <a className="btn btn-primary" href={filtersToolHref} target="_blank" rel="noopener noreferrer">
             Launch Analyzer <ExternalLink size={18} />
           </a>
           <Link className="btn btn-secondary" to="/research">
