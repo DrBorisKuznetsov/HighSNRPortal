@@ -18,8 +18,9 @@ The tool should connect directly to the capacitor research line:
 1. `docs/source/technical-spec-source.pdf`
 2. `docs/technical-spec.md`
 3. `docs/architecture.md`
-4. `docs/portal-integration.md`
-5. `public/tool-manifest.json`
+4. `docs/mathematics.md`
+5. `docs/portal-integration.md`
+6. `public/tool-manifest.json`
 
 ## Important Product Decisions
 
@@ -29,19 +30,23 @@ The tool should connect directly to the capacitor research line:
 - Local dev port should be `5175` unless there is a conflict.
 - The MVP starts with topology presets, not a custom nodal editor.
 - Charge-conserving capacitor modeling is not optional for nonlinear mode.
+- The currently connected solver topologies are `RC Low-pass`, `RC High-pass`, and loaded `RC 2-Stage Low-pass`.
+- Catalog entries without a connected `solverTopology` are schematic/planning entries and must not imply validated numeric analysis.
+- The loaded two-stage RC model uses independent `R1/C1` and `R2/C2`; its cutoff is solved numerically from the `-3 dB` condition.
 
 ## Suggested First Implementation Task
 
-Create a minimal Vite + React + TypeScript app with:
+Completed baseline implementation:
 
 - topology selector;
-- RC low-pass ideal AC response;
-- magnitude and phase plots;
+- RC low-pass/high-pass ideal AC response;
+- loaded RC 2-stage low-pass response;
+- magnitude, phase, nonlinear distortion and harmonic sweep plots;
 - compact parameter panel;
-- placeholder tabs for non-ideal and nonlinear modes;
-- a small validation test for RC cutoff frequency.
+- charge-conserving nonlinear capacitor model;
+- validation tests for first-order and two-stage RC behavior.
 
-Do not start with every topology at once. Prove the architecture on one topology, then expand.
+Next implementation task: add one new topology at a time with a transfer-function derivation, UI parameters, and at least one validation fixture.
 
 ## Guardrails
 

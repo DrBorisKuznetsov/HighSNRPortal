@@ -16,10 +16,13 @@ The tool belongs to the HighSNR Engineering Tools family, but it should not be b
 - Initial ideal RC low-pass/high-pass AC workbench implemented.
 - RC cutoff and ideal response validation tests added.
 - Initial charge-conserving nonlinear RC distortion analysis implemented.
+- **UI Architecture Modularized**: Separated `App.tsx` logic into distinct view/ui components (`src/components/views`, `src/components/ui`).
+- **Custom Schematics Integrated**: Replaced placeholders with exact SVG schemas from CorelDraw (`RC Low-pass`, `RC High-pass`, `RC 2-Stage Low-pass`), scaling them uniformly via fixed height mapping and normalized `viewBox` coordinates.
+- **2nd Order RC Support**: Connected `RC 2-Stage Low-pass` to the linear and nonlinear solvers with independent R1/C1 and R2/C2 values.
 - Recommended production subdomain: `https://filters.highsnr.org`.
 - Recommended local development URL: `http://localhost:5175/`.
 
-The current app supports ideal unloaded RC low-pass/high-pass frequency response and an initial nonlinear distortion mode. Nonlinear mode uses a charge-conserving capacitor model, time-domain simulation, FFT spectrum, HD2-HD5, THD, capacitance profile plotting, CSV export, and validation tests. Linear non-ideal mode is still planned.
+The current app supports ideal RC low-pass/high-pass frequency response plus a loaded two-stage RC low-pass model. Nonlinear mode uses a charge-conserving capacitor model, time-domain simulation, FFT-derived HD2-HD5, THD, capacitance profile plotting, CSV export, and validation tests. The UI is now modularized with native vector schematic rendering. Additional second-order topologies in the catalog are currently schematic/planning entries until their electrical models are connected.
 
 ## Local Development
 
@@ -50,8 +53,9 @@ The existing portal route can remain stable for SEO and internal links even if t
 
 1. `docs/technical-spec.md` - working summary of the PDF specification.
 2. `docs/architecture.md` - recommended application boundaries and solver design.
-3. `docs/portal-integration.md` - how this tool should connect to the portal.
-4. `docs/agent-brief.md` - instructions for future agents working inside this tool.
+3. `docs/mathematics.md` - mathematical reference for linear and nonlinear solvers.
+4. `docs/portal-integration.md` - how this tool should connect to the portal.
+5. `docs/agent-brief.md` - instructions for future agents working inside this tool.
 
 ## Recommended Development Direction
 

@@ -106,6 +106,12 @@ The first working version should support:
 
 The UI should start with topology presets rather than a fully custom schematic editor.
 
+Current implementation note:
+
+- RC low-pass and RC high-pass are connected first-order solver topologies.
+- RC 2-Stage Low-pass is connected as a loaded second-order RC topology with R1/C1 and R2/C2.
+- Other listed second-order and higher-order topologies may appear in the catalog as schematic/planning entries until their transfer functions and validation fixtures are added.
+
 ## Later Topologies
 
 After the MVP:

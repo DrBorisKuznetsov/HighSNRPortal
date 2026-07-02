@@ -15,10 +15,11 @@ Status: complete.
 
 Goal: first usable browser workbench.
 
-Status: started. Ideal unloaded RC low-pass/high-pass AC response, magnitude/phase plots, cutoff metric, CSV export, and baseline validation tests are implemented.
+Status: substantially complete. Ideal RC low-pass/high-pass AC response, loaded RC 2-stage low-pass response, magnitude/phase plots, cutoff metric, CSV export, modular UI views, custom SVG schematics, and baseline validation tests are implemented.
 
 - Scaffold Vite + React + TypeScript.
 - Implement RC low-pass and RC high-pass ideal AC response.
+- Implement loaded RC 2-stage low-pass response with R1/C1 and R2/C2.
 - Add magnitude and phase plots.
 - Add cutoff frequency metric.
 - Add validation tests for ideal RC equations.
@@ -37,17 +38,20 @@ Goal: compare ideal and realistic passive behavior.
 
 Goal: connect capacitor nonlinearity to distortion.
 
-Status: started. A charge-conserving RC nonlinear simulation, FFT spectrum, HD2-HD5, THD metrics, time-domain plot, and capacitance profile plot are implemented for the preset RC topologies.
+Status: started. A charge-conserving RC nonlinear simulation, FFT-derived HD2-HD5, THD metrics, time-domain result table, capacitance profile plot, and harmonic-vs-frequency sweep are implemented for the connected RC solver topologies.
 
 - Add polynomial C(V) model.
 - Use charge-conserving q(V) formulation.
 - Add time-domain simulation for RC low-pass.
+- Add two-state RK4 simulation for loaded RC 2-stage low-pass.
 - Add spectrum and HD2-HD5/THD metrics.
 - Validate against analytical small-nonlinearity cases.
 
 ## Phase 4 - Topology Expansion
 
 Goal: cover the MVP topology list.
+
+Status: topology catalog and schematic previews are started, but only `RC Low-pass`, `RC High-pass`, and `RC 2-Stage Low-pass` are connected to numerical solvers.
 
 - RC band-pass.
 - RC band-stop / notch.

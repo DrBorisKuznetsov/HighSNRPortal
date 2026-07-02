@@ -109,3 +109,13 @@ The tool should feel like a compact engineering instrument:
 - defaults that immediately produce a meaningful plot.
 
 The portal landing page can carry the explanatory copy. The app itself should prioritize work.
+
+## UI Architecture and Schematics
+
+- **Modular Views**: The main App.tsx acts only as a state container. All UI panels are separated into src/components/views/ (e.g., FilterSetupView.tsx) and smaller presentation components in src/components/ui/.
+- **SVG Rendering**: Schematics are rendered as inline SVGs via FilterSchematic.tsx. To maintain a uniform scale across SVGs exported with different viewBox coordinates, the schematic wrapper assigns a fixed visual height and auto width. ViewBox coordinates are manually padded and normalized so that edge text is not cropped.
+- **Topology Scope**: The topology library may list schematic/planning entries before their numerical model exists. Only entries with a connected `solverTopology` should enable AC and distortion calculations.
+
+## Solvers and Mathematics
+
+The mathematical foundation is documented in `mathematics.md`. The linear solver computes direct algebraic transfer functions for the connected RC topologies. The nonlinear solver uses explicit fourth-order Runge-Kutta (RK4) integration while tracking charge (`Q`) to maintain charge conservation over voltage-dependent capacitors. The connected second-order model is the loaded `RC 2-Stage Low-pass`; other second-order catalog entries need separate validation fixtures before solver activation.

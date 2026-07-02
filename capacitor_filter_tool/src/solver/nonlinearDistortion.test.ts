@@ -64,6 +64,44 @@ describe("nonlinear distortion solver", () => {
     expect(result.thdDb).toBeLessThan(-90);
   });
 
+  it("matches ideal 2-stage RC low-pass amplitude when both capacitors are linear", () => {
+    const result = simulateNonlinearDistortion({
+      topology: "low-pass-2nd",
+      resistanceOhms: 1000,
+      capacitor: linearCapacitor,
+      resistanceOhms2: 1000,
+      capacitor2: linearCapacitor,
+      signal: {
+        amplitudeVolts: 1,
+        frequencyHz: 500,
+        dcBiasVolts: 0,
+      },
+      settings: {
+        fftSize: 4096,
+        settleCycles: 64,
+        analysisCycles: 8,
+      },
+    });
+    const [linearPoint] = calculateFrequencyResponse({
+      topology: "low-pass-2nd",
+      resistanceOhms: 1000,
+      capacitanceFarads: 100e-9,
+      resistanceOhms2: 1000,
+      capacitanceFarads2: 100e-9,
+      frequency: {
+        startHz: 500,
+        stopHz: 500.001,
+        points: 2,
+      },
+    });
+
+    expect(result.fundamentalAmplitudeVoltsPeak).toBeCloseTo(
+      linearPoint.magnitudeLinear,
+      3,
+    );
+    expect(result.thdDb).toBeLessThan(-90);
+  });
+
   it("produces second harmonic distortion when alpha is non-zero", () => {
     const result = simulateNonlinearDistortion({
       topology: "low-pass",

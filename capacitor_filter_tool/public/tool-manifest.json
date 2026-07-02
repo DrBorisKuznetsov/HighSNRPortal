@@ -41,6 +41,7 @@
   "docs": {
     "technicalSpec": "docs/technical-spec.md",
     "architecture": "docs/architecture.md",
+    "mathematics": "docs/mathematics.md",
     "portalIntegration": "docs/portal-integration.md",
     "agentBrief": "docs/agent-brief.md",
     "roadmap": "docs/roadmap.md"

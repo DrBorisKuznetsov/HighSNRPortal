@@ -46,6 +46,49 @@ describe("RC ideal AC response", () => {
     expect(point.phaseDeg).toBeCloseTo(45, 9);
   });
 
+  it("solves the loaded 2-stage RC low-pass cutoff at the -3 dB point", () => {
+    const cutoffFrequency = calculateCutoffFrequency(
+      1000,
+      100e-9,
+      "low-pass-2nd",
+      1000,
+      100e-9,
+    );
+    const [point] = calculateFrequencyResponse({
+      topology: "low-pass-2nd",
+      resistanceOhms: 1000,
+      capacitanceFarads: 100e-9,
+      resistanceOhms2: 1000,
+      capacitanceFarads2: 100e-9,
+      frequency: {
+        startHz: cutoffFrequency,
+        stopHz: cutoffFrequency * 1.000001,
+        points: 2,
+      },
+    });
+
+    expect(cutoffFrequency).toBeCloseTo(595.6201131155902, 9);
+    expect(point.magnitudeDb).toBeCloseTo(-3.0102999566, 9);
+  });
+
+  it("includes loading between stages in the 2-stage RC response", () => {
+    const firstOrderCutoff = calculateCutoffFrequency(1000, 100e-9);
+    const [point] = calculateFrequencyResponse({
+      topology: "low-pass-2nd",
+      resistanceOhms: 1000,
+      capacitanceFarads: 100e-9,
+      resistanceOhms2: 1000,
+      capacitanceFarads2: 100e-9,
+      frequency: {
+        startHz: firstOrderCutoff,
+        stopHz: firstOrderCutoff * 1.000001,
+        points: 2,
+      },
+    });
+
+    expect(point.magnitudeDb).toBeCloseTo(20 * Math.log10(1 / 3), 9);
+  });
+
   it("creates a logarithmic sweep with fixed endpoints", () => {
     const values = logSpace(10, 1000, 3);
 

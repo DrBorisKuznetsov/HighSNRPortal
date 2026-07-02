@@ -24,6 +24,8 @@ export type NonlinearDistortionInput = {
   topology: RcTopology;
   resistanceOhms: number;
   capacitor: NonlinearCapacitorModel;
+  resistanceOhms2?: number;
+  capacitor2?: NonlinearCapacitorModel;
   signal: NonlinearSignal;
   settings: NonlinearSimulationSettings;
 };
@@ -117,10 +119,22 @@ export function simulateNonlinearDistortion({
   topology,
   resistanceOhms,
   capacitor,
+  resistanceOhms2,
+  capacitor2,
   signal,
   settings,
 }: NonlinearDistortionInput): NonlinearDistortionResult {
+  const is2ndOrder = topology === "low-pass-2nd";
+  const R2 = resistanceOhms2 || resistanceOhms;
+  const C2 = capacitor2 || capacitor;
+
   validateNonlinearInput(resistanceOhms, capacitor, signal, settings);
+
+  if (is2ndOrder) {
+    assertPositive("resistanceOhms2", R2);
+    assertPositive("capacitanceFarads2", C2.capacitanceFarads);
+    validateCapacitanceProfile(C2, signal, "C2");
+  }
 
   const dt = settings.analysisCycles / (signal.frequencyHz * settings.fftSize);
   const sampleRateHz = 1 / dt;
@@ -132,15 +146,32 @@ export function simulateNonlinearDistortion({
   const timeDomain: TimeDomainPoint[] = [];
   const profile = createCapacitanceProfile(capacitor, signal);
 
-  let capacitorVoltage = signal.dcBiasVolts;
-  let charge = voltageToCharge(capacitorVoltage, capacitor);
+  let capacitorVoltage1 = signal.dcBiasVolts;
+  let capacitorVoltage2 = signal.dcBiasVolts;
+  let charge1 = voltageToCharge(capacitorVoltage1, capacitor);
+  let charge2 = is2ndOrder ? voltageToCharge(capacitorVoltage2, C2) : 0;
 
   for (let sample = 0; sample < totalSamples; sample += 1) {
     const timeSec = sample * dt;
-    capacitorVoltage = chargeToVoltage(charge, capacitor, capacitorVoltage);
+    capacitorVoltage1 = chargeToVoltage(charge1, capacitor, capacitorVoltage1);
+    if (is2ndOrder) {
+      capacitorVoltage2 = chargeToVoltage(charge2, C2, capacitorVoltage2);
+    }
     const inputVolts = inputAtTime(timeSec, signal);
-    const outputVolts =
-      topology === "low-pass" ? capacitorVoltage : inputVolts - capacitorVoltage;
+    
+    let outputVolts: number;
+    let mainCapacitorVolts: number;
+    
+    if (topology === "low-pass-2nd") {
+        outputVolts = capacitorVoltage2;
+        mainCapacitorVolts = capacitorVoltage2;
+    } else if (topology === "low-pass") {
+        outputVolts = capacitorVoltage1;
+        mainCapacitorVolts = capacitorVoltage1;
+    } else { // high-pass
+        outputVolts = inputVolts - capacitorVoltage1;
+        mainCapacitorVolts = capacitorVoltage1;
+    }
 
     if (sample >= settleSamples) {
       const analysisIndex = sample - settleSamples;
@@ -149,11 +180,17 @@ export function simulateNonlinearDistortion({
         timeMs: (analysisIndex * dt * 1000),
         inputVolts,
         outputVolts,
-        capacitorVolts: capacitorVoltage,
+        capacitorVolts: mainCapacitorVolts,
       });
     }
 
-    charge = integrateChargeRk4(charge, timeSec, dt, resistanceOhms, capacitor, signal);
+    if (is2ndOrder) {
+      const next = integrateCharge2ndOrderRk4(charge1, charge2, timeSec, dt, resistanceOhms, R2, capacitor, C2, signal);
+      charge1 = next.charge1;
+      charge2 = next.charge2;
+    } else {
+      charge1 = integrateChargeRk4(charge1, timeSec, dt, resistanceOhms, capacitor, signal);
+    }
   }
 
   const harmonicSpectrum = calculateSpectrum(outputSamples, sampleRateHz, "rectangular");
@@ -189,6 +226,8 @@ export function sweepNonlinearDistortionByFrequency({
   topology,
   resistanceOhms,
   capacitor,
+  resistanceOhms2,
+  capacitor2,
   signal,
   settings,
   frequency,
@@ -204,6 +243,8 @@ export function sweepNonlinearDistortionByFrequency({
       topology,
       resistanceOhms,
       capacitor,
+      resistanceOhms2,
+      capacitor2,
       signal: {
         ...signal,
         frequencyHz,
@@ -283,6 +324,37 @@ export function chargeToVoltage(
   }
 
   return voltage;
+}
+
+function integrateCharge2ndOrderRk4(
+  charge1: number,
+  charge2: number,
+  timeSec: number,
+  dt: number,
+  r1: number,
+  r2: number,
+  c1: NonlinearCapacitorModel,
+  c2: NonlinearCapacitorModel,
+  signal: NonlinearSignal
+) {
+  const derivative = (t: number, q1: number, q2: number) => {
+    const v1 = chargeToVoltage(q1, c1);
+    const v2 = chargeToVoltage(q2, c2);
+    const vin = inputAtTime(t, signal);
+    const dq1 = (vin - v1) / r1 - (v1 - v2) / r2;
+    const dq2 = (v1 - v2) / r2;
+    return { dq1, dq2 };
+  };
+
+  const k1 = derivative(timeSec, charge1, charge2);
+  const k2 = derivative(timeSec + dt / 2, charge1 + (dt * k1.dq1) / 2, charge2 + (dt * k1.dq2) / 2);
+  const k3 = derivative(timeSec + dt / 2, charge1 + (dt * k2.dq1) / 2, charge2 + (dt * k2.dq2) / 2);
+  const k4 = derivative(timeSec + dt, charge1 + dt * k3.dq1, charge2 + dt * k3.dq2);
+
+  return {
+    charge1: charge1 + (dt * (k1.dq1 + 2 * k2.dq1 + 2 * k3.dq1 + k4.dq1)) / 6,
+    charge2: charge2 + (dt * (k1.dq2 + 2 * k2.dq2 + 2 * k3.dq2 + k4.dq2)) / 6,
+  };
 }
 
 function integrateChargeRk4(
@@ -474,13 +546,21 @@ function validateNonlinearInput(
     throw new Error("settings.fftSize is too small for HD5 at this analysis length.");
   }
 
+  validateCapacitanceProfile(capacitor, signal, "C1");
+}
+
+function validateCapacitanceProfile(
+  capacitor: NonlinearCapacitorModel,
+  signal: NonlinearSignal,
+  label: string,
+) {
   const profile = createCapacitanceProfile(capacitor, signal);
   const hasInvalidCapacitance = profile.some(
     (point) => !Number.isFinite(point.capacitanceRatio) || point.capacitanceRatio <= 0,
   );
 
   if (hasInvalidCapacitance) {
-    throw new Error("C(V) becomes non-positive in the simulated voltage range.");
+    throw new Error(`${label} C(V) becomes non-positive in the simulated voltage range.`);
   }
 }
 
