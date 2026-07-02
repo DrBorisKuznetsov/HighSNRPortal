@@ -62,8 +62,8 @@ HighSNR Engineering Lab — это независимая инженерная �
 
 Workspace стабилизирован как набор независимых подпроектов:
 
-- `portal` остается главным хабом и содержит рабочую MVP-карту маршрутов: `/research`, `/tools`, `/publications`, `/lab-notes`, `/projects`, `/courses`, `/about`, `/subscribe`, `/consulting`.
-- Для инструментов заведены отдельные SEO-заготовки: `/tools/adc-enob-loss-calculator` и `/tools/capacitor-distortion-analyzer`.
+- `portal` остается главным хабом и содержит рабочую MVP-карту маршрутов: `/research`, `/tools`, `/publications`, `/lab-notes`, `/projects`, `/courses`, `/about`, `/consulting`. Старый маршрут `/subscribe` перенаправляет на `/lab-notes`, пока нет полноценной рассылки.
+- Каталог `/tools` является основной витриной описания и запуска инструментов. Старые адреса `/tools/adc-enob-loss-calculator` и `/tools/capacitor-distortion-analyzer` сохранены как редиректы на каталог, чтобы не плодить пустые промежуточные страницы.
 - Для образовательных/визуальных инструментов заведена отдельная категория `/education-tools`, чтобы не смешивать production-инструменты с инженерными калькуляторами. Текущая стартовая страница `/education-tools` посвящена HighSNR Circuit Builder; сам редактор открывается в новой вкладке как static app по `/education-tools/highsnr-circuit-builder/app/index.html`.
 - `videos_project` остается независимым Vite-приложением и открывается из портала обычной HTML-ссылкой: локально `http://localhost:5174/videos_project/`, в продакшене `/videos_project/`.
 - `adc_tool` остается отдельным Git-репозиторием и отдельным runtime-проектом на `adc.highsnr.org`.
@@ -77,12 +77,12 @@ Workspace стабилизирован как набор независимых 
 
 ```text
 workspace:  capacitor_filter_tool
-portal:     /tools/capacitor-distortion-analyzer
+portal:     /tools
 local:      http://localhost:5175/
 production: https://filters.highsnr.org
 ```
 
-Портал отвечает за карточку, описание, связи с Research/Publications/Lab Notes и кнопку запуска. Сам инструмент отвечает за UI, численную модель, данные, валидацию, графики и экспорт.
+Портал отвечает за карточку в `/tools`, краткое описание, связи с Research/Publications/Lab Notes и кнопку запуска. Сам инструмент отвечает за UI, численную модель, данные, валидацию, графики и экспорт.
 
 Такой подход сохраняет плоскую структуру портала: это не новый верхний раздел и не вложенный research-граф, а еще один независимый Engineering Tool, связанный короткими related-ссылками с темой `Capacitor Research`.
 
@@ -97,7 +97,7 @@ production: https://filters.highsnr.org
 - Videos
 - About
 
-Вторичные или будущие разделы (`Lab Notes`, `Education Tools`, `Courses`, `Subscribe`, `Consulting`) доступны через связанные страницы и CTA. Это сохраняет навигацию короткой и не превращает шапку в карту всего сайта.
+Вторичные или будущие разделы (`Lab Notes`, `Education Tools`, `Courses`, `Consulting`) доступны через связанные страницы и CTA. Это сохраняет навигацию короткой и не превращает шапку в карту всего сайта. Пустые страницы под будущие функции не показываются публично.
 
 ## Анти-граф правило
 

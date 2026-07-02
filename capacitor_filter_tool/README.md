@@ -19,10 +19,11 @@ The tool belongs to the HighSNR Engineering Tools family, but it should not be b
 - **UI Architecture Modularized**: Separated `App.tsx` logic into distinct view/ui components (`src/components/views`, `src/components/ui`).
 - **Custom Schematics Integrated**: Replaced placeholders with exact SVG schemas from CorelDraw (`RC Low-pass`, `RC High-pass`, `RC 2-Stage Low-pass`), scaling them uniformly via fixed height mapping and normalized `viewBox` coordinates.
 - **2nd Order RC Support**: Connected `RC 2-Stage Low-pass` to the linear and nonlinear solvers with independent R1/C1 and R2/C2 values.
+- **Public Announcement Audit**: Added Open Graph/Twitter metadata, generated `public/social-preview.png`, removed temporary migration scripts, and limited the public topology list to solver-connected models.
 - Recommended production subdomain: `https://filters.highsnr.org`.
 - Recommended local development URL: `http://localhost:5175/`.
 
-The current app supports ideal RC low-pass/high-pass frequency response plus a loaded two-stage RC low-pass model. Nonlinear mode uses a charge-conserving capacitor model, time-domain simulation, FFT-derived HD2-HD5, THD, capacitance profile plotting, CSV export, and validation tests. The UI is now modularized with native vector schematic rendering. Additional second-order topologies in the catalog are currently schematic/planning entries until their electrical models are connected.
+The current app supports ideal RC low-pass/high-pass frequency response plus a loaded two-stage RC low-pass model. Nonlinear mode uses a charge-conserving capacitor model, time-domain simulation, FFT-derived HD2-HD5, THD, capacitance profile plotting, CSV export, and validation tests. The UI is now modularized with native vector schematic rendering. The public topology list only exposes models that are connected to the solver; additional topology definitions remain internal roadmap material until their electrical models are implemented.
 
 ## Local Development
 

@@ -1,33 +1,28 @@
 import React from 'react';
 import { ArrowRight, Calculator, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import heroImage from '../assets/highsnr-lab-hero.jpg';
 
 export default function Home() {
   return (
     <div className="home-page">
-      {/* Premium Minimal Hero Section */}
-      <section style={{ padding: '7rem 0', textAlign: 'center', backgroundColor: 'var(--bg-main)' }}>
-        <div className="container" style={{ maxWidth: '800px' }}>
+      <section className="home-hero" style={{ '--hero-image': `url(${heroImage})` }}>
+        <div className="container home-hero-inner">
+          <h1>HighSNR Engineering Lab</h1>
           
-          <div style={{ display: 'inline-block', padding: '0.25rem 0.75rem', backgroundColor: 'var(--border-subtle)', border: '1px solid var(--border-base)', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-            v1.0 Portal Initialization
-          </div>
-          
-          <h1 style={{ marginBottom: '1.5rem' }}>HighSNR Engineering Lab</h1>
-          
-          <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '3rem' }}>
+          <p>
             Independent research, precise tools, and education for real-world electronic signal chains. We investigate physical constraints to build better hardware.
           </p>
           
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+          <div className="home-hero-actions">
             <Link to="/tools" className="btn btn-primary">
               Launch Tools
             </Link>
             <Link to="/research" className="btn btn-secondary">
               Read Research
             </Link>
-            <Link to="/subscribe" className="btn btn-secondary">
-              Subscribe
+            <Link to="/lab-notes" className="btn btn-secondary">
+              Research Log
             </Link>
           </div>
         </div>
@@ -36,12 +31,12 @@ export default function Home() {
       {/* Featured Tools Section */}
       <section style={{ padding: '5rem 0', backgroundColor: 'var(--bg-surface)', borderTop: '1px solid var(--border-subtle)' }}>
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+          <div className="home-section-header">
             <div>
               <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Engineering Tools</h2>
               <p style={{ color: 'var(--text-secondary)' }}>Calculators for nonlinearities, noise, and signal degradation.</p>
             </div>
-            <Link to="/tools" className="link-arrow" style={{ color: 'var(--text-secondary)' }}>
+            <Link to="/tools" className="link-arrow home-section-link">
               View all tools <ArrowRight size={16} />
             </Link>
           </div>
@@ -52,12 +47,12 @@ export default function Home() {
               <div className="card-icon-wrapper">
                 <Calculator size={20} />
               </div>
-              <h3 style={{ marginBottom: '0.75rem' }}>ADC ENOB Loss Calculator</h3>
+              <h3 style={{ marginBottom: '0.75rem' }}>ADC Input Stage Simulator</h3>
               <p style={{ marginBottom: '2rem' }}>
-                Estimate effective resolution loss in SAR ADC front ends caused by source impedance, acquisition time, and filtering.
+                Simulate SAR ADC front-end settling, nonlinear MLCC behavior, and dynamic performance metrics.
               </p>
-              <Link to="/tools/adc-enob-loss-calculator" className="link-arrow">
-                View Tool Page <ArrowRight size={16} />
+              <Link to="/tools" className="link-arrow">
+                Open Tools Catalog <ArrowRight size={16} />
               </Link>
             </div>
 
@@ -65,12 +60,12 @@ export default function Home() {
               <div className="card-icon-wrapper">
                 <Activity size={20} />
               </div>
-              <h3 style={{ marginBottom: '0.75rem' }}>Capacitor Distortion Analyzer</h3>
+              <h3 style={{ marginBottom: '0.75rem' }}>Passive Filter Distortion Analyzer</h3>
               <p style={{ marginBottom: '2rem' }}>
-                Model voltage-dependent capacitance and calculate harmonic distortion in RC filters using MLCC X7R/X5R capacitors.
+                Analyze passive filters with real capacitor behavior: AC response, C(V), harmonic distortion, and THD.
               </p>
-              <Link to="/tools/capacitor-distortion-analyzer" className="link-arrow">
-                View Tool Brief <ArrowRight size={16} />
+              <Link to="/tools" className="link-arrow">
+                Open Tools Catalog <ArrowRight size={16} />
               </Link>
             </div>
 

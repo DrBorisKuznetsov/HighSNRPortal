@@ -58,6 +58,10 @@ export function FilterSetupView({
   const [topologyQuery, setTopologyQuery] = useState("");
   const normalizedQuery = topologyQuery.trim().toLowerCase();
   const visibleTopologies = topologyCatalog.filter((item) => {
+    if (!item.solverTopology) {
+      return false;
+    }
+
     if (!normalizedQuery) {
       return true;
     }
@@ -120,7 +124,6 @@ export function FilterSetupView({
                     ? "topology-card is-active"
                     : "topology-card"
                 }
-                disabled={!item.solverTopology}
                 key={item.id}
                 type="button"
                 onClick={() => item.solverTopology && setTopology(item.solverTopology)}

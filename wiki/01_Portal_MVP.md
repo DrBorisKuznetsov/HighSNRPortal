@@ -8,8 +8,8 @@
 /                         # Главный портал (Отдельный репозиторий)
 ├── /research             # Исследовательские направления
 ├── /tools                # Каталог инженерных инструментов
-├── /tools/adc-enob-loss-calculator
-├── /tools/capacitor-distortion-analyzer
+├── /tools/adc-enob-loss-calculator        # legacy redirect на /tools
+├── /tools/capacitor-distortion-analyzer   # legacy redirect на /tools
 ├── /videos_project       # Каталог YouTube видео (Независимый репозиторий)
 ├── /publications         # Статьи, preprints, технические отчеты
 ├── /lab-notes            # Лабораторные заметки
@@ -30,6 +30,7 @@
 - **Подзаголовок:** Research, tools, and education for real-world electronic signal chains.
 - **Описание:** Миссия лаборатории — изучение потери качества сигнала в реальных электронных системах (нелинейность, паразитные эффекты, шумы). 
 - **CTA Кнопки:** "Run Engineering Tools", "Read Research".
+- **Визуал:** первый экран использует полноширинный инженерный hero-фон `portal/src/assets/highsnr-lab-hero.jpg`: рабочая лабораторная сцена с платой, пробниками, осциллографом и спектром. Изображение служит контекстом, а не отдельной иллюстрационной карточкой.
 
 ### Блок 2: Featured Tools
 Карточки уже готовых инструментов:
@@ -60,8 +61,8 @@
 
 - MVP-карта маршрутов заведена в `portal/src/App.jsx`.
 - Заглушки заменены на рабочие страницы-заготовки в `portal/src/pages/ContentPages.jsx`.
-- Карточка ADC ведет на `/tools/adc-enob-loss-calculator`, откуда запускается отдельный симулятор.
-- Карточка Capacitor Distortion Analyzer ведет на `/tools/capacitor-distortion-analyzer` как на tool brief до переноса полноценного инструмента.
+- Карточки инструментов ведут на `/tools`, где есть описание, preview и прямые кнопки запуска рабочих приложений.
+- Старые tool-brief адреса `/tools/adc-enob-loss-calculator` и `/tools/capacitor-distortion-analyzer` сохранены только как legacy redirects на `/tools`.
 - `/publications` использует компактный publication index и содержит первые DOI-записи engrXiv.
 - `/projects` использует плоский project register, чтобы не создавать циклическую навигацию между разделами.
 - `/about` содержит профиль автора, официальные ссылки, контактный email и методологию работы; карту портала и публикации не дублируем.

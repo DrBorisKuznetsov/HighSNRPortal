@@ -38,4 +38,4 @@ The work continues.
 
 - `/research`
 - `/publications`
-- `/tools/adc-enob-loss-calculator`
+- `/tools`

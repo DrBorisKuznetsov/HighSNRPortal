@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Activity, ArrowRight, Cpu, ExternalLink, Globe2, Mail } from 'lucide-react';
 import editorScreenshot from '../assets/editor-screenshot.png';
+import authorPortrait from '../assets/boris-kuznetsov-portrait.jpg';
 import './EducationTools.css';
 import './Publications.css';
 
 const adcToolHref = import.meta.env.DEV ? 'http://localhost:8000/' : 'https://adc.highsnr.org';
-const filtersToolHref = import.meta.env.DEV ? 'http://localhost:5175/' : 'https://filters.highsnr.org';
 const circuitBuilderHref = '/education-tools/highsnr-circuit-builder/app/index.html';
 const highSnrEmail = 'info@highsnr.org';
 
@@ -53,7 +53,7 @@ const publications = [
     topics: ['RC networks', 'MLCC', 'Harmonic distortion', 'Charge modeling'],
     links: [
       { label: 'Research', to: '/research' },
-      { label: 'Capacitor Tool', to: '/tools/capacitor-distortion-analyzer' },
+      { label: 'Tools', to: '/tools' },
     ],
   },
   {
@@ -71,7 +71,7 @@ const publications = [
     topics: ['SAR ADC', 'MLCC', 'ENOB', 'Charge modeling'],
     links: [
       { label: 'Research', to: '/research' },
-      { label: 'ADC Tool', to: '/tools/adc-enob-loss-calculator' },
+      { label: 'Tools', to: '/tools' },
     ],
   },
   {
@@ -88,7 +88,7 @@ const publications = [
     topics: ['Class II capacitors', 'THD', 'RC filters', 'Simulation traps'],
     links: [
       { label: 'Research', to: '/research' },
-      { label: 'Capacitor Tool', to: '/tools/capacitor-distortion-analyzer' },
+      { label: 'Tools', to: '/tools' },
     ],
   },
 ];
@@ -130,7 +130,7 @@ const labNotes = [
     links: [
       { label: 'Capacitor Research', to: '/research' },
       { label: 'Articles & Papers', to: '/publications' },
-      { label: 'ADC Tool', to: '/tools/adc-enob-loss-calculator' },
+      { label: 'Tools', to: '/tools' },
     ],
   },
 ];
@@ -275,57 +275,6 @@ export function Research() {
               <span>{item}</span>
             </div>
           ))}
-        </div>
-      </Section>
-    </PageShell>
-  );
-}
-
-export function AdcToolPage() {
-  return (
-    <PageShell
-      title="ADC ENOB Loss Calculator"
-      summary="Estimate effective resolution loss in SAR ADC front ends caused by source impedance, acquisition time, input filtering, and nonlinear components."
-    >
-      <Section title="Model Scope">
-        <div className="detail-list">
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Time-domain acquisition simulation for the ADC sample-and-hold network.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>MLCC Class II capacitor voltage-dependence and settling error analysis.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>FFT metrics: THD, SNR, SINAD, and ENOB.</span></div>
-        </div>
-        <div className="cta-row">
-          <a className="btn btn-primary" href={adcToolHref} target="_blank" rel="noopener noreferrer">
-            Launch Simulator <ExternalLink size={18} />
-          </a>
-          <Link className="btn btn-secondary" to="/research">
-            Read Research
-          </Link>
-        </div>
-      </Section>
-    </PageShell>
-  );
-}
-
-export function CapacitorToolPage() {
-  return (
-    <PageShell
-      title="Passive Filter Distortion Analyzer"
-      summary="A planned standalone tool for analyzing how real capacitor behavior changes passive filter response and creates harmonic distortion."
-    >
-      <Section title="Planned Scope">
-        <div className="detail-list">
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Linear AC analysis for RC and RLC passive filter topologies.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Non-ideal component effects: ESR, ESL, leakage, source resistance, load resistance, and tolerances.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Charge-conserving nonlinear capacitor model for harmonic distortion and THD estimates.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Prepared as a separate application workspace launched on filters.highsnr.org.</span></div>
-        </div>
-        <div className="cta-row">
-          <a className="btn btn-primary" href={filtersToolHref} target="_blank" rel="noopener noreferrer">
-            Launch Analyzer <ExternalLink size={18} />
-          </a>
-          <Link className="btn btn-secondary" to="/research">
-            Read Related Research
-          </Link>
         </div>
       </Section>
     </PageShell>
@@ -532,7 +481,11 @@ export function About() {
     >
       <Section title="Author Profile">
         <div className="about-profile">
-          <div>
+          <figure className="about-portrait">
+            <img src={authorPortrait} alt="Boris Kuznetsov" />
+          </figure>
+
+          <div className="about-profile-copy">
             <p>
               Boris Kuznetsov is a Professor and Electronics Engineer specializing in precision measurement systems and embedded electronics. His work focuses on analog and mixed-signal circuit design, high-speed PCB design, digital signal processing, and instrumentation systems.
             </p>
@@ -564,19 +517,6 @@ export function About() {
           <div className="detail-row"><span className="bullet-indicator"></span><span>Numerical simulation, reproducible source code, and validation checks.</span></div>
           <div className="detail-row"><span className="bullet-indicator"></span><span>Public knowledge base linking research, tools, videos, courses, and open projects.</span></div>
         </div>
-      </Section>
-    </PageShell>
-  );
-}
-
-export function Subscribe() {
-  return (
-    <PageShell
-      title="Subscribe to HighSNR Lab Notes"
-      summary="Research updates, model changes, tool releases, open questions, and engineering notes for precision electronics."
-    >
-      <Section title="Subscription Status">
-        <p className="muted-block">Newsletter integration is planned for the next stabilization stage. This page keeps the route and product promise explicit in the MVP.</p>
       </Section>
     </PageShell>
   );

@@ -60,11 +60,11 @@ export default function ToolsCatalog() {
               <ExternalLink size={18} />
             </a>
             <Link
-              to="/tools/adc-enob-loss-calculator"
+              to="/research"
               className="btn btn-secondary"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
             >
-              Model Page
+              Read Research
               <ArrowRight size={18} />
             </Link>
           </div>
@@ -128,11 +128,11 @@ export default function ToolsCatalog() {
               <ExternalLink size={18} />
             </a>
             <Link
-              to="/tools/capacitor-distortion-analyzer"
+              to="/research"
               className="btn btn-secondary"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
             >
-              Model Page
+              Read Research
               <ArrowRight size={18} />
             </Link>
           </div>
