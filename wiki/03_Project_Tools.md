@@ -52,7 +52,7 @@ C:\Users\Voris\Downloads\Техническое задание.pdf
 capacitor_filter_tool
 ```
 
-Текущий статус на 2026-07-02: создан рабочий Vite/React/TypeScript MVP, подготовлены CNAME `filters.highsnr.org`, social preview, tool manifest, методические страницы и pre-announcement audit. Внутрь перенесен исходный PDF как `docs/source/technical-spec-source.pdf`, создана сводка ТЗ, архитектурные заметки, дорожная карта и brief для будущих агентов.
+Текущий статус на 2026-07-04: создан рабочий Vite/React/TypeScript MVP, реализована модульная архитектура UI, добавлены SVG-схемы, интегрирована поддержка двухзвенных фильтров (RC 2-Stage). Подготовлены CNAME `filters.highsnr.org`, social preview, tool manifest, методические страницы и pre-announcement audit. Внутрь перенесен исходный PDF как `docs/source/technical-spec-source.pdf`, создана сводка ТЗ, архитектурные заметки, дорожная карта и brief для будущих агентов.
 
 Позиционирование:
 
@@ -73,6 +73,7 @@ MVP-режимы:
 MVP-топологии:
 - RC low-pass;
 - RC high-pass;
+- RC 2-Stage low-pass;
 - RC band-pass;
 - RC band-stop / notch;
 - RLC band-pass;

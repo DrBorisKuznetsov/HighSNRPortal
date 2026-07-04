@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link, Navigate, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, Navigate, Routes, Route, useLocation } from 'react-router-dom';
+import { trackEvent } from './utils/analytics';
 import Header from './components/Header';
 import Home from './pages/Home';
 import ToolsCatalog from './pages/ToolsCatalog';
@@ -16,6 +17,15 @@ import {
 } from './pages/ContentPages';
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackEvent('page_view', {
+      page_path: location.pathname,
+      page_search: location.search,
+    });
+  }, [location]);
+
   return (
     <div className="app-container">
       <Header />

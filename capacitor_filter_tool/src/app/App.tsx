@@ -42,6 +42,7 @@ import {
   type RcTopology,
 } from "../solver/acResponse";
 import { formatDb, formatEngineering, formatHz, formatPhase } from "../solver/format";
+
 import {
   defaultNonlinearSettings,
   defaultNonlinearSignal,
@@ -51,6 +52,7 @@ import {
   type NonlinearSimulationSettings,
   type NonlinearSignal,
 } from "../solver/nonlinearDistortion";
+import { trackEvent } from "../utils/analytics";
 
 export type AnalysisMode = "setup" | "linear" | "nonlinear" | "methodology";
 export type OpenMethodology = (sectionId: string) => void;
@@ -451,6 +453,7 @@ export function App() {
 
   const selectAnalysisMode = (mode: AnalysisMode) => {
     setAnalysisMode(mode);
+    trackEvent('tab_changed', { mode });
 
     if (mode !== "methodology" && window.location.hash.startsWith("#method-")) {
       window.history.replaceState(
@@ -491,31 +494,42 @@ export function App() {
     setAlphaPerVolt(polynomial.alphaPerVolt);
     setBetaPerVoltSquared(polynomial.betaPerVoltSquared);
     setGammaPerVoltCubed(polynomial.gammaPerVoltCubed);
+    trackEvent('preset_applied', { preset_id: presetId });
+  };
+
+  const updateTopology = (newTopology: RcTopology) => {
+    setTopology(newTopology);
+    trackEvent('topology_changed', { topology: newTopology });
   };
 
   const updateCapacitanceFarads = (value: number) => {
     setSelectedCapacitorId("custom");
     setCapacitanceFarads(value);
+    trackEvent('parameter_changed', { parameter: 'capacitance_farads', value });
   };
 
   const updateCapacitanceFarads2 = (value: number) => {
     setSelectedCapacitorId("custom");
     setCapacitanceFarads2(value);
+    trackEvent('parameter_changed', { parameter: 'capacitance_farads2', value });
   };
 
   const updateAlphaPerVolt = (value: number) => {
     setSelectedCapacitorId("custom");
     setAlphaPerVolt(value);
+    trackEvent('parameter_changed', { parameter: 'alpha_per_volt', value });
   };
 
   const updateBetaPerVoltSquared = (value: number) => {
     setSelectedCapacitorId("custom");
     setBetaPerVoltSquared(value);
+    trackEvent('parameter_changed', { parameter: 'beta_per_volt_squared', value });
   };
 
   const updateGammaPerVoltCubed = (value: number) => {
     setSelectedCapacitorId("custom");
     setGammaPerVoltCubed(value);
+    trackEvent('parameter_changed', { parameter: 'gamma_per_volt_cubed', value });
   };
 
   const exportCsv = () => {
@@ -668,8 +682,7 @@ export function App() {
             </button>
             <button
               className="btn-secondary"
-              type="button"
-              title="Export CSV"
+              type="button" title="Export CSV"
               onClick={exportCsv}
               disabled={!canExport}
             >
@@ -688,7 +701,7 @@ export function App() {
         {analysisMode === "setup" && (
           <FilterSetupView
             topology={topology}
-            setTopology={setTopology}
+            setTopology={updateTopology}
             resistanceOhms={resistanceOhms}
             setResistanceOhms={setResistanceOhms}
             capacitanceFarads={capacitanceFarads}
