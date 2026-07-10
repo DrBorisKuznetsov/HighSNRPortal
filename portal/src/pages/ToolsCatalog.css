@@ -116,6 +116,29 @@
   transform: scale(1.02) translateY(5px);
 }
 
+.tools-support-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(280px, 360px);
+}
+
+.support-tool-thumb {
+  aspect-ratio: 16 / 9;
+  background-color: #f8fafc;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.support-tool-thumb img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  width: 100%;
+}
+
 /* Coming Soon Calculators Grid */
 .tools-dev-grid {
   display: grid;

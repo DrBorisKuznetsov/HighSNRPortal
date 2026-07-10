@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Calculator, Activity } from 'lucide-react';
+import { ArrowRight, Calculator, Activity, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroImage from '../assets/highsnr-lab-hero.jpg';
 
@@ -17,6 +17,9 @@ export default function Home() {
           <div className="home-hero-actions">
             <Link to="/tools" className="btn btn-primary">
               Launch Tools
+            </Link>
+            <Link to="/education-tools" className="btn btn-secondary">
+              Circuit Builder
             </Link>
             <Link to="/research" className="btn btn-secondary">
               Read Research
@@ -66,6 +69,19 @@ export default function Home() {
               </p>
               <Link to="/tools" className="link-arrow">
                 Open Tools Catalog <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            <div className="card">
+              <div className="card-icon-wrapper">
+                <Cpu size={20} />
+              </div>
+              <h3 style={{ marginBottom: '0.75rem' }}>HighSNR Circuit Builder</h3>
+              <p style={{ marginBottom: '2rem' }}>
+                Open the visual web editor for drawing circuits and exporting Manim-ready Python code.
+              </p>
+              <Link to="/education-tools" className="link-arrow">
+                Open Web Editor <ArrowRight size={16} />
               </Link>
             </div>
 

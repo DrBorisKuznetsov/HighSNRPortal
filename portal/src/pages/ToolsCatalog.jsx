@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, ArrowRight, ExternalLink, Zap, Calculator } from 'lucide-react';
+import { Activity, ArrowRight, ExternalLink, Zap, Calculator, Cpu } from 'lucide-react';
 import adcScreenshot from '../assets/adc-screenshot.png';
 import capacitorScreenshot from '../assets/capacitor-screenshot.png';
+import editorScreenshot from '../assets/editor-screenshot.png';
 import './ToolsCatalog.css';
 
 export default function ToolsCatalog() {
@@ -152,6 +153,27 @@ export default function ToolsCatalog() {
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', marginTop: '5rem' }}>Education & Visualization Tools</h3>
+
+      <div className="tools-support-grid">
+        <div className="dev-tool-card card">
+          <div className="dev-tool-header">
+            <Cpu className="text-secondary" size={24} />
+            <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--accent-light)', padding: '0.1rem 0.5rem', borderRadius: '1rem', color: 'var(--accent-color)' }}>Web Editor</span>
+          </div>
+          <div className="support-tool-thumb">
+            <img src={editorScreenshot} alt="HighSNR Circuit Builder editor interface" />
+          </div>
+          <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>HighSNR Circuit Builder</h4>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+            Draw circuits in the browser and export Manim-ready Python code for videos, courses, and technical explanations.
+          </p>
+          <Link to="/education-tools" className="link-arrow">
+            Open launch page <ArrowRight size={16} />
+          </Link>
         </div>
       </div>
 
