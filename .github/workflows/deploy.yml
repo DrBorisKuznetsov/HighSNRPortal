@@ -53,6 +53,29 @@ jobs:
           
           # Add SPA fallback for GitHub Pages (so refresh works)
           cp dist_final/index.html dist_final/404.html
+
+          # Add static entrypoints for public React routes so direct links return 200.
+          for route in \
+            research \
+            research/adc-front-end-modeling \
+            research/nonlinear-passive-components \
+            tools \
+            tools/adc-enob-loss-calculator \
+            tools/capacitor-distortion-analyzer \
+            tools/capacitor-distortion \
+            publications \
+            lab-notes \
+            projects \
+            courses \
+            education-tools \
+            education-tools/highsnr-circuit-builder \
+            about \
+            subscribe \
+            consulting
+          do
+            mkdir -p "dist_final/$route"
+            cp dist_final/index.html "dist_final/$route/index.html"
+          done
           
           # Copy videos project to a subdirectory
           mkdir -p dist_final/videos_project
