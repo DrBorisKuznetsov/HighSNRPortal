@@ -6,12 +6,11 @@ import Home from './pages/Home';
 import ToolsCatalog from './pages/ToolsCatalog';
 import {
   About,
-  Consulting,
   Courses,
+  DesignReview,
   EducationTools,
   LabNotes,
   NotFound,
-  Projects,
   Publications,
   Research,
 } from './pages/ContentPages';
@@ -41,13 +40,13 @@ function App() {
           <Route path="/tools/capacitor-distortion" element={<Navigate to="/tools" replace />} />
           <Route path="/publications" element={<Publications />} />
           <Route path="/lab-notes" element={<LabNotes />} />
-          <Route path="/projects" element={<Projects />} />
+
           <Route path="/courses" element={<Courses />} />
           <Route path="/education-tools" element={<EducationTools />} />
           <Route path="/education-tools/highsnr-circuit-builder" element={<Navigate to="/education-tools" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="/subscribe" element={<Navigate to="/lab-notes" replace />} />
-          <Route path="/consulting" element={<Consulting />} />
+          <Route path="/design-review" element={<DesignReview />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

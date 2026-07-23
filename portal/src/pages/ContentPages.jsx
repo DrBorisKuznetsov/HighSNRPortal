@@ -8,6 +8,7 @@ import './Publications.css';
 
 const adcToolHref = import.meta.env.DEV ? 'http://localhost:8000/' : 'https://adc.highsnr.org';
 const circuitBuilderHref = '/education-tools/highsnr-circuit-builder/app/index.html';
+const mlccResearchPlanHref = '/research/mlcc-research-directions-2026-07-16.md';
 const highSnrEmail = 'info@highsnr.org';
 
 const officialLinks = [
@@ -96,7 +97,7 @@ const publications = [
 const capacitorResearch = {
   title: 'Capacitor Research',
   summary:
-    'HighSNR Lab currently focuses on real capacitor behavior in precision electronics: MLCC bias, dielectric memory, losses, distortion, settling, and measurement reliability.',
+    'HighSNR Lab focuses on real capacitor behavior in precision electronics: MLCC bias, charge nonlinearity, distortion, settling, measurement methods, and practical design rules.',
   introTitle: 'Why MLCCs Matter',
   intro: [
     'MLCCs are everywhere in modern electronics. They are small, inexpensive, reliable, and easy to use until their real behavior starts to matter.',
@@ -110,6 +111,45 @@ const capacitorResearch = {
     'Harmonic distortion in RC filters and precision signal paths',
     'Dielectric history, bias memory, losses, and long-term behavior',
     'Measurement methods and design rules for reducing MLCC-related errors',
+  ],
+  program: [
+    {
+      title: 'Physics and Q(V) formalism',
+      status: 'Most developed',
+      text: 'Charge-based nonlinear capacitor models, analytical harmonic estimates, and validation against real DC-bias curves from vendor data.',
+      output: 'Flagship theory article for signal-integrity readers.',
+    },
+    {
+      title: 'THD methodology for passive filters',
+      status: 'Tool-backed',
+      text: 'Simulation methods for passive RC/filter networks with voltage-dependent Class II capacitors, supported by open engineering tools.',
+      output: 'Practical article and reusable simulator workflow.',
+    },
+    {
+      title: 'Circuit-level distortion compensation',
+      status: 'High novelty',
+      text: 'Anti-parallel capacitor arrangements, bias-point selection, value splitting, and residual-distortion estimates for practical mitigation.',
+      output: 'Application-oriented article for analog design engineers.',
+    },
+    {
+      title: 'Behavioral SPICE and system models',
+      status: 'Vendor-facing',
+      text: 'Limits of C(Vdc)-interpolation models and a path toward charge-based Q(V) formulations for predicting distortion.',
+      output: 'Targeted material for application engineers at component vendors.',
+    },
+    {
+      title: 'Measurement stand and experimental validation',
+      status: 'In progress',
+      text: 'A dedicated measurement board, QA403-based THD workflow, NPR-style wideband tests, and temperature-dependent characterization.',
+      output: 'Experimental validation articles planned for winter 2026/27.',
+    },
+  ],
+  roadmap: [
+    'Publish the Q(V) formalism and physical distortion mechanism as the flagship theory piece.',
+    'Turn the passive-filter simulator workflow into a practical engineering article.',
+    'Develop compensation methods for reducing MLCC distortion in real circuits.',
+    'Document the limits of common vendor SPICE models and propose charge-based improvements.',
+    'Build the measurement stand and validate theory with measured THD, NPR, bias, and temperature data.',
   ],
 };
 
@@ -277,6 +317,40 @@ export function Research() {
           ))}
         </div>
       </Section>
+
+      <Section title="Research Program Plan">
+        <div className="research-plan">
+          <p className="research-plan-lede">
+            The active program remains one research area - real capacitor behavior - but it is now organized as a practical publication and measurement roadmap.
+          </p>
+          <div className="research-plan-list">
+            {capacitorResearch.program.map((item) => (
+              <article className="research-plan-item" key={item.title}>
+                <div className="research-plan-heading">
+                  <h3>{item.title}</h3>
+                  <span>{item.status}</span>
+                </div>
+                <p>{item.text}</p>
+                <small>{item.output}</small>
+              </article>
+            ))}
+          </div>
+          <a className="research-plan-link" href={mlccResearchPlanHref} target="_blank" rel="noopener noreferrer">
+            Open full working plan <ExternalLink size={14} />
+          </a>
+        </div>
+      </Section>
+
+      <Section title="Publication Roadmap">
+        <div className="detail-list">
+          {capacitorResearch.roadmap.map((item) => (
+            <div className="detail-row" key={item}>
+              <span className="bullet-indicator"></span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
     </PageShell>
   );
 }
@@ -355,40 +429,7 @@ export function LabNotes() {
   );
 }
 
-export function Projects() {
-  return (
-    <PageShell
-      title="Open Projects"
-      summary="A compact register of real hardware, software, and measurement work. Sections such as Tools, Research, and Education are not listed here as projects."
-    >
-      <Section title="Project Register">
-        <div className="detail-list">
-          <div className="detail-row">
-            <span className="bullet-indicator"></span>
-            <span>
-              <strong>ADC Model:</strong> Python mathematical core and client simulator for acquisition, settling, nonlinear capacitors, FFT metrics, SINAD, and ENOB.
-              {' '}<a className="link-arrow" href={adcToolHref} target="_blank" rel="noopener noreferrer">Open simulator <ExternalLink size={14} /></a>
-            </span>
-          </div>
-          <div className="detail-row">
-            <span className="bullet-indicator"></span>
-            <span>
-              <strong>MLCC Distortion Fixture:</strong> planned measurement setup for validating voltage-dependent capacitance and RC-filter distortion models.
-              {' '}<Link className="link-arrow" to="/research">Related research <ArrowRight size={14} /></Link>
-            </span>
-          </div>
-          <div className="detail-row">
-            <span className="bullet-indicator"></span>
-            <span>
-              <strong>DSP PWM/PDM Spectrum Analyzer:</strong> candidate desktop software project for MCU timer PWM, delta-sigma PDM, FFT, occupied bandwidth, and aliasing analysis.
-              {' '}<Link className="link-arrow" to="/tools">Tools catalog <ArrowRight size={14} /></Link>
-            </span>
-          </div>
-        </div>
-      </Section>
-    </PageShell>
-  );
-}
+
 
 export function Courses() {
   return (
@@ -522,17 +563,263 @@ export function About() {
   );
 }
 
-export function Consulting() {
+export function DesignReview() {
   return (
     <PageShell
-      title="Engineering Review and Consulting"
-      summary="Future services include ADC front-end review, capacitor nonlinearity audit, filter distortion analysis, custom modeling, and corporate training."
+      title="Design Review"
+      summary="Independent engineering assessment of precision analog and mixed-signal hardware."
     >
-      <Section title="Service Tracks">
-        <div className="detail-list">
-          <div className="detail-row"><span className="bullet-indicator"></span><span>ADC front-end design review and ENOB risk analysis.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Custom signal-chain models and validation reports.</span></div>
-          <div className="detail-row"><span className="bullet-indicator"></span><span>Training and tool development for engineering teams.</span></div>
+      <Section title="Overview & Scope">
+        <div className="publication-list">
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Who This Service Is For</span>
+              </div>
+              <h3 style={{ marginBottom: '1rem' }}>Target Audience & Projects</h3>
+              <ul style={{ paddingLeft: '1.25rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.95rem' }}>
+                <li>Hardware teams approaching a first or second prototype without a dedicated precision analog specialist.</li>
+                <li>Developers of scientific instrumentation, DAQ systems, laboratory equipment, and precision sensor interfaces.</li>
+                <li>Engineering teams dealing with excess noise, thermal drift, unstable ADC codes, slow settling, or discrepancies between simulation and measurement.</li>
+                <li>Projects where the cost of a board spin or missed specification is significantly higher than the cost of an independent review.</li>
+              </ul>
+            </div>
+            <aside className="publication-actions">
+              <a href="mailto:info@highsnr.org?subject=Design Review Evaluation">Contact Us <ArrowRight size={14} /></a>
+            </aside>
+          </article>
+
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>What We Review</span>
+              </div>
+              <h3 style={{ marginBottom: '1rem' }}>Technical Coverage</h3>
+              <ul style={{ paddingLeft: '1.25rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.95rem' }}>
+                <li>Sensor front-ends for thermocouples, RTDs, strain gauges, photodiodes, piezo sensors, and high-impedance sources.</li>
+                <li>Drivers and buffers for high-resolution ADCs.</li>
+                <li>Active and passive anti-aliasing, notch, low-pass, and high-pass filters.</li>
+                <li>Voltage-reference circuitry: filtering, buffering, distribution, and dynamic load handling.</li>
+                <li>Precision current sources, instrumentation amplifiers, and transimpedance amplifiers.</li>
+                <li>PCB regions that directly affect analog noise, stability, reference integrity, return paths, and measurement accuracy.</li>
+              </ul>
+            </div>
+          </article>
+          
+          <article className="publication-item" style={{ borderBottom: 'none' }}>
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Typical Problems</span>
+              </div>
+              <h3 style={{ marginBottom: '1rem' }}>Common Issues Identified</h3>
+              <ul style={{ paddingLeft: '1.25rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.95rem' }}>
+                <li>MLCC nonlinearities, DC-bias derating, and shifts in filter characteristics.</li>
+                <li>Insufficient phase margin, ringing, and incomplete settling in ADC drivers.</li>
+                <li>Noise sources that limit effective resolution and dynamic range.</li>
+                <li>Incorrect SPICE assumptions, incomplete component models, and unmodeled parasitics.</li>
+                <li>Layout risks in voltage references, power delivery, return-current paths, and sensitive analog nodes.</li>
+                <li>Thermal drift, tolerance accumulation, common-mode violations, and operating-limit problems.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </Section>
+
+      <Section title="Service Packages & Deliverables">
+        <div className="publication-list">
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Deliverables</span>
+              </div>
+              <h3 style={{ marginBottom: '1rem' }}>What You Receive</h3>
+              <ul style={{ paddingLeft: '1.25rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.95rem' }}>
+                <li>A concise executive summary for project leads.</li>
+                <li>Critical / Major / Minor findings linked to specific circuits and design decisions.</li>
+                <li>Annotated schematic fragments and quantitative calculations where required.</li>
+                <li>Concrete recommendations for components, values, topology, and test conditions.</li>
+                <li>A validation plan identifying the measurements needed to confirm the revised design.</li>
+                <li>One written clarification round within the agreed review scope.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article className="publication-item" style={{ borderBottom: 'none' }}>
+            <div className="publication-main" style={{ gridColumn: '1 / -1' }}>
+              <div className="publication-meta-row">
+                <span>Packages & Pricing</span>
+              </div>
+              <h3 style={{ marginBottom: '1rem' }}>Service Packages</h3>
+              <div className="packages-table-wrapper" style={{ overflowX: 'auto', marginBottom: '1rem' }}>
+                <table className="packages-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid var(--border-base)' }}>
+                      <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-secondary)' }}>Package</th>
+                      <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-secondary)' }}>Pricing & timeline</th>
+                      <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-secondary)' }}>Best suited for</th>
+                      <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-secondary)' }}>Deliverables</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '600' }}>Expert Audit</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>From $2,000<br/>7-10 days</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>One well-defined signal chain and one primary operating mode.</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>8-12 page report, prioritized risks, high-level noise budget, actionable recommendations.</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '600' }}>Comprehensive Audit</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>From $5,000<br/>10-15 days</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>One highly complex chain or two interconnected chains.</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>Detailed noise, stability, and settling analysis; agreed critical PCB areas; 15-25 page report.</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '600' }}>System-Level Review</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>From $8,000<br/>15-30 days</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>Multi-mode or multi-channel precision systems.</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>Advanced calculations, in-depth simulation, review of the agreed precision-analog PCB scope, and a laboratory validation plan.</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '600' }}>Custom Project</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>Upon request</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>Three or more independent chains, complete DAQ systems, or complex instrumentation.</td>
+                      <td style={{ padding: '0.75rem 0.5rem' }}>Custom scope, price, milestones, and schedule after initial material review.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style={{ margin: '1rem 0 0.5rem 0', fontSize: '0.9rem' }}><strong>Why prices are listed as "From".</strong> Analog design complexity is driven by the number of gain stages, operating modes, performance targets, model availability, and PCB-analysis depth—not simply by component count. After reviewing your materials, we provide a fixed-price Scope of Work. There are no hourly overages within the agreed scope.</p>
+              <p style={{ margin: 0, fontSize: '0.9rem' }}><strong>What we mean by one signal chain.</strong> One continuous functional path from a sensor or input connector to the ADC input or another agreed output node. Shared references, supplies, multiplexers, and multiple operating modes may increase the project scope.</p>
+            </div>
+          </article>
+        </div>
+      </Section>
+
+      <Section title="Process & Requirements">
+        <div className="publication-list">
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Workflow</span>
+              </div>
+              <h3 style={{ marginBottom: '1rem' }}>How the Process Works</h3>
+              <ol style={{ paddingLeft: '1.25rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.95rem' }}>
+                <li>Submit your schematic, requirements, and a short description of the design challenge.</li>
+                <li>We confirm technical fit and, when needed, execute an NDA before full documentation is transferred.</li>
+                <li>Within 1-2 business days after receiving sufficient material, we issue a fixed-price Scope of Work and delivery schedule.</li>
+                <li>After payment according to the proposal, we review the identified design revision.</li>
+                <li>You receive the PDF report and may submit one written clarification round within 10 business days.</li>
+              </ol>
+            </div>
+          </article>
+
+          <article className="publication-item" style={{ borderBottom: 'none' }}>
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Requirements</span>
+              </div>
+              <h3 style={{ marginBottom: '1rem' }}>What We Need to Start</h3>
+              <ul style={{ paddingLeft: '1.25rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.95rem', marginBottom: '1rem' }}>
+                <li>Searchable vector PDF of the schematic.</li>
+                <li>Input signal range, source type, and source impedance.</li>
+                <li>Target bandwidth, sampling rate, and ADC operating mode.</li>
+                <li>Required accuracy, noise performance, dynamic range, and settling time.</li>
+                <li>Temperature range, supply limits, and component constraints.</li>
+                <li>PCB data when layout review is included.</li>
+              </ul>
+              <p style={{ fontSize: '0.95rem', margin: 0 }}><strong>EDA-neutral workflow.</strong> Native EDA project files are useful supplementary material but are not required for initial qualification. For PCB analysis, IPC-2581 or ODB++ is preferred; an extended Gerber package may also be accepted. File conversion, schematic reconstruction, and recovery of missing engineering data are quoted separately when required.</p>
+            </div>
+          </article>
+        </div>
+      </Section>
+
+      <Section title="Additional Information">
+        <div className="publication-list">
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Sample Report</span>
+              </div>
+              <h3>See the Review Before You Commit</h3>
+              <p className="publication-summary" style={{ margin: 0 }}>A demonstration report based on a HighSNR reference design shows the structure, analytical depth, risk classification, and style of recommendations you can expect. It is not derived from client materials.</p>
+            </div>
+            <aside className="publication-actions">
+              <a href="#" target="_blank" rel="noopener noreferrer">View Sample <ExternalLink size={14} /></a>
+            </aside>
+          </article>
+
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Expertise</span>
+              </div>
+              <h3>Review Led by Principal Engineer</h3>
+              <p className="publication-summary" style={{ margin: 0 }}>Each review is conducted or directly supervised by Boris Kuznetsov. Core engineering analysis is not delegated to anonymous junior reviewers or outsourced without the client's prior written approval.</p>
+            </div>
+            <aside className="publication-actions">
+              <Link to="/about">About the Author <ArrowRight size={14} /></Link>
+              <Link to="/publications">Research & Papers <ArrowRight size={14} /></Link>
+              <a href={import.meta.env.DEV ? 'http://localhost:5174/videos_project/' : '/videos_project/'}>Videos <ArrowRight size={14} /></a>
+            </aside>
+          </article>
+
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Terms</span>
+              </div>
+              <h3>Confidentiality</h3>
+              <p className="publication-summary" style={{ margin: 0 }}>We can execute a Non-Disclosure Agreement before you transfer complete documentation. Project materials are accessible only to personnel explicitly assigned to the review. They are not shared with third parties, used for model training, or included in publications, demonstrations, or benchmarks without your written permission. Retention and deletion requirements can be specified in the NDA or Scope of Work.</p>
+            </div>
+          </article>
+
+          <article className="publication-item">
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>Terms</span>
+              </div>
+              <h3>Scope and Limitations</h3>
+              <p className="publication-summary">The service focuses on precision analog and mixed-signal performance. High-current power electronics, RF and microwave design above 100 MHz, antenna design, standalone digital-logic auditing, firmware, FPGA development, and formal metrological certification are outside the primary scope. These areas are considered only when they directly affect the agreed analog signal chain.</p>
+              <p className="publication-summary" style={{ margin: 0 }}>The review applies only to the submitted and identified schematic and PCB revision. It is an independent engineering assessment based on the information provided and does not replace prototype testing, formal certification, or laboratory validation. Review of a modified revision is quoted separately unless explicitly included in the Scope of Work.</p>
+            </div>
+          </article>
+
+          <article className="publication-item" style={{ borderBottom: 'none' }}>
+            <div className="publication-main">
+              <div className="publication-meta-row">
+                <span>FAQ</span>
+              </div>
+              <h3 style={{ marginBottom: '1.5rem' }}>Frequently Asked Questions</h3>
+              <div className="faq-item" style={{ marginBottom: '1.25rem' }}>
+                <p><strong>Do I need to send native EDA files?</strong><br/>No. A searchable vector PDF is sufficient for initial qualification. Native project files can be supplied as supplementary material.</p>
+              </div>
+              <div className="faq-item" style={{ marginBottom: '1.25rem' }}>
+                <p><strong>Can I submit an incomplete project package?</strong><br/>Yes, for preliminary qualification. A fixed-price proposal and engineering work can begin after the minimum technical information has been provided.</p>
+              </div>
+              <div className="faq-item" style={{ marginBottom: '1.25rem' }}>
+                <p><strong>Is the preliminary evaluation free?</strong><br/>The initial fit and scope assessment is normally provided without charge. It confirms required inputs, price, and schedule; it does not include engineering findings or design recommendations.</p>
+              </div>
+              <div className="faq-item" style={{ marginBottom: '1.25rem' }}>
+                <p><strong>Does the review guarantee final hardware performance?</strong><br/>No. The review reduces engineering risk and identifies likely performance limitations, but final performance must be confirmed on physical hardware.</p>
+              </div>
+              <div className="faq-item" style={{ marginBottom: '1.25rem' }}>
+                <p><strong>Can you check the corrected revision?</strong><br/>Yes. A focused Revision Check can verify whether agreed Critical and Major findings were addressed. It is quoted separately or included in selected scopes.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </Section>
+
+      <Section title="Ready to proceed?">
+        <div className="publication-list" style={{ borderTop: 'none' }}>
+          <article className="publication-item" style={{ borderBottom: 'none' }}>
+            <div className="publication-main">
+              <p style={{ margin: 0 }}>Initial qualification response within 1-2 business days after sufficient material is received.</p>
+            </div>
+            <aside className="publication-actions">
+              <a href="mailto:info@highsnr.org?subject=Design Review Evaluation">Submit Design <ArrowRight size={14} /></a>
+            </aside>
+          </article>
         </div>
       </Section>
     </PageShell>
