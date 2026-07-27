@@ -31,6 +31,18 @@ export default function Home() {
         </div>
       </section>
 
+      <section style={{ padding: '1.1rem 0', backgroundColor: '#1a365d', color: 'white' }}>
+        <div className="container" style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+          <div>
+            <strong style={{ display: 'block', fontSize: '0.95rem' }}>New public release · Application Note AN-001</strong>
+            <span style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.86rem' }}>Why MLCC distortion can peak near an RC transition band.</span>
+          </div>
+          <Link to="/application-notes/an-001" className="link-arrow" style={{ color: 'white' }}>
+            Read the note <ArrowRight size={16} />
+          </Link>
+        </div>
+      </section>
+
       {/* Featured Tools Section */}
       <section style={{ padding: '5rem 0', backgroundColor: 'var(--bg-surface)', borderTop: '1px solid var(--border-subtle)' }}>
         <div className="container">

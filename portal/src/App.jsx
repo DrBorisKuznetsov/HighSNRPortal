@@ -4,6 +4,7 @@ import { trackEvent } from './utils/analytics';
 import Header from './components/Header';
 import Home from './pages/Home';
 import ToolsCatalog from './pages/ToolsCatalog';
+import ApplicationNote001 from './pages/ApplicationNote001';
 import {
   About,
   Courses,
@@ -39,6 +40,7 @@ function App() {
           <Route path="/tools/capacitor-distortion-analyzer" element={<Navigate to="/tools" replace />} />
           <Route path="/tools/capacitor-distortion" element={<Navigate to="/tools" replace />} />
           <Route path="/publications" element={<Publications />} />
+          <Route path="/application-notes/an-001" element={<ApplicationNote001 />} />
           <Route path="/lab-notes" element={<LabNotes />} />
 
           <Route path="/courses" element={<Courses />} />

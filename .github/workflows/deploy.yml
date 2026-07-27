@@ -69,6 +69,7 @@ jobs:
             tools/capacitor-distortion-analyzer \
             tools/capacitor-distortion \
             publications \
+            application-notes/an-001 \
             lab-notes \
             projects \
             courses \
