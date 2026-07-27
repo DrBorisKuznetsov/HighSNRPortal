@@ -106,7 +106,6 @@ const publications = [
       'Shows why THD from X7R and X5R capacitors can peak near an RC cutoff frequency, and separates physical nonlinear behavior from artifacts caused by poor C(V) simulation models.',
     topics: ['Class II capacitors', 'THD', 'RC filters', 'Simulation traps'],
     links: [
-      { label: 'Application Note', to: '/application-notes/an-001' },
       { label: 'Research', to: '/research' },
       { label: 'Tools', to: '/tools' },
     ],
