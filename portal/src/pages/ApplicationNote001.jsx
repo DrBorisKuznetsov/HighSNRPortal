@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   Code2,
   Download,
-  ExternalLink,
   Mail,
 } from 'lucide-react';
 import './ApplicationNote001.css';
@@ -58,9 +57,7 @@ export default function ApplicationNote001() {
             <div className="an001-meta">
               <span>Boris Kuznetsov</span>
               <span>July 27, 2026</span>
-              <a href={doiHref} target="_blank" rel="noopener noreferrer">
-                DOI 10.31224/7436 <ExternalLink size={13} />
-              </a>
+              <span>HighSNR Lab AN-001</span>
             </div>
           </div>
 
@@ -158,9 +155,9 @@ export default function ApplicationNote001() {
             </a>
             <a href={doiHref} className="an001-resource-card" target="_blank" rel="noopener noreferrer">
               <BookOpen size={20} />
-              <strong>Archival preprint</strong>
-              <span>Persistent DOI record for the underlying frequency-dependent distortion study.</span>
-              <em>Open DOI <ArrowRight size={15} /></em>
+              <strong>Related research preprint</strong>
+              <span>The scholarly paper underlying this application note has its own engrXiv record and DOI.</span>
+              <em>Open related paper <ArrowRight size={15} /></em>
             </a>
           </div>
         </div>

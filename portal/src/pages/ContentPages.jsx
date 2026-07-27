@@ -77,14 +77,31 @@ const publications = [
   },
   {
     title: 'Frequency-Dependent Distortion in Class II Ceramic Capacitors',
+    subtitle: 'Physics and Simulation Traps',
+    author: 'Boris Kuznetsov',
+    date: '2026-06-25',
+    status: 'Preprint',
+    venue: 'engrXiv / Open Engineering Inc.',
+    doi: '10.31224/7436',
+    doiUrl: 'https://doi.org/10.31224/7436',
+    sourceUrl: 'https://engrxiv.org/preprint/view/7436/version/9618',
+    summary:
+      'Explains why output-voltage THD in a nonlinear RC low-pass network peaks near the transition band and distinguishes physical dielectric distortion from numerical artifacts in incorrectly formulated capacitor models.',
+    topics: ['Class II capacitors', 'THD', 'RC filters', 'Charge modeling'],
+    links: [
+      { label: 'Related Application Note', to: '/application-notes/an-001' },
+      { label: 'Research', to: '/research' },
+    ],
+  },
+  {
+    title: 'Frequency-Dependent Distortion in Class II Ceramic Capacitors',
     subtitle: 'Why THD Peaks Near the RC Transition Band — and How Incorrect C(V) Simulation Creates False Harmonics',
     author: 'Boris Kuznetsov',
     date: '2026-07-27',
     status: 'Application Note AN-001',
-    venue: 'HighSNR Lab / engrXiv',
-    doi: '10.31224/7436',
-    doiUrl: 'https://doi.org/10.31224/7436',
-    sourceUrl: 'https://engrxiv.org/preprint/view/7436/version/9618',
+    venue: 'HighSNR Lab',
+    publicationUrl: '/application-notes/an-001',
+    pdfUrl: '/application-notes/an-001/AN-001.pdf',
     summary:
       'Shows why THD from X7R and X5R capacitors can peak near an RC cutoff frequency, and separates physical nonlinear behavior from artifacts caused by poor C(V) simulation models.',
     topics: ['Class II capacitors', 'THD', 'RC filters', 'Simulation traps'],
@@ -252,12 +269,26 @@ function PublicationItem({ publication }) {
       </div>
 
       <aside className="publication-actions" aria-label={`Links for ${publication.title}`}>
-        <a href={publication.doiUrl} target="_blank" rel="noopener noreferrer">
-          DOI: {publication.doi}
-        </a>
-        <a href={publication.sourceUrl} target="_blank" rel="noopener noreferrer">
-          engrXiv <ExternalLink size={14} />
-        </a>
+        {publication.doiUrl && (
+          <a href={publication.doiUrl} target="_blank" rel="noopener noreferrer">
+            DOI: {publication.doi}
+          </a>
+        )}
+        {publication.sourceUrl && (
+          <a href={publication.sourceUrl} target="_blank" rel="noopener noreferrer">
+            engrXiv <ExternalLink size={14} />
+          </a>
+        )}
+        {publication.publicationUrl && (
+          <Link to={publication.publicationUrl}>
+            Publication page <ArrowRight size={14} />
+          </Link>
+        )}
+        {publication.pdfUrl && (
+          <a href={publication.pdfUrl} target="_blank" rel="noopener noreferrer">
+            Full PDF <ExternalLink size={14} />
+          </a>
+        )}
         {publication.links.map((link) => (
           <Link key={link.to} to={link.to}>
             {link.label}
@@ -366,7 +397,7 @@ export function Publications() {
       <Section title="Publication Index">
         <div className="publication-list">
           {publications.map((publication) => (
-            <PublicationItem key={publication.doi} publication={publication} />
+            <PublicationItem key={publication.doi || publication.status} publication={publication} />
           ))}
         </div>
       </Section>
