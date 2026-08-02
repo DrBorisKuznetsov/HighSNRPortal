@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Calculator, Activity, Cpu } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from '../router';
 import heroImage from '../assets/highsnr-lab-hero.jpg';
 
 export default function Home() {

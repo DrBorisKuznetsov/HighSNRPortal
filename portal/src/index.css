@@ -171,6 +171,25 @@ p {
   justify-content: flex-end;
 }
 
+.nav-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: none;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  width: 44px;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
 .nav-link {
   color: var(--text-secondary);
   font-weight: 500;
@@ -697,7 +716,7 @@ p {
       linear-gradient(180deg, rgba(252, 252, 253, 0) 62%, rgba(252, 252, 253, 0.9) 100%),
       var(--hero-image);
     background-position: 62% center;
-    min-height: min(540px, calc(100svh - 150px));
+    min-height: min(540px, calc(100svh - 65px));
     padding: 3.75rem 0 4.25rem;
   }
 
@@ -728,13 +747,44 @@ p {
   }
 
   .header-container {
-    align-items: flex-start;
-    padding-top: var(--spacing-md);
-    padding-bottom: var(--spacing-md);
+    align-items: center;
+    min-height: 64px;
+    position: relative;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
   }
 
   .nav-links {
-    gap: var(--spacing-sm);
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-base);
+    box-shadow: var(--shadow-md);
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    left: 0;
+    padding: 0.5rem var(--spacing-lg) 0.75rem;
+    position: absolute;
+    right: 0;
+    top: 100%;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-link {
+    align-items: center;
+    border-radius: var(--radius-sm);
+    display: flex;
+    min-height: 44px;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: var(--bg-main);
   }
 
   .about-profile {

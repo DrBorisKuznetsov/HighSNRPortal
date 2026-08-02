@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../router';
 import { Activity, ArrowRight, Cpu, ExternalLink, Globe2, Mail } from 'lucide-react';
 import editorScreenshot from '../assets/editor-screenshot.png';
 import authorPortrait from '../assets/boris-kuznetsov-portrait.jpg';
 import './EducationTools.css';
 import './Publications.css';
 
-const adcToolHref = import.meta.env.DEV ? 'http://localhost:8000/' : 'https://adc.highsnr.org';
 const circuitBuilderHref = '/education-tools/highsnr-circuit-builder/app/index.html';
 const mlccResearchPlanHref = '/research/mlcc-research-directions-2026-07-16.md';
 const highSnrEmail = 'info@highsnr.org';
@@ -616,8 +615,9 @@ export function DesignReview() {
                 <li>Projects where the cost of a board spin or missed specification is significantly higher than the cost of an independent review.</li>
               </ul>
             </div>
-            <aside className="publication-actions">
+            <aside className="publication-actions" style={{ flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
               <a href="mailto:info@highsnr.org?subject=Design Review Evaluation">Contact Us <ArrowRight size={14} /></a>
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>info@highsnr.org</span>
             </aside>
           </article>
 
@@ -770,13 +770,15 @@ export function DesignReview() {
           <article className="publication-item">
             <div className="publication-main">
               <div className="publication-meta-row">
-                <span>Sample Report</span>
+                <span>Sample Report: Battery Tester</span>
               </div>
               <h3>See the Review Before You Commit</h3>
               <p className="publication-summary" style={{ margin: 0 }}>A demonstration report based on a HighSNR reference design shows the structure, analytical depth, risk classification, and style of recommendations you can expect. It is not derived from client materials.</p>
             </div>
-            <aside className="publication-actions">
-              <a href="#" target="_blank" rel="noopener noreferrer">View Sample <ExternalLink size={14} /></a>
+            <aside className="publication-actions" style={{ flexDirection: 'column', gap: '0.75rem', alignItems: 'flex-start' }}>
+              <a href="/docs/battery-tester/client_brief_battery_tester_en.pdf" target="_blank" rel="noopener noreferrer" download>Client Brief <ExternalLink size={14} /></a>
+              <a href="/docs/battery-tester/battery_tester_rev_d.pdf" target="_blank" rel="noopener noreferrer" download>Source Schematic <ExternalLink size={14} /></a>
+              <a href="/docs/battery-tester/HighSNR_Design_Review_SNR-R-2607_corrected.pdf" target="_blank" rel="noopener noreferrer" download>Design Review Report <ExternalLink size={14} /></a>
             </aside>
           </article>
 
@@ -848,8 +850,9 @@ export function DesignReview() {
             <div className="publication-main">
               <p style={{ margin: 0 }}>Initial qualification response within 1-2 business days after sufficient material is received.</p>
             </div>
-            <aside className="publication-actions">
+            <aside className="publication-actions" style={{ flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
               <a href="mailto:info@highsnr.org?subject=Design Review Evaluation">Submit Design <ArrowRight size={14} /></a>
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>info@highsnr.org</span>
             </aside>
           </article>
         </div>

@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
-import { Link, Navigate, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { Link, Navigate, Routes, Route } from './router';
 import { trackEvent } from './utils/analytics';
+import { getRouteMetadata } from './routeMetadata';
+import { usePortalLocation } from './usePortalLocation';
 import Header from './components/Header';
 import Home from './pages/Home';
 import ToolsCatalog from './pages/ToolsCatalog';
@@ -17,14 +19,51 @@ import {
 } from './pages/ContentPages';
 
 function App() {
-  const location = useLocation();
+  const location = usePortalLocation();
+
+  useLayoutEffect(() => {
+    if (location.hash) {
+      document.getElementById(location.hash.slice(1))?.scrollIntoView();
+      return;
+    }
+
+    window.scrollTo(0, 0);
+  }, [location.hash, location.pathname]);
 
   useEffect(() => {
+    const metadata = getRouteMetadata(location.pathname);
+    const pageTitle = metadata.title === 'HighSNR Lab' ? metadata.title : `${metadata.title} | HighSNR Lab`;
+    const canonicalUrl = `https://highsnr.org${location.pathname === '/' ? '/' : location.pathname}`;
+
+    document.title = pageTitle;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', metadata.description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', pageTitle);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', metadata.description);
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalUrl);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', pageTitle);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', metadata.description);
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', canonicalUrl);
+
+    let robots = document.querySelector('meta[name="robots"]');
+    if (!robots) {
+      robots = document.createElement('meta');
+      robots.setAttribute('name', 'robots');
+      document.head.appendChild(robots);
+    }
+    robots.setAttribute('content', metadata.noIndex ? 'noindex, nofollow' : 'index, follow');
+
     trackEvent('page_view', {
       page_path: location.pathname,
       page_search: location.search,
     });
-  }, [location]);
+  }, [location.pathname, location.search]);
 
   return (
     <div className="app-container">
@@ -49,6 +88,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/subscribe" element={<Navigate to="/lab-notes" replace />} />
           <Route path="/design-review" element={<DesignReview />} />
+          <Route path="/projects" element={<Navigate to="/research" replace />} />
+          <Route path="/consulting" element={<Navigate to="/design-review" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

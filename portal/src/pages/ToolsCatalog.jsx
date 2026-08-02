@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../router';
 import { Activity, ArrowRight, ExternalLink, Zap, Calculator, Cpu } from 'lucide-react';
 import adcScreenshot from '../assets/adc-screenshot.png';
 import capacitorScreenshot from '../assets/capacitor-screenshot.png';

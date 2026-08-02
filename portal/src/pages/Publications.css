@@ -1,5 +1,7 @@
 .publication-list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   border-top: 1px solid var(--border-base);
 }
 
@@ -9,6 +11,20 @@
   gap: 32px;
   padding: 1.6rem 0;
   border-bottom: 1px solid var(--border-base);
+  min-width: 0;
+}
+
+.publication-main {
+  min-width: 0;
+}
+
+.packages-table-wrapper {
+  max-width: 100%;
+  overscroll-behavior-inline: contain;
+}
+
+.packages-table {
+  min-width: 720px;
 }
 
 .publication-main h3 {

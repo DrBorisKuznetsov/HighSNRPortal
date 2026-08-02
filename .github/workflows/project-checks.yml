@@ -27,6 +27,14 @@ jobs:
       - name: Check portal
         run: npm run check:portal
 
+      - name: Install Chromium for portal smoke tests
+        working-directory: ./portal
+        run: npx playwright install --with-deps chromium
+
+      - name: Run portal smoke tests
+        working-directory: ./portal
+        run: npm run test:e2e
+
       - name: Install video catalog dependencies
         run: npm ci --prefix videos_project
 
