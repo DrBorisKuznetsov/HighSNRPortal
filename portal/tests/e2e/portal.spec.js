@@ -7,6 +7,7 @@ const publicPages = [
   ['/publications', 'Articles, Preprints, and Technical Notes', 'Articles & Papers | HighSNR Lab'],
   ['/application-notes/an-001', 'Frequency-Dependent Distortion in Class II Ceramic Capacitors', 'AN-001: MLCC Distortion Near an RC Transition Band | HighSNR Lab'],
   ['/lab-notes', 'Research Log', 'Research Log | HighSNR Lab'],
+  ['/lab-notes/mlcc-distortion-meter-functional-architecture', 'Measuring MLCC Distortion Under DC Bias', 'Measuring MLCC Distortion Under DC Bias | HighSNR Lab'],
   ['/courses', 'Engineering Education', 'Engineering Education | HighSNR Lab'],
   ['/education-tools', 'HighSNR Circuit Builder', 'HighSNR Circuit Builder | HighSNR Lab'],
   ['/about', 'HighSNR Engineering Lab', 'About HighSNR Lab | HighSNR Lab'],
@@ -56,6 +57,38 @@ test('Design Review does not overflow the mobile viewport', async ({ page }) => 
   }));
 
   expect(dimensions.scrollWidth).toBe(dimensions.clientWidth);
+});
+
+test('MLCC engineering note is responsive and has publication metadata', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/lab-notes/mlcc-distortion-meter-functional-architecture');
+
+  const dimensions = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+
+  expect(dimensions.scrollWidth).toBe(dimensions.clientWidth);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://highsnr.org/lab-notes/mlcc-distortion-meter-functional-architecture',
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeHidden();
+});
+
+test('published routes keep their metadata with a trailing slash', async ({ page }) => {
+  await page.goto('/lab-notes/mlcc-distortion-meter-functional-architecture/');
+
+  await expect(page.getByRole('heading', { level: 1, name: 'Measuring MLCC Distortion Under DC Bias' })).toBeVisible();
+  await expect(page).toHaveTitle('Measuring MLCC Distortion Under DC Bias | HighSNR Lab');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://highsnr.org/lab-notes/mlcc-distortion-meter-functional-architecture',
+  );
 });
 
 test('internal navigation resets scroll position', async ({ page }) => {

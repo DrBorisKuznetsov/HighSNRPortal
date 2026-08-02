@@ -12,6 +12,16 @@ export const routeMetadata = [
   { path: '/publications', title: 'Articles & Papers', description: 'HighSNR Lab articles, preprints, application notes, and technical publications.' },
   { path: '/application-notes/an-001', title: 'AN-001: MLCC Distortion Near an RC Transition Band', description: 'Application Note AN-001 explains why MLCC distortion can peak near an RC transition band.' },
   { path: '/lab-notes', title: 'Research Log', description: 'Research updates, measurements, modeling notes, and engineering observations from HighSNR Lab.' },
+  {
+    path: '/lab-notes/mlcc-distortion-meter-functional-architecture',
+    title: 'Measuring MLCC Distortion Under DC Bias',
+    description: 'A two-channel architecture for measuring MLCC voltage and current under DC bias while controlling residual distortion in the test setup.',
+    ogType: 'article',
+    image: '/lab-notes/mlcc-distortion-meter-functional-architecture/03-meter-functional-architecture.png',
+    imageWidth: 3127,
+    imageHeight: 1317,
+    imageAlt: 'Functional architecture of a two-channel MLCC distortion meter.',
+  },
   { path: '/courses', title: 'Engineering Education', description: 'Engineering education and course material for practical analog and mixed-signal design.' },
   { path: '/education-tools', title: 'HighSNR Circuit Builder', description: 'Visual tools for drawing circuits and exporting Manim-ready Python code.' },
   { path: '/education-tools/highsnr-circuit-builder', title: 'HighSNR Circuit Builder', description: defaultDescription },
@@ -26,11 +36,17 @@ export const publishedRoutePaths = routeMetadata
   .map(({ path }) => path)
   .filter((path) => path !== '/');
 
+export function normalizeRoutePath(pathname) {
+  if (!pathname || pathname === '/') return '/';
+  return pathname.replace(/\/+$/, '') || '/';
+}
+
 export function getRouteMetadata(pathname) {
-  return routeMetadata.find(({ path }) => path === pathname) ?? {
+  const normalizedPathname = normalizeRoutePath(pathname);
+
+  return routeMetadata.find(({ path }) => path === normalizedPathname) ?? {
     title: 'Page Not Found',
     description: 'The requested page is not part of the current HighSNR Lab portal.',
     noIndex: true,
   };
 }
-

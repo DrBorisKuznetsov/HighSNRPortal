@@ -1,12 +1,13 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { Link, Navigate, Routes, Route } from './router';
 import { trackEvent } from './utils/analytics';
-import { getRouteMetadata } from './routeMetadata';
+import { getRouteMetadata, normalizeRoutePath } from './routeMetadata';
 import { usePortalLocation } from './usePortalLocation';
 import Header from './components/Header';
 import Home from './pages/Home';
 import ToolsCatalog from './pages/ToolsCatalog';
 import ApplicationNote001 from './pages/ApplicationNote001';
+import MlccDistortionMeterArchitecture from './pages/MlccDistortionMeterArchitecture';
 import {
   About,
   Courses,
@@ -32,16 +33,24 @@ function App() {
 
   useEffect(() => {
     const metadata = getRouteMetadata(location.pathname);
+    const normalizedPathname = normalizeRoutePath(location.pathname);
     const pageTitle = metadata.title === 'HighSNR Lab' ? metadata.title : `${metadata.title} | HighSNR Lab`;
-    const canonicalUrl = `https://highsnr.org${location.pathname === '/' ? '/' : location.pathname}`;
+    const canonicalUrl = `https://highsnr.org${normalizedPathname}`;
+    const socialImageUrl = `https://highsnr.org${metadata.image ?? '/social-preview.png'}`;
 
     document.title = pageTitle;
     document.querySelector('meta[name="description"]')?.setAttribute('content', metadata.description);
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', pageTitle);
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', metadata.description);
+    document.querySelector('meta[property="og:type"]')?.setAttribute('content', metadata.ogType ?? 'website');
     document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalUrl);
+    document.querySelector('meta[property="og:image"]')?.setAttribute('content', socialImageUrl);
+    document.querySelector('meta[property="og:image:width"]')?.setAttribute('content', String(metadata.imageWidth ?? 1200));
+    document.querySelector('meta[property="og:image:height"]')?.setAttribute('content', String(metadata.imageHeight ?? 627));
+    document.querySelector('meta[property="og:image:alt"]')?.setAttribute('content', metadata.imageAlt ?? 'HighSNR Lab portal preview with research, tools, publications, and videos.');
     document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', pageTitle);
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', metadata.description);
+    document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', socialImageUrl);
 
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -60,7 +69,7 @@ function App() {
     robots.setAttribute('content', metadata.noIndex ? 'noindex, nofollow' : 'index, follow');
 
     trackEvent('page_view', {
-      page_path: location.pathname,
+      page_path: normalizedPathname,
       page_search: location.search,
     });
   }, [location.pathname, location.search]);
@@ -81,6 +90,7 @@ function App() {
           <Route path="/publications" element={<Publications />} />
           <Route path="/application-notes/an-001" element={<ApplicationNote001 />} />
           <Route path="/lab-notes" element={<LabNotes />} />
+          <Route path="/lab-notes/mlcc-distortion-meter-functional-architecture" element={<MlccDistortionMeterArchitecture />} />
 
           <Route path="/courses" element={<Courses />} />
           <Route path="/education-tools" element={<EducationTools />} />

@@ -172,6 +172,17 @@ const capacitorResearch = {
 
 const labNotes = [
   {
+    date: '2026-08-02',
+    type: 'Engineering note',
+    title: 'Measuring MLCC Distortion Under DC Bias',
+    summary: 'A two-channel functional architecture for the MLCC distortion measurement stand.',
+    paragraphs: [],
+    links: [
+      { label: 'Open Engineering Note 001', to: '/lab-notes/mlcc-distortion-meter-functional-architecture' },
+      { label: 'Capacitor Research', to: '/research' },
+    ],
+  },
+  {
     date: '2026-06-30',
     type: 'Interim note',
     title: 'First interim results of the capacitor study',

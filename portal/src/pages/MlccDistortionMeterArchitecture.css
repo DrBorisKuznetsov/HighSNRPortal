@@ -1,0 +1,318 @@
+.mlcc-architecture-page {
+  background: var(--bg-main);
+}
+
+.mlcc-architecture-hero {
+  padding: clamp(4rem, 8vw, 7rem) 0 4.5rem;
+  border-bottom: 1px solid var(--border-base);
+  background:
+    radial-gradient(circle at 84% 20%, rgba(37, 99, 235, 0.12), transparent 24rem),
+    linear-gradient(145deg, #f8fafc 0%, #eef4fb 100%);
+}
+
+.mlcc-architecture-hero-inner {
+  max-width: 980px;
+}
+
+.mlcc-architecture-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 3rem;
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mlcc-architecture-back:hover,
+.mlcc-architecture-toc a:hover,
+.mlcc-architecture-references a:hover {
+  color: var(--accent-color);
+}
+
+.mlcc-architecture-kicker {
+  margin: 0 0 0.9rem;
+  color: var(--accent-color);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mlcc-architecture-hero h1 {
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(2.7rem, 7vw, 5.3rem);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.mlcc-architecture-subtitle {
+  margin: 1.25rem 0 0;
+  color: #1e3a5f;
+  font-size: clamp(1.25rem, 3vw, 1.9rem);
+  font-weight: 650;
+}
+
+.mlcc-architecture-lede {
+  max-width: 780px;
+  margin: 1.6rem 0 0;
+  color: #475569;
+  font-size: 1.14rem;
+  line-height: 1.65;
+}
+
+.mlcc-architecture-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.2rem;
+  margin-top: 2rem;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.mlcc-architecture-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 760px);
+  gap: clamp(2rem, 6vw, 5rem);
+  justify-content: center;
+  padding-top: 4.5rem;
+  padding-bottom: 5rem;
+}
+
+.mlcc-architecture-toc {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  display: grid;
+  gap: 0.65rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--border-base);
+}
+
+.mlcc-architecture-toc > span {
+  margin-bottom: 0.25rem;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mlcc-architecture-toc a {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.mlcc-architecture-body {
+  min-width: 0;
+}
+
+.mlcc-architecture-body > p,
+.mlcc-architecture-body section > p {
+  margin: 0 0 1.1rem;
+  color: #475569;
+  font-size: 1.02rem;
+  line-height: 1.72;
+}
+
+.mlcc-architecture-body section {
+  scroll-margin-top: 96px;
+  margin-top: 4rem;
+}
+
+.mlcc-architecture-body h2 {
+  margin: 0 0 1.35rem;
+  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  letter-spacing: -0.035em;
+}
+
+.mlcc-architecture-body code {
+  color: #1e3a5f;
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+.mlcc-architecture-status {
+  margin-bottom: 2.2rem;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid #bfdbfe;
+  border-left: 4px solid var(--accent-color);
+  background: #eff6ff;
+}
+
+.mlcc-architecture-status strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #1e3a5f;
+}
+
+.mlcc-architecture-status p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.mlcc-architecture-equation {
+  overflow-x: auto;
+  margin: 1.35rem 0 1.6rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border-base);
+  background: #fff;
+  color: #1e3a5f;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.mlcc-architecture-figure {
+  margin: 2.3rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border-base);
+  background: #fff;
+  box-shadow: 0 18px 45px rgba(30, 58, 95, 0.07);
+}
+
+.mlcc-architecture-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mlcc-architecture-figure figcaption {
+  padding: 0.9rem 0.35rem 0.2rem;
+  color: var(--text-tertiary);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.mlcc-architecture-conclusion {
+  margin-top: 2.4rem;
+  padding: 2rem;
+  border-top: 4px solid #2563eb;
+  background: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.mlcc-architecture-conclusion h2 {
+  font-size: 1.55rem;
+}
+
+.mlcc-architecture-conclusion p:last-child {
+  margin-bottom: 0;
+}
+
+.mlcc-architecture-references ul {
+  display: grid;
+  gap: 0.75rem;
+  padding-left: 1.2rem;
+}
+
+.mlcc-architecture-references a {
+  color: #1e3a5f;
+  line-height: 1.5;
+}
+
+.mlcc-architecture-cta {
+  padding: 4.5rem 0;
+  background: #1e3a5f;
+}
+
+.mlcc-architecture-cta-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: center;
+}
+
+.mlcc-architecture-cta h2,
+.mlcc-architecture-cta p {
+  color: #fff;
+}
+
+.mlcc-architecture-cta h2 {
+  max-width: 680px;
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
+}
+
+.mlcc-architecture-cta p:last-child {
+  margin: 0;
+  opacity: 0.76;
+}
+
+.mlcc-architecture-cta .mlcc-architecture-kicker {
+  color: #93c5fd;
+}
+
+.mlcc-architecture-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+  .mlcc-architecture-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .mlcc-architecture-toc {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mlcc-architecture-toc > span {
+    grid-column: 1 / -1;
+  }
+
+  .mlcc-architecture-cta-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .mlcc-architecture-cta-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .mlcc-architecture-hero {
+    padding: 3.5rem 0 3.25rem;
+  }
+
+  .mlcc-architecture-back {
+    margin-bottom: 2.2rem;
+  }
+
+  .mlcc-architecture-layout {
+    padding-top: 3rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .mlcc-architecture-toc {
+    grid-template-columns: 1fr;
+  }
+
+  .mlcc-architecture-body section {
+    margin-top: 3.2rem;
+    scroll-margin-top: 170px;
+  }
+
+  .mlcc-architecture-figure {
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
+    padding: 0.5rem;
+  }
+
+  .mlcc-architecture-cta-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
