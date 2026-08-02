@@ -2,6 +2,13 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import { Link, Navigate, Routes, Route } from './router';
 import { trackEvent } from './utils/analytics';
 import { getRouteMetadata, normalizeRoutePath } from './routeMetadata';
+import {
+  buildStructuredData,
+  getCanonicalUrl,
+  getPageTitle,
+  getRobotsContent,
+  getSocialImage,
+} from './seo';
 import { usePortalLocation } from './usePortalLocation';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -34,9 +41,10 @@ function App() {
   useEffect(() => {
     const metadata = getRouteMetadata(location.pathname);
     const normalizedPathname = normalizeRoutePath(location.pathname);
-    const pageTitle = metadata.title === 'HighSNR Lab' ? metadata.title : `${metadata.title} | HighSNR Lab`;
-    const canonicalUrl = `https://highsnr.org${normalizedPathname}`;
-    const socialImageUrl = `https://highsnr.org${metadata.image ?? '/social-preview.png'}`;
+    const runtimeMetadata = { ...metadata, path: normalizedPathname };
+    const pageTitle = getPageTitle(runtimeMetadata);
+    const canonicalUrl = getCanonicalUrl(runtimeMetadata);
+    const socialImage = getSocialImage(runtimeMetadata);
 
     document.title = pageTitle;
     document.querySelector('meta[name="description"]')?.setAttribute('content', metadata.description);
@@ -44,13 +52,13 @@ function App() {
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', metadata.description);
     document.querySelector('meta[property="og:type"]')?.setAttribute('content', metadata.ogType ?? 'website');
     document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalUrl);
-    document.querySelector('meta[property="og:image"]')?.setAttribute('content', socialImageUrl);
-    document.querySelector('meta[property="og:image:width"]')?.setAttribute('content', String(metadata.imageWidth ?? 1200));
-    document.querySelector('meta[property="og:image:height"]')?.setAttribute('content', String(metadata.imageHeight ?? 627));
-    document.querySelector('meta[property="og:image:alt"]')?.setAttribute('content', metadata.imageAlt ?? 'HighSNR Lab portal preview with research, tools, publications, and videos.');
+    document.querySelector('meta[property="og:image"]')?.setAttribute('content', socialImage.url);
+    document.querySelector('meta[property="og:image:width"]')?.setAttribute('content', String(socialImage.width));
+    document.querySelector('meta[property="og:image:height"]')?.setAttribute('content', String(socialImage.height));
+    document.querySelector('meta[property="og:image:alt"]')?.setAttribute('content', socialImage.alt);
     document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', pageTitle);
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', metadata.description);
-    document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', socialImageUrl);
+    document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', socialImage.url);
 
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -66,7 +74,12 @@ function App() {
       robots.setAttribute('name', 'robots');
       document.head.appendChild(robots);
     }
-    robots.setAttribute('content', metadata.noIndex ? 'noindex, nofollow' : 'index, follow');
+    robots.setAttribute('content', getRobotsContent(runtimeMetadata));
+
+    const structuredData = document.querySelector('#structured-data');
+    if (structuredData) {
+      structuredData.textContent = JSON.stringify(buildStructuredData(runtimeMetadata));
+    }
 
     trackEvent('page_view', {
       page_path: normalizedPathname,

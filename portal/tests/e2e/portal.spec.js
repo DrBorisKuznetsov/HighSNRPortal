@@ -71,10 +71,17 @@ test('MLCC engineering note is responsive and has publication metadata', async (
   expect(dimensions.scrollWidth).toBe(dimensions.clientWidth);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    'https://highsnr.org/lab-notes/mlcc-distortion-meter-functional-architecture',
+    'https://highsnr.org/lab-notes/mlcc-distortion-meter-functional-architecture/',
   );
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  const structuredData = JSON.parse(await page.locator('#structured-data').textContent());
+  const articleEntity = structuredData['@graph'].find((entity) => entity['@type'] === 'TechArticle');
+  expect(articleEntity).toMatchObject({
+    headline: 'Measuring MLCC Distortion Under DC Bias',
+    datePublished: '2026-08-02',
+    url: 'https://highsnr.org/lab-notes/mlcc-distortion-meter-functional-architecture/',
+  });
   await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeHidden();
 });
@@ -87,7 +94,7 @@ test('published routes keep their metadata with a trailing slash', async ({ page
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    'https://highsnr.org/lab-notes/mlcc-distortion-meter-functional-architecture',
+    'https://highsnr.org/lab-notes/mlcc-distortion-meter-functional-architecture/',
   );
 });
 
