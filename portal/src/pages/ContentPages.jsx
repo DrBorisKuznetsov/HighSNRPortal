@@ -179,6 +179,7 @@ const labNotes = [
     paragraphs: [],
     links: [
       { label: 'Open Engineering Note 001', to: '/lab-notes/mlcc-distortion-meter-functional-architecture' },
+      { label: 'Download PDF', href: '/lab-notes/mlcc-distortion-meter-functional-architecture/high-snr-lab-en-001-mlcc-distortion-meter-v4.pdf', download: true },
       { label: 'Capacitor Research', to: '/research' },
     ],
   },
@@ -450,9 +451,15 @@ export function LabNotes() {
               </div>
               <div className="lab-note-links">
                 {note.links.map((link) => (
-                  <Link key={link.to} to={link.to}>
-                    {link.label} <ArrowRight size={14} />
-                  </Link>
+                  link.href ? (
+                    <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" download={link.download}>
+                      {link.label} <ArrowRight size={14} />
+                    </a>
+                  ) : (
+                    <Link key={link.to} to={link.to}>
+                      {link.label} <ArrowRight size={14} />
+                    </Link>
+                  )
                 ))}
               </div>
             </article>

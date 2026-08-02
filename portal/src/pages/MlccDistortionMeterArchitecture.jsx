@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight, Mail } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Mail, Download } from 'lucide-react';
 import { Link } from '../router';
 import './MlccDistortionMeterArchitecture.css';
 
@@ -38,6 +38,18 @@ export default function MlccDistortionMeterArchitecture() {
             <span>Boris Kuznetsov</span>
             <span>August 2, 2026</span>
             <span>Design-stage note</span>
+          </div>
+          <div style={{ marginTop: '1.5rem' }}>
+            <a 
+              href={`${assetRoot}/high-snr-lab-en-001-mlcc-distortion-meter-v4.pdf`}
+              target="_blank" 
+              rel="noopener noreferrer" 
+              download
+              className="mlcc-architecture-back"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', border: '1px solid var(--border-base)', padding: '0.5rem 0.8rem', borderRadius: '4px', textDecoration: 'none' }}
+            >
+              <Download size={15} /> Download PDF
+            </a>
           </div>
         </div>
       </header>
