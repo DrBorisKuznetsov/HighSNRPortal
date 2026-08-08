@@ -101,6 +101,7 @@ function App() {
           <Route path="/tools/capacitor-distortion-analyzer" element={<Navigate to="/tools" replace />} />
           <Route path="/tools/capacitor-distortion" element={<Navigate to="/tools" replace />} />
           <Route path="/publications" element={<Publications />} />
+          <Route path="/blog" element={<Publications />} />
           <Route path="/application-notes/an-001" element={<ApplicationNote001 />} />
           <Route path="/lab-notes" element={<LabNotes />} />
           <Route path="/lab-notes/mlcc-distortion-meter-functional-architecture" element={<MlccDistortionMeterArchitecture />} />

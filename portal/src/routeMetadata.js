@@ -10,6 +10,7 @@ export const routeMetadata = [
   { path: '/tools/capacitor-distortion-analyzer', title: 'Engineering Tools', description: defaultDescription, canonicalPath: '/tools', noIndex: true },
   { path: '/tools/capacitor-distortion', title: 'Engineering Tools', description: defaultDescription, canonicalPath: '/tools', noIndex: true },
   { path: '/publications', title: 'Articles & Papers', description: 'HighSNR Lab articles, preprints, application notes, and technical publications.', schemaType: 'CollectionPage' },
+  { path: '/blog', title: 'Articles & Papers', description: defaultDescription, canonicalPath: '/publications', noIndex: true },
   {
     path: '/application-notes/an-001',
     title: 'AN-001: MLCC Distortion Near an RC Transition Band',

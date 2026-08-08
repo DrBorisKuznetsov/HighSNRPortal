@@ -168,4 +168,12 @@ if (!designReviewHtml.includes('<div id="root"></div>')) {
   throw new Error('Design Review entrypoint does not contain the portal root element.');
 }
 
+const legacyBlogHtml = await readFile(join(distDir, 'blog', 'index.html'), 'utf8');
+if (
+  !legacyBlogHtml.includes('<meta name="robots" content="noindex, follow" />')
+  || !legacyBlogHtml.includes('<link rel="canonical" href="https://highsnr.org/publications/" />')
+) {
+  throw new Error('Legacy /blog entrypoint must be noindex and canonicalize to /publications/.');
+}
+
 console.log(`Verified ${publishedRoutePaths.length} public routes, ${sitemapRouteMetadata.length} sitemap URLs, and ${pdfPaths.length} PDF downloads.`);

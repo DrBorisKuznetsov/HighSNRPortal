@@ -42,7 +42,7 @@ test('mobile navigation is compact, accessible, and closes after navigation', as
   await expect(navigation).toBeVisible();
 
   await navigation.getByRole('link', { name: 'Research', exact: true }).click();
-  await expect(page).toHaveURL('/research');
+  await expect(page).toHaveURL('/research/');
   await expect(navigation).toBeHidden();
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
 });
@@ -104,8 +104,26 @@ test('internal navigation resets scroll position', async ({ page }) => {
   expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(500);
 
   await page.getByRole('link', { name: 'About & Contact' }).click();
-  await expect(page).toHaveURL('/about');
+  await expect(page).toHaveURL('/about/');
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
+});
+
+test('internal links use canonical trailing-slash URLs', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByRole('link', { name: 'Design Review' })).toHaveAttribute('href', '/design-review/');
+  await expect(page.getByRole('link', { name: 'Research', exact: true })).toHaveAttribute('href', '/research/');
+});
+
+test('legacy blog URL resolves without creating an indexable duplicate', async ({ page }) => {
+  await page.goto('/blog/');
+
+  await expect(page.getByRole('heading', { level: 1, name: 'Articles, Preprints, and Technical Notes' })).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://highsnr.org/publications/',
+  );
 });
 
 test('Design Review PDF downloads are published as PDFs', async ({ request }) => {
