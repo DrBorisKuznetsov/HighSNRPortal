@@ -176,7 +176,7 @@ export default function ApplicationNote001() {
             <a className="btn btn-primary" href="mailto:info@highsnr.org?subject=Nonlinear%20model%20or%20distortion%20review">
               <Mail size={17} /> Discuss a model or circuit
             </a>
-            <Link className="btn btn-secondary" to="/design-review">
+            <Link className="btn btn-secondary" to="/design-review" analyticsContext="application_note_related">
               Review service <ArrowRight size={17} />
             </Link>
           </div>

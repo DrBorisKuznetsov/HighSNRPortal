@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   notFoundMetadata,
   publishedRoutePaths,
@@ -20,6 +20,8 @@ const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const distDir = join(projectRoot, 'dist');
 const sourceIndex = join(distDir, 'index.html');
 const sourceHtml = await readFile(sourceIndex, 'utf8');
+const serverEntry = join(projectRoot, 'dist-ssr', 'entry-server.js');
+const { render } = await import(pathToFileURL(serverEntry).href);
 
 function escapeHtml(value) {
   return String(value)
@@ -34,7 +36,14 @@ function replaceMeta(html, attribute, value, content) {
   return html.replace(pattern, `<meta ${attribute}="${value}" content="${escapeHtml(content)}" />`);
 }
 
-function renderRouteHtml(metadata, { includeCanonical = true, includeStructuredData = true } = {}) {
+function renderRouteHtml(
+  metadata,
+  {
+    includeCanonical = true,
+    includeStructuredData = true,
+    renderPath = metadata.path,
+  } = {},
+) {
   const title = getPageTitle(metadata);
   const url = getCanonicalUrl(metadata);
   const socialImage = getSocialImage(metadata);
@@ -73,6 +82,12 @@ function renderRouteHtml(metadata, { includeCanonical = true, includeStructuredD
     html = html.replace(/\s*<link rel="canonical" href="[^"]*" \/>/, '');
   }
 
+  const appHtml = render(renderPath);
+  html = html.replace(
+    '<div id="root"></div>',
+    `<div id="root" data-prerender-path="${escapeHtml(renderPath)}">${appHtml}</div>`,
+  );
+
   return html;
 }
 
@@ -80,7 +95,7 @@ await writeFile(sourceIndex, renderRouteHtml(routeMetadata.find(({ path }) => pa
 
 const notFoundHtml = renderRouteHtml(
   { ...notFoundMetadata, path: '/' },
-  { includeCanonical: false, includeStructuredData: false },
+  { includeCanonical: false, includeStructuredData: false, renderPath: '/404-not-found' },
 );
 await writeFile(join(distDir, '404.html'), notFoundHtml, 'utf8');
 

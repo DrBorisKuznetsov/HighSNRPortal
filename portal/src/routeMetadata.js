@@ -9,7 +9,12 @@ export const routeMetadata = [
   { path: '/tools/adc-enob-loss-calculator', title: 'Engineering Tools', description: defaultDescription, canonicalPath: '/tools', noIndex: true },
   { path: '/tools/capacitor-distortion-analyzer', title: 'Engineering Tools', description: defaultDescription, canonicalPath: '/tools', noIndex: true },
   { path: '/tools/capacitor-distortion', title: 'Engineering Tools', description: defaultDescription, canonicalPath: '/tools', noIndex: true },
-  { path: '/publications', title: 'Articles & Papers', description: 'HighSNR Lab articles, preprints, application notes, and technical publications.', schemaType: 'CollectionPage' },
+  {
+    path: '/publications',
+    title: 'Electronics Research Papers & Application Notes',
+    description: 'HighSNR Lab publications on MLCC distortion, precision signal chains, ADC front ends, measurement methods, and practical electronics design.',
+    schemaType: 'CollectionPage',
+  },
   { path: '/blog', title: 'Articles & Papers', description: defaultDescription, canonicalPath: '/publications', noIndex: true },
   {
     path: '/application-notes/an-001',
