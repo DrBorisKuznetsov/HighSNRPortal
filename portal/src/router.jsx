@@ -1,10 +1,12 @@
 import React, { Children, forwardRef, useEffect } from 'react';
 import {
   Link as WouterLink,
+  Router as WouterRouter,
   Route as WouterRoute,
   Switch,
   useLocation as useWouterLocation,
 } from 'wouter';
+import { trackEvent } from './utils/analytics';
 
 function getCanonicalRouteHref(to) {
   if (typeof to !== 'string' || !to.startsWith('/') || to === '/' || to.startsWith('//')) {
@@ -27,8 +29,25 @@ export function BrowserRouter({ children }) {
   return children;
 }
 
-export const Link = forwardRef(function Link({ to, ...props }, ref) {
-  return <WouterLink href={getCanonicalRouteHref(to)} ref={ref} {...props} />;
+export function StaticRouter({ path, children }) {
+  return <WouterRouter ssrPath={path}>{children}</WouterRouter>;
+}
+
+export const Link = forwardRef(function Link({ to, analyticsContext, onClick, ...props }, ref) {
+  const href = getCanonicalRouteHref(to);
+
+  function handleClick(event) {
+    onClick?.(event);
+
+    if (!event.defaultPrevented && analyticsContext) {
+      trackEvent('select_content', {
+        content_type: analyticsContext,
+        item_id: href,
+      });
+    }
+  }
+
+  return <WouterLink href={href} ref={ref} onClick={handleClick} {...props} />;
 });
 
 export const NavLink = forwardRef(function NavLink({ to, className, children, ...props }, ref) {

@@ -293,8 +293,14 @@ export default function MlccDistortionMeterArchitecture() {
             <a className="btn btn-primary" href="mailto:info@highsnr.org?subject=MLCC%20distortion%20meter%20architecture">
               <Mail size={17} /> Send technical feedback
             </a>
-            <Link className="btn btn-secondary" to="/research">
+            <Link className="btn btn-secondary" to="/research" analyticsContext="mlcc_note_related">
               Capacitor research <ArrowRight size={17} />
+            </Link>
+            <Link className="btn btn-secondary" to="/application-notes/an-001" analyticsContext="mlcc_note_related">
+              Application Note AN-001 <ArrowRight size={17} />
+            </Link>
+            <Link className="btn btn-secondary" to="/tools" analyticsContext="mlcc_note_related">
+              Engineering tools <ArrowRight size={17} />
             </Link>
           </div>
         </div>

@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
     "build": "vite build",
-    "build:pages": "npm run build && node scripts/prepare-pages.mjs",
+    "build:pages": "npm run build && npm run build:ssr && node scripts/prepare-pages.mjs",
+    "build:ssr": "vite build --ssr src/entry-server.jsx --outDir dist-ssr",
     "check": "npm run lint && npm run build:pages && npm run test:static",
     "lint": "oxlint",
     "preview": "vite preview",
+    "preview:test": "vite preview --host 127.0.0.1 --port 5173 --strictPort",
     "test:e2e": "playwright test",
     "test:static": "node scripts/verify-pages.mjs"
   },

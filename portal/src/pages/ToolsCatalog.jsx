@@ -62,6 +62,7 @@ export default function ToolsCatalog() {
             </a>
             <Link
               to="/research"
+              analyticsContext="tool_related_research"
               className="btn btn-secondary"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
             >
@@ -129,11 +130,12 @@ export default function ToolsCatalog() {
               <ExternalLink size={18} />
             </a>
             <Link
-              to="/research"
+              to="/application-notes/an-001"
+              analyticsContext="tool_related_publication"
               className="btn btn-secondary"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
             >
-              Read Research
+              Read Application Note
               <ArrowRight size={18} />
             </Link>
           </div>

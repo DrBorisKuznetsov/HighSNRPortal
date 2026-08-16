@@ -4,7 +4,7 @@ const publicPages = [
   ['/', 'HighSNR Engineering Lab', 'HighSNR Lab'],
   ['/research', 'Capacitor Research', 'Capacitor Research | HighSNR Lab'],
   ['/tools', 'Engineering Tools', 'Engineering Tools | HighSNR Lab'],
-  ['/publications', 'Articles, Preprints, and Technical Notes', 'Articles & Papers | HighSNR Lab'],
+  ['/publications', 'Articles, Preprints, and Technical Notes', 'Electronics Research Papers & Application Notes | HighSNR Lab'],
   ['/application-notes/an-001', 'Frequency-Dependent Distortion in Class II Ceramic Capacitors', 'AN-001: MLCC Distortion Near an RC Transition Band | HighSNR Lab'],
   ['/lab-notes', 'Research Log', 'Research Log | HighSNR Lab'],
   ['/lab-notes/mlcc-distortion-meter-functional-architecture', 'Measuring MLCC Distortion Under DC Bias', 'Measuring MLCC Distortion Under DC Bias | HighSNR Lab'],
@@ -16,6 +16,20 @@ const publicPages = [
 
 for (const [path, heading, title] of publicPages) {
   test(`${path} renders directly`, async ({ page }) => {
+    const clientErrors = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error' && /react error|hydration/i.test(message.text())) {
+        clientErrors.push(message.text());
+      }
+    });
+    page.on('pageerror', (error) => clientErrors.push(error.message));
+    page.on('response', (response) => {
+      const url = new URL(response.url());
+      if (url.origin === 'http://127.0.0.1:5173' && response.status() >= 400) {
+        clientErrors.push(`${response.status()} ${url.pathname}`);
+      }
+    });
+
     const response = await page.goto(path);
     expect(response?.ok()).toBeTruthy();
     await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible();
@@ -25,6 +39,7 @@ for (const [path, heading, title] of publicPages) {
       images.filter((image) => image.complete && image.naturalWidth === 0).length
     ));
     expect(brokenImages).toBe(0);
+    expect(clientErrors).toEqual([]);
   });
 }
 
@@ -113,6 +128,32 @@ test('internal links use canonical trailing-slash URLs', async ({ page }) => {
 
   await expect(page.getByRole('link', { name: 'Design Review' })).toHaveAttribute('href', '/design-review/');
   await expect(page.getByRole('link', { name: 'Research', exact: true })).toHaveAttribute('href', '/research/');
+});
+
+test('publication hub exposes and measures related portal paths', async ({ page }) => {
+  await page.goto('/publications/');
+  await page.evaluate(() => {
+    window.__testAnalyticsEvents = [];
+    window.gtag = (...args) => window.__testAnalyticsEvents.push(args);
+  });
+
+  await expect(page.getByRole('link', { name: 'Engineering Tools' })).toHaveAttribute('href', '/tools/');
+  const mlccLink = page.getByRole('link', { name: 'MLCC Measurement Note' });
+  await expect(mlccLink).toHaveAttribute(
+    'href',
+    '/lab-notes/mlcc-distortion-meter-functional-architecture/',
+  );
+
+  await mlccLink.click();
+  await expect(page).toHaveURL('/lab-notes/mlcc-distortion-meter-functional-architecture/');
+  expect(await page.evaluate(() => window.__testAnalyticsEvents)).toContainEqual([
+    'event',
+    'select_content',
+    {
+      content_type: 'publication_hub',
+      item_id: '/lab-notes/mlcc-distortion-meter-functional-architecture/',
+    },
+  ]);
 });
 
 test('legacy blog URL resolves without creating an indexable duplicate', async ({ page }) => {

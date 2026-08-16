@@ -20,6 +20,9 @@ wiki/11_Daily_Log_2026-07-01.md
 wiki/12_Daily_Log_2026-07-02.md
 wiki/13_Daily_Log_2026-07-16.md
 wiki/14_Project_Revision_2026-07-22.md
+wiki/15_Daily_Log_2026-07-23.md
+wiki/16_Audience_SEO_and_Channel_Analytics_2026-08-16.md
+wiki/17_Traffic_Distribution_and_UTM.md
 ```
 
 ## Локальный запуск
@@ -88,7 +91,11 @@ npm run check
 - [x] Исправлена production-сборка `videos_project`.
 - [x] Исправлены локальные/production-ссылки между порталом, видео-каталогом и ADC Tool.
 - [x] Добавлена базовая автоматическая проверка проекта.
+- [x] Зафиксирован базовый снимок аудитории, SEO и каналов привлечения на 2026-08-16: Google Analytics, Search Console, YouTube Studio и LinkedIn.
+- [x] Подтверждено, что новая MLCC Lab Note индексируется и получает показы в Google.
 - [ ] Реализовать рабочий веб-MVP Passive Filter Distortion Analyzer на основе `capacitor_filter_tool`.
+- [x] Зафиксировать единый UTM-стандарт и карту ссылок для YouTube, LinkedIn и GitHub.
+- [ ] Применить размеченные ссылки во внешних профилях и публикациях и вести еженедельный KPI-снимок каналов привлечения.
 - [ ] Развивать исследовательскую программу по плану 2026/27: Q(V)-формализм, THD-методология, компенсация, SPICE-модели и измерительная валидация.
 - [ ] Подключить newsletter/feedback формы и полноценные публикации из wiki/статей.
 

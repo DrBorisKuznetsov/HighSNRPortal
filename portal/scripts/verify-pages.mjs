@@ -68,6 +68,14 @@ for (const metadata of routeMetadata) {
   const expectedCanonical = getCanonicalUrl(metadata);
   const expectedSocialImage = getSocialImage(metadata);
 
+  if (
+    !html.includes('<main class="main-content">')
+    || !html.includes(`data-prerender-path="${metadata.path}"`)
+    || html.includes('<div id="root"></div>')
+  ) {
+    throw new Error(`${metadata.path} must contain server-rendered page HTML inside #root.`);
+  }
+
   assertHtmlValue(html, /<title>(.*?)<\/title>/, escapeHtml(expectedTitle), metadata.path, 'title');
   assertHtmlValue(html, /<meta name="description" content="([^"]*)" \/>/, escapeHtml(metadata.description), metadata.path, 'description');
   assertHtmlValue(html, /<meta name="robots" content="([^"]*)" \/>/, getRobotsContent(metadata), metadata.path, 'robots directive');
@@ -112,6 +120,11 @@ for (const metadata of routeMetadata) {
       throw new Error(`${metadata.path} has incomplete TechArticle structured data.`);
     }
   }
+}
+
+const publicationsHtml = await readFile(join(distDir, 'publications', 'index.html'), 'utf8');
+if (!publicationsHtml.includes('Articles, Preprints, and Technical Notes')) {
+  throw new Error('/publications/ must expose its visible page heading in the generated HTML.');
 }
 
 const robots = await readFile(join(distDir, 'robots.txt'), 'utf8');
@@ -164,8 +177,8 @@ for (const pdfPath of pdfPaths) {
 }
 
 const designReviewHtml = await readFile(join(distDir, 'design-review', 'index.html'), 'utf8');
-if (!designReviewHtml.includes('<div id="root"></div>')) {
-  throw new Error('Design Review entrypoint does not contain the portal root element.');
+if (!designReviewHtml.includes('<div id="root" data-prerender-path="/design-review">') || !designReviewHtml.includes('<h1>Design Review</h1>')) {
+  throw new Error('Design Review entrypoint does not contain its server-rendered portal content.');
 }
 
 const legacyBlogHtml = await readFile(join(distDir, 'blog', 'index.html'), 'utf8');

@@ -290,7 +290,7 @@ function PublicationItem({ publication }) {
           </a>
         )}
         {publication.publicationUrl && (
-          <Link to={publication.publicationUrl}>
+          <Link to={publication.publicationUrl} analyticsContext="publication_index">
             Publication page <ArrowRight size={14} />
           </Link>
         )}
@@ -300,7 +300,7 @@ function PublicationItem({ publication }) {
           </a>
         )}
         {publication.links.map((link) => (
-          <Link key={link.to} to={link.to}>
+          <Link key={link.to} to={link.to} analyticsContext="publication_related">
             {link.label}
           </Link>
         ))}
@@ -414,12 +414,24 @@ export function Publications() {
 
       <Section title="Connected Research">
         <div className="publication-related-grid">
-          <Link className="publication-related-link" to="/research">
+          <Link className="publication-related-link" to="/research" analyticsContext="publication_hub">
             Capacitor Research
             <ArrowRight size={16} />
           </Link>
-          <Link className="publication-related-link" to="/lab-notes">
+          <Link className="publication-related-link" to="/lab-notes" analyticsContext="publication_hub">
             Research Log
+            <ArrowRight size={16} />
+          </Link>
+          <Link className="publication-related-link" to="/tools" analyticsContext="publication_hub">
+            Engineering Tools
+            <ArrowRight size={16} />
+          </Link>
+          <Link
+            className="publication-related-link"
+            to="/lab-notes/mlcc-distortion-meter-functional-architecture"
+            analyticsContext="publication_hub"
+          >
+            MLCC Measurement Note
             <ArrowRight size={16} />
           </Link>
         </div>
@@ -456,7 +468,7 @@ export function LabNotes() {
                       {link.label} <ArrowRight size={14} />
                     </a>
                   ) : (
-                    <Link key={link.to} to={link.to}>
+                    <Link key={link.to} to={link.to} analyticsContext="research_log_related">
                       {link.label} <ArrowRight size={14} />
                     </Link>
                   )
