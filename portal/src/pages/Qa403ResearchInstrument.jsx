@@ -3,6 +3,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Link } from '../router';
 import './MlccDistortionMeterArchitecture.css';
 
+const assetRoot = '/lab-notes/qa403-research-instrument';
+
 export default function Qa403ResearchInstrument() {
   return (
     <article className="mlcc-architecture-page">
@@ -48,6 +50,17 @@ export default function Qa403ResearchInstrument() {
               comparison campaign.
             </p>
           </div>
+
+          <figure className="mlcc-architecture-figure qa403-research-figure">
+            <img
+              src={`${assetRoot}/qa403-and-mlcc-test-board.png`}
+              alt="QuantAsylum QA403 audio analyzer and the custom MLCC measurement PCB on a laboratory bench"
+            />
+            <figcaption>
+              The QA403 analyzer and the custom MLCC measurement PCB now form the hardware foundation for
+              the next stage of the research program.
+            </figcaption>
+          </figure>
 
           <section id="equipment-problem">
             <h2>The equipment problem</h2>
