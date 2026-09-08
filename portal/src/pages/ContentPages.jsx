@@ -172,6 +172,19 @@ const capacitorResearch = {
 
 const labNotes = [
   {
+    date: '2026-09-08',
+    type: 'Research note',
+    title: 'From Budget Constraint to Measurement Platform',
+    summary: 'Why the QuantAsylum QA403 was selected for the transition from MLCC simulation to physical measurement.',
+    paragraphs: [
+      'The QA403 and the custom MLCC measurement PCB are now in hand. This note records the equipment requirements, the role of the local programming interface, and the conversation with Matt from QuantAsylum that led to the instrument becoming part of the research workflow.',
+    ],
+    links: [
+      { label: 'Read the full note', to: '/lab-notes/qa403-research-instrument' },
+      { label: 'Capacitor Research', to: '/research' },
+    ],
+  },
+  {
     date: '2026-08-02',
     type: 'Engineering note',
     title: 'Measuring MLCC Distortion Under DC Bias',

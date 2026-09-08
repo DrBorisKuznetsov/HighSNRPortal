@@ -15,6 +15,7 @@ import Home from './pages/Home';
 import ToolsCatalog from './pages/ToolsCatalog';
 import ApplicationNote001 from './pages/ApplicationNote001';
 import MlccDistortionMeterArchitecture from './pages/MlccDistortionMeterArchitecture';
+import Qa403ResearchInstrument from './pages/Qa403ResearchInstrument';
 import {
   About,
   Courses,
@@ -105,6 +106,7 @@ function App() {
           <Route path="/application-notes/an-001" element={<ApplicationNote001 />} />
           <Route path="/lab-notes" element={<LabNotes />} />
           <Route path="/lab-notes/mlcc-distortion-meter-functional-architecture" element={<MlccDistortionMeterArchitecture />} />
+          <Route path="/lab-notes/qa403-research-instrument" element={<Qa403ResearchInstrument />} />
 
           <Route path="/courses" element={<Courses />} />
           <Route path="/education-tools" element={<EducationTools />} />
