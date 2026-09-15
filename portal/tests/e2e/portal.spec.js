@@ -8,6 +8,7 @@ const publicPages = [
   ['/application-notes/an-001', 'Frequency-Dependent Distortion in Class II Ceramic Capacitors', 'AN-001: MLCC Distortion Near an RC Transition Band | HighSNR Lab'],
   ['/lab-notes', 'Research Log', 'Research Log | HighSNR Lab'],
   ['/lab-notes/mlcc-distortion-meter-functional-architecture', 'Measuring MLCC Distortion Under DC Bias', 'Measuring MLCC Distortion Under DC Bias | HighSNR Lab'],
+  ['/lab-notes/measurement-board-designed', 'From Simulation to Hardware: The Measurement Board Is Finally Designed', 'From Simulation to Hardware: The Measurement Board Is Finally Designed | HighSNR Lab'],
   ['/courses', 'Engineering Education', 'Engineering Education | HighSNR Lab'],
   ['/education-tools', 'HighSNR Circuit Builder', 'HighSNR Circuit Builder | HighSNR Lab'],
   ['/about', 'HighSNR Engineering Lab', 'About HighSNR Lab | HighSNR Lab'],
@@ -99,6 +100,26 @@ test('MLCC engineering note is responsive and has publication metadata', async (
   });
   await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeHidden();
+});
+
+test('measurement board note renders its source image and publication metadata', async ({ page }) => {
+  await page.goto('/lab-notes/measurement-board-designed');
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://highsnr.org/lab-notes/measurement-board-designed/',
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+  await expect(page.locator('.mlcc-architecture-figure img')).toHaveAttribute(
+    'alt',
+    'Rendered measurement board for the HighSNR Lab MLCC distortion test platform',
+  );
+  const image = await page.locator('.mlcc-architecture-figure img').evaluate((element) => ({
+    complete: element.complete,
+    naturalWidth: element.naturalWidth,
+    naturalHeight: element.naturalHeight,
+  }));
+  expect(image).toEqual({ complete: true, naturalWidth: 1774, naturalHeight: 887 });
 });
 
 test('published routes keep their metadata with a trailing slash', async ({ page }) => {

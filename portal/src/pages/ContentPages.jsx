@@ -172,6 +172,19 @@ const capacitorResearch = {
 
 const labNotes = [
   {
+    date: '2026-09-15',
+    type: 'Research note',
+    title: 'From Simulation to Hardware: The Measurement Board Is Finally Designed',
+    summary: 'Why the measurement board is part of the experiment itself as the MLCC research program moves from simulation toward hardware validation.',
+    paragraphs: [
+      'The schematic and PCB layout are complete, the board has been fabricated, and the next step is to establish the measurement-system floor before comparing real X7R and C0G/NP0 capacitors.',
+    ],
+    links: [
+      { label: 'Read the full note', to: '/lab-notes/measurement-board-designed' },
+      { label: 'Capacitor Research', to: '/research' },
+    ],
+  },
+  {
     date: '2026-09-08',
     type: 'Research note',
     title: 'From Budget Constraint to Measurement Platform',
