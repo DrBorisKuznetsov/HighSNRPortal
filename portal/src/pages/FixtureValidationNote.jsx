@@ -17,6 +17,7 @@ function escapeHtml(value) {
 
 function inlineMarkup(value) {
   let html = escapeHtml(value);
+  html = html.replace(/\[([^\]]+)]\((\/[^)]+)\)/g, '<a href="$2">$1</a>');
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
   return { __html: html };
@@ -116,7 +117,7 @@ function renderBlocks(blocks, prefix) {
             <thead><tr>{block.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead>
             <tbody>
               {block.rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>
+                <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex} dangerouslySetInnerHTML={inlineMarkup(cell)} />)}</tr>
               ))}
             </tbody>
           </table>
@@ -151,7 +152,7 @@ export default function FixtureValidationNote() {
           <h1>Proving the Fixture Before Trusting the Capacitor</h1>
           <p className="mlcc-architecture-subtitle">Instrument floor, contact control, repeatability, drive dependence, and the 50 Hz problem</p>
           <p className="mlcc-architecture-lede">
-            Before capacitor distortion data can be trusted, the analyzer, contacts, wiring, and environmental pickup must be measured as part of the experiment.
+            Before capacitor distortion data can be trusted, the QA403 analyzer, contacts, wiring, and environmental pickup must be measured as part of the experiment.
           </p>
           <div className="mlcc-architecture-meta">
             <span>Boris Kuznetsov</span>

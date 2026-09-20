@@ -52,6 +52,17 @@
   line-height: 1.5 !important;
 }
 
+.mlcc-architecture-body a {
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.mlcc-architecture-body a:hover {
+  color: #1e3a5f;
+}
+
 @media (max-width: 600px) {
   .fixture-table-wrap {
     margin-right: -0.5rem;

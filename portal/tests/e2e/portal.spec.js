@@ -134,6 +134,9 @@ test('fixture validation note renders its figures, tables, and publication metad
   await expect(page.locator('.fixture-table')).toHaveCount(6);
   await expect(page.locator('.fixture-figure img')).toHaveCount(5);
   await expect(page.getByText('[TO CONFIRM — Boris]')).toHaveCount(0);
+  const qa403Links = page.locator('a[href="/lab-notes/qa403-research-instrument/"]');
+  await expect(qa403Links).toHaveCount(3);
+  await expect(qa403Links.first()).toContainText('QuantAsylum QA403');
 
   const images = await page.locator('.fixture-figure img').evaluateAll((elements) => elements.map((element) => ({
     complete: element.complete,

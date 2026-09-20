@@ -15,6 +15,11 @@ contacts, repeatability across removal and refitting, the amplitude dependence
 of the harmonics, and the one problem that turned out to dominate everything
 else — 50 Hz pickup.
 
+All measurements in this series were made with the [QuantAsylum
+QA403](/lab-notes/qa403-research-instrument/). The earlier note **From Budget
+Constraint to Measurement Platform** explains why this analyzer was selected
+and how it fits into the wider HighSNR Lab measurement system.
+
 ---
 
 ## 1. The measurement chain
@@ -36,7 +41,7 @@ Kelvin pair, twisted together on the way back.
 | Excitation | 20 Hz sine |
 | DUT | Fenghua 1206B106K100NT, 10 µF, 10 V, X7R, ±10 %, 1206 (LCSC C165101) |
 | Shunt | 1.2 kΩ |
-| Analyzer | QuantAsylum QA403, QA40x software v1.223 |
+| Analyzer | [QuantAsylum QA403](/lab-notes/qa403-research-instrument/), QA40x software v1.223 |
 | Full Scale Input | 0 dBV |
 | Sample rate | 48 kS/s |
 | FFT | 64K, Hann window |
@@ -51,7 +56,7 @@ frequency.
 
 ## 2. Where the instrument floor sits
 
-With 50 Ω terminations on the inputs and the same software settings:
+With 50 Ω terminations on the QA403 inputs and the same software settings:
 
 | Measurement | Result |
 | :--- | :--- |
@@ -181,7 +186,7 @@ alone read −90.94 dBV. Those states belong to diagnostics.
 
 ## 7. What this series settles
 
-- The QA403 measures these harmonics with large headroom. Loopback THD lands at
+- The [QA403](/lab-notes/qa403-research-instrument/) measures these harmonics with large headroom. Loopback THD lands at
   −112…−115 dB while the capacitor produces H2/H3 in the −60…−80 dBV range.
 - The fixture contributes no harmonics at a comparable level. The resistor
   control reads ≈ −132 dBV.
