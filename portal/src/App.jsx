@@ -17,6 +17,7 @@ import ApplicationNote001 from './pages/ApplicationNote001';
 import MlccDistortionMeterArchitecture from './pages/MlccDistortionMeterArchitecture';
 import Qa403ResearchInstrument from './pages/Qa403ResearchInstrument';
 import MeasurementBoardDesigned from './pages/MeasurementBoardDesigned';
+import FixtureValidationNote from './pages/FixtureValidationNote';
 import {
   About,
   Courses,
@@ -109,6 +110,7 @@ function App() {
           <Route path="/lab-notes/mlcc-distortion-meter-functional-architecture" element={<MlccDistortionMeterArchitecture />} />
           <Route path="/lab-notes/qa403-research-instrument" element={<Qa403ResearchInstrument />} />
           <Route path="/lab-notes/measurement-board-designed" element={<MeasurementBoardDesigned />} />
+          <Route path="/lab-notes/fixture-validation" element={<FixtureValidationNote />} />
 
           <Route path="/courses" element={<Courses />} />
           <Route path="/education-tools" element={<EducationTools />} />

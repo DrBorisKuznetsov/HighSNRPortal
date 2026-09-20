@@ -9,6 +9,7 @@ const publicPages = [
   ['/lab-notes', 'Research Log', 'Research Log | HighSNR Lab'],
   ['/lab-notes/mlcc-distortion-meter-functional-architecture', 'Measuring MLCC Distortion Under DC Bias', 'Measuring MLCC Distortion Under DC Bias | HighSNR Lab'],
   ['/lab-notes/measurement-board-designed', 'From Simulation to Hardware: The Measurement Board Is Finally Designed', 'From Simulation to Hardware: The Measurement Board Is Finally Designed | HighSNR Lab'],
+  ['/lab-notes/fixture-validation', 'Proving the Fixture Before Trusting the Capacitor', 'Proving the Fixture Before Trusting the Capacitor | HighSNR Lab'],
   ['/courses', 'Engineering Education', 'Engineering Education | HighSNR Lab'],
   ['/education-tools', 'HighSNR Circuit Builder', 'HighSNR Circuit Builder | HighSNR Lab'],
   ['/about', 'HighSNR Engineering Lab', 'About HighSNR Lab | HighSNR Lab'],
@@ -120,6 +121,26 @@ test('measurement board note renders its source image and publication metadata',
     naturalHeight: element.naturalHeight,
   }));
   expect(image).toEqual({ complete: true, naturalWidth: 1774, naturalHeight: 887 });
+});
+
+test('fixture validation note renders its figures, tables, and publication metadata', async ({ page }) => {
+  await page.goto('/lab-notes/fixture-validation');
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://highsnr.org/lab-notes/fixture-validation/',
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+  await expect(page.locator('.fixture-table')).toHaveCount(6);
+  await expect(page.locator('.fixture-figure img')).toHaveCount(5);
+  await expect(page.getByText('[TO CONFIRM — Boris]')).toHaveCount(0);
+
+  const images = await page.locator('.fixture-figure img').evaluateAll((elements) => elements.map((element) => ({
+    complete: element.complete,
+    naturalWidth: element.naturalWidth,
+    naturalHeight: element.naturalHeight,
+  })));
+  expect(images.every((image) => image.complete && image.naturalWidth > 0 && image.naturalHeight > 0)).toBeTruthy();
 });
 
 test('published routes keep their metadata with a trailing slash', async ({ page }) => {

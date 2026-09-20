@@ -172,6 +172,19 @@ const capacitorResearch = {
 
 const labNotes = [
   {
+    date: '2026-09-20',
+    type: 'Research note',
+    title: 'Proving the Fixture Before Trusting the Capacitor',
+    summary: 'A validation series that separates capacitor distortion from analyzer limits, contact nonlinearity, refit variation, and environmental 50 Hz pickup.',
+    paragraphs: [
+      'The resistor control remains at the residual floor, the capacitor harmonics reproduce after removal and refitting, and a shield bonded at one point reduces the 50 Hz line by 18.66 dB.',
+    ],
+    links: [
+      { label: 'Read the full note', to: '/lab-notes/fixture-validation' },
+      { label: 'Capacitor Research', to: '/research' },
+    ],
+  },
+  {
     date: '2026-09-15',
     type: 'Research note',
     title: 'From Simulation to Hardware: The Measurement Board Is Finally Designed',

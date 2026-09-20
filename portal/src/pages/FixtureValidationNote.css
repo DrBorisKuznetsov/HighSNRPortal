@@ -1,0 +1,60 @@
+.fixture-hero {
+  background:
+    radial-gradient(circle at 83% 18%, rgba(14, 116, 144, 0.13), transparent 25rem),
+    linear-gradient(145deg, #f8fafc 0%, #edf7f8 100%);
+}
+
+.fixture-table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0 1.8rem;
+  border: 1px solid var(--border-base);
+  background: #fff;
+}
+
+.fixture-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  color: #334155;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.fixture-table th,
+.fixture-table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--border-base);
+  text-align: left;
+  vertical-align: top;
+}
+
+.fixture-table th {
+  background: #f1f5f9;
+  color: #1e3a5f;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.025em;
+}
+
+.fixture-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.fixture-figure {
+  margin-bottom: 0.55rem;
+}
+
+.fixture-caption {
+  margin: 0 0 1.8rem !important;
+  color: var(--text-tertiary) !important;
+  font-size: 0.82rem !important;
+  font-style: italic;
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 600px) {
+  .fixture-table-wrap {
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
+  }
+}
