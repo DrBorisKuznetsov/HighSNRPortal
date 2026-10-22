@@ -14,6 +14,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import ToolsCatalog from './pages/ToolsCatalog';
 import ApplicationNote001 from './pages/ApplicationNote001';
+import ApplicationNote002 from './pages/ApplicationNote002';
 import MlccDistortionMeterArchitecture from './pages/MlccDistortionMeterArchitecture';
 import Qa403ResearchInstrument from './pages/Qa403ResearchInstrument';
 import MeasurementBoardDesigned from './pages/MeasurementBoardDesigned';
@@ -106,6 +107,7 @@ function App() {
           <Route path="/publications" element={<Publications />} />
           <Route path="/blog" element={<Publications />} />
           <Route path="/application-notes/an-001" element={<ApplicationNote001 />} />
+          <Route path="/application-notes/an-002" element={<ApplicationNote002 />} />
           <Route path="/lab-notes" element={<LabNotes />} />
           <Route path="/lab-notes/mlcc-distortion-meter-functional-architecture" element={<MlccDistortionMeterArchitecture />} />
           <Route path="/lab-notes/qa403-research-instrument" element={<Qa403ResearchInstrument />} />

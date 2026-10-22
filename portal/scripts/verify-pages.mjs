@@ -159,6 +159,8 @@ if (sitemapUrlCount !== sitemapRouteMetadata.length) {
 }
 
 const pdfPaths = [
+  'application-notes/an-001/AN-001.pdf',
+  'application-notes/an-002/AN-002_RevA_en.pdf',
   'docs/battery-tester/client_brief_battery_tester_en.pdf',
   'docs/battery-tester/battery_tester_rev_d.pdf',
   'docs/battery-tester/HighSNR_Design_Review_SNR-R-2607_corrected.pdf',

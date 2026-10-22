@@ -39,6 +39,23 @@ const officialLinks = [
 
 const publications = [
   {
+    title: 'Third Harmonic Distortion in a 10 µF X7R RC Filter at Zero Applied DC Bias',
+    subtitle: 'Measured Results, Circuit Interpretation, and a Reproducible Test Method',
+    author: 'Boris Kuznetsov',
+    date: '2026-10-22',
+    status: 'Application Note AN-002 · Rev A',
+    venue: 'HighSNR Lab',
+    publicationUrl: '/application-notes/an-002',
+    pdfUrl: '/application-notes/an-002/AN-002_RevA_en.pdf',
+    summary:
+      'Reports a mean current H3 of −49.8 dBc across 29 complete runs on ten X7R capacitors at 19.8 Hz. Circuit calculations give −44.6 dBc, or 0.59%, across the capacitor at approximately 0.43 V RMS.',
+    topics: ['X7R', 'Harmonic distortion', 'Zero applied DC bias', 'Measurements'],
+    links: [
+      { label: 'Related Application Note AN-001', to: '/application-notes/an-001' },
+      { label: 'Data and reproducibility package', href: 'https://doi.org/10.5281/zenodo.23528005' },
+    ],
+  },
+  {
     title: 'An Analytical Theory of Harmonic Distortion in RC Networks with Voltage-Dependent Capacitance',
     subtitle: 'A Charge-Conserving Small-Nonlinearity Analysis Through the Fifth Harmonic',
     author: 'Boris Kuznetsov',
@@ -338,7 +355,11 @@ function PublicationItem({ publication }) {
             Full PDF <ExternalLink size={14} />
           </a>
         )}
-        {publication.links.map((link) => (
+        {publication.links.map((link) => link.href ? (
+          <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
+            {link.label} <ExternalLink size={14} />
+          </a>
+        ) : (
           <Link key={link.to} to={link.to} analyticsContext="publication_related">
             {link.label}
           </Link>

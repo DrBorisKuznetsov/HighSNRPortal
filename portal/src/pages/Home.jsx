@@ -34,10 +34,10 @@ export default function Home() {
       <section style={{ padding: '1.1rem 0', backgroundColor: '#1a365d', color: 'white' }}>
         <div className="container" style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
           <div>
-            <strong style={{ display: 'block', fontSize: '0.95rem' }}>New public release · Application Note AN-001</strong>
-            <span style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.86rem' }}>Why MLCC distortion can peak near an RC transition band.</span>
+            <strong style={{ display: 'block', fontSize: '0.95rem' }}>New public release · Application Note AN-002</strong>
+            <span style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.86rem' }}>Measured X7R distortion at zero applied DC bias—and what it means for an RC filter.</span>
           </div>
-          <Link to="/application-notes/an-001" className="link-arrow" style={{ color: 'white' }}>
+          <Link to="/application-notes/an-002" className="link-arrow" style={{ color: 'white' }}>
             Read the note <ArrowRight size={16} />
           </Link>
         </div>

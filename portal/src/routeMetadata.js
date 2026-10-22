@@ -25,6 +25,16 @@ export const routeMetadata = [
     datePublished: '2026-07-27',
     dateModified: '2026-07-27',
   },
+  {
+    path: '/application-notes/an-002',
+    title: 'AN-002: X7R Distortion at Zero Applied DC Bias',
+    description: 'Measured third-harmonic distortion in ten 10 µF X7R capacitors at 19.8 Hz with zero applied DC bias, with circuit calculations and a reproducible test method.',
+    ogType: 'article',
+    schemaType: 'TechArticle',
+    author: 'Boris Kuznetsov',
+    datePublished: '2026-10-22',
+    dateModified: '2026-10-22',
+  },
   { path: '/lab-notes', title: 'Research Log', description: 'Research updates, measurements, modeling notes, and engineering observations from HighSNR Lab.', schemaType: 'CollectionPage' },
   {
     path: '/lab-notes/mlcc-distortion-meter-functional-architecture',

@@ -6,6 +6,7 @@ const publicPages = [
   ['/tools', 'Engineering Tools', 'Engineering Tools | HighSNR Lab'],
   ['/publications', 'Articles, Preprints, and Technical Notes', 'Electronics Research Papers & Application Notes | HighSNR Lab'],
   ['/application-notes/an-001', 'Frequency-Dependent Distortion in Class II Ceramic Capacitors', 'AN-001: MLCC Distortion Near an RC Transition Band | HighSNR Lab'],
+  ['/application-notes/an-002', 'Third Harmonic Distortion in a 10 µF X7R RC Filter at Zero Applied DC Bias', 'AN-002: X7R Distortion at Zero Applied DC Bias | HighSNR Lab'],
   ['/lab-notes', 'Research Log', 'Research Log | HighSNR Lab'],
   ['/lab-notes/mlcc-distortion-meter-functional-architecture', 'Measuring MLCC Distortion Under DC Bias', 'Measuring MLCC Distortion Under DC Bias | HighSNR Lab'],
   ['/lab-notes/measurement-board-designed', 'From Simulation to Hardware: The Measurement Board Is Finally Designed', 'From Simulation to Hardware: The Measurement Board Is Finally Designed | HighSNR Lab'],
@@ -212,8 +213,29 @@ test('legacy blog URL resolves without creating an indexable duplicate', async (
   );
 });
 
-test('Design Review PDF downloads are published as PDFs', async ({ request }) => {
+test('AN-002 is featured on the home page and keeps both notes accessible', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('link', { name: 'Read the note' })).toHaveAttribute('href', '/application-notes/an-002/');
+  await page.getByRole('link', { name: 'Read the note' }).click();
+  await expect(page).toHaveURL('/application-notes/an-002/');
+  await expect(page.getByRole('link', { name: 'Download AN-002', exact: true })).toHaveAttribute('href', '/application-notes/an-002/AN-002_RevA_en.pdf');
+  await expect(page.getByRole('link', { name: /Related Application Note AN-001/ })).toHaveAttribute('href', '/application-notes/an-001/');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBeTruthy();
+  const structuredData = JSON.parse(await page.locator('#structured-data').textContent());
+  expect(structuredData['@graph'].find((entity) => entity['@type'] === 'TechArticle')).toMatchObject({ datePublished: '2026-10-22' });
+
+  await page.goto('/publications/');
+  await expect(page.locator('a[href="/application-notes/an-002/"]')).toBeVisible();
+  await expect(page.locator('a[href="/application-notes/an-001/"]').first()).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Data and reproducibility package' })).toHaveAttribute('href', 'https://doi.org/10.5281/zenodo.23528005');
+});
+
+test('published PDF downloads are served as PDFs', async ({ request }) => {
   const pdfPaths = [
+    '/application-notes/an-001/AN-001.pdf',
+    '/application-notes/an-002/AN-002_RevA_en.pdf',
     '/docs/battery-tester/client_brief_battery_tester_en.pdf',
     '/docs/battery-tester/battery_tester_rev_d.pdf',
     '/docs/battery-tester/HighSNR_Design_Review_SNR-R-2607_corrected.pdf',
