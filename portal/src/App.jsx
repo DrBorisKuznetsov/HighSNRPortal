@@ -19,6 +19,7 @@ import MlccDistortionMeterArchitecture from './pages/MlccDistortionMeterArchitec
 import Qa403ResearchInstrument from './pages/Qa403ResearchInstrument';
 import MeasurementBoardDesigned from './pages/MeasurementBoardDesigned';
 import FixtureValidationNote from './pages/FixtureValidationNote';
+import AiDesignMethodology from './pages/AiDesignMethodology';
 import {
   About,
   Courses,
@@ -105,6 +106,7 @@ function App() {
           <Route path="/tools/capacitor-distortion-analyzer" element={<Navigate to="/tools" replace />} />
           <Route path="/tools/capacitor-distortion" element={<Navigate to="/tools" replace />} />
           <Route path="/publications" element={<Publications />} />
+          <Route path="/articles/ai-design-methodology" element={<AiDesignMethodology />} />
           <Route path="/blog" element={<Publications />} />
           <Route path="/application-notes/an-001" element={<ApplicationNote001 />} />
           <Route path="/application-notes/an-002" element={<ApplicationNote002 />} />

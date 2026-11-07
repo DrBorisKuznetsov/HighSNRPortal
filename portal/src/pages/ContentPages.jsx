@@ -39,6 +39,18 @@ const officialLinks = [
 
 const publications = [
   {
+    title: 'How I Design Electronics with AI Agents',
+    subtitle: 'The method behind the control board for my MLCC analyzer',
+    author: 'Boris Kuznetsov',
+    date: '2026-11-07',
+    status: 'Engineering article',
+    venue: 'HighSNR Lab',
+    publicationUrl: '/articles/ai-design-methodology',
+    summary: 'A practical account of AI-assisted electronics design: persistent project files, requirements, simulation, KiCad schematics and routing, independent review, and the engineer’s responsibility for decisions. The control board awaits fabrication and bench testing.',
+    topics: ['AI-assisted design', 'KiCad', 'Design review', 'Engineering methodology'],
+    links: [],
+  },
+  {
     title: 'Third Harmonic Distortion in a 10 µF X7R RC Filter at Zero Applied DC Bias',
     subtitle: 'Measured Results, Circuit Interpretation, and a Reproducible Test Method',
     author: 'Boris Kuznetsov',
@@ -188,6 +200,18 @@ const capacitorResearch = {
 };
 
 const labNotes = [
+  {
+    date: '2026-11-07',
+    type: 'Engineering article',
+    title: 'How I Design Electronics with AI Agents',
+    summary: 'The method behind the MLCC analyzer control board: project files, simulation, schematic and PCB design, and separate review passes.',
+    paragraphs: [
+      'The board is fully routed in KiCad and awaits fabrication and bench testing. This article records the design process, its verification steps, and what remains open.',
+    ],
+    links: [
+      { label: 'Read the article', to: '/articles/ai-design-methodology' },
+    ],
+  },
   {
     date: '2026-09-20',
     type: 'Research note',

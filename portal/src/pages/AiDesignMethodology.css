@@ -1,0 +1,38 @@
+.ai-design-page .mlcc-architecture-toc {
+  max-height: calc(100dvh - 120px);
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+}
+
+.ai-design-page .mlcc-architecture-body p {
+  overflow-wrap: anywhere;
+}
+
+.ai-design-page .mlcc-architecture-body a {
+  color: #1d4ed8;
+  text-underline-offset: 0.16em;
+}
+
+.ai-design-figure img {
+  cursor: zoom-in;
+}
+
+.ai-design-figure figcaption {
+  color: #64748b;
+}
+
+.ai-design-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-base);
+}
+
+@media (max-width: 900px) {
+  .ai-design-page .mlcc-architecture-toc {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
