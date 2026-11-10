@@ -9,7 +9,6 @@ import './EducationTools.css';
 import './Publications.css';
 
 const circuitBuilderHref = '/education-tools/highsnr-circuit-builder/app/index.html';
-const mlccResearchPlanHref = '/research/mlcc-research-directions-2026-07-16.md';
 const highSnrEmail = 'info@highsnr.org';
 
 const equipmentItems = [
@@ -472,9 +471,6 @@ export function Research() {
               </article>
             ))}
           </div>
-          <a className="research-plan-link" href={mlccResearchPlanHref} target="_blank" rel="noopener noreferrer">
-            Open full working plan <ExternalLink size={14} />
-          </a>
         </div>
       </Section>
 
