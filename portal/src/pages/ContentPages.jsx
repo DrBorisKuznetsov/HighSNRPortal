@@ -37,19 +37,7 @@ const officialLinks = [
   },
 ];
 
-const publications = [
-  {
-    title: 'How I Design Electronics with AI Agents',
-    subtitle: 'The method behind the control board for my MLCC analyzer',
-    author: 'Boris Kuznetsov',
-    date: '2026-11-07',
-    status: 'Engineering article',
-    venue: 'HighSNR Lab',
-    publicationUrl: '/articles/ai-design-methodology',
-    summary: 'A practical account of AI-assisted electronics design: persistent project files, requirements, simulation, KiCad schematics and routing, independent review, and the engineer’s responsibility for decisions. The control board awaits fabrication and bench testing.',
-    topics: ['AI-assisted design', 'KiCad', 'Design review', 'Engineering methodology'],
-    links: [],
-  },
+const applicationNotes = [
   {
     title: 'Third Harmonic Distortion in a 10 µF X7R RC Filter at Zero Applied DC Bias',
     subtitle: 'Measured Results, Circuit Interpretation, and a Reproducible Test Method',
@@ -66,6 +54,38 @@ const publications = [
       { label: 'Related Application Note AN-001', to: '/application-notes/an-001' },
       { label: 'Data and reproducibility package', href: 'https://doi.org/10.5281/zenodo.23528005' },
     ],
+  },
+  {
+    title: 'Frequency-Dependent Distortion in Class II Ceramic Capacitors',
+    subtitle: 'Why THD Peaks Near the RC Transition Band — and How Incorrect C(V) Simulation Creates False Harmonics',
+    author: 'Boris Kuznetsov',
+    date: '2026-07-27',
+    status: 'Application Note AN-001',
+    venue: 'HighSNR Lab',
+    publicationUrl: '/application-notes/an-001',
+    pdfUrl: '/application-notes/an-001/AN-001.pdf',
+    summary:
+      'Shows why THD from X7R and X5R capacitors can peak near an RC cutoff frequency, and separates physical nonlinear behavior from artifacts caused by poor C(V) simulation models.',
+    topics: ['Class II capacitors', 'THD', 'RC filters', 'Simulation traps'],
+    links: [
+      { label: 'Research', to: '/research' },
+      { label: 'Tools', to: '/tools' },
+    ],
+  },
+];
+
+const otherPublications = [
+  {
+    title: 'How I Design Electronics with AI Agents',
+    subtitle: 'The method behind the control board for my MLCC analyzer',
+    author: 'Boris Kuznetsov',
+    date: '2026-11-07',
+    status: 'Engineering article',
+    venue: 'HighSNR Lab',
+    publicationUrl: '/articles/ai-design-methodology',
+    summary: 'A practical account of AI-assisted electronics design: persistent project files, requirements, simulation, KiCad schematics and routing, independent review, and the engineer’s responsibility for decisions. The control board awaits fabrication and bench testing.',
+    topics: ['AI-assisted design', 'KiCad', 'Design review', 'Engineering methodology'],
+    links: [],
   },
   {
     title: 'An Analytical Theory of Harmonic Distortion in RC Networks with Voltage-Dependent Capacitance',
@@ -119,23 +139,6 @@ const publications = [
     links: [
       { label: 'Related Application Note', to: '/application-notes/an-001' },
       { label: 'Research', to: '/research' },
-    ],
-  },
-  {
-    title: 'Frequency-Dependent Distortion in Class II Ceramic Capacitors',
-    subtitle: 'Why THD Peaks Near the RC Transition Band — and How Incorrect C(V) Simulation Creates False Harmonics',
-    author: 'Boris Kuznetsov',
-    date: '2026-07-27',
-    status: 'Application Note AN-001',
-    venue: 'HighSNR Lab',
-    publicationUrl: '/application-notes/an-001',
-    pdfUrl: '/application-notes/an-001/AN-001.pdf',
-    summary:
-      'Shows why THD from X7R and X5R capacitors can peak near an RC cutoff frequency, and separates physical nonlinear behavior from artifacts caused by poor C(V) simulation models.',
-    topics: ['Class II capacitors', 'THD', 'RC filters', 'Simulation traps'],
-    links: [
-      { label: 'Research', to: '/research' },
-      { label: 'Tools', to: '/tools' },
     ],
   },
 ];
@@ -486,12 +489,20 @@ export function Publications() {
   return (
     <PageShell
       title="Articles, Preprints, and Technical Notes"
-      summary="Formal materials connect research programs, tools, validation data, source code, and videos into one traceable engineering knowledge system."
+      summary="Start with our application notes for practical design guidance, worked examples, and links to the models or measurement data behind them."
     >
-      <Section title="Publication Index">
+      <Section title="Application Notes">
         <div className="publication-list">
-          {publications.map((publication) => (
-            <PublicationItem key={publication.doi || publication.status} publication={publication} />
+          {applicationNotes.map((note) => (
+            <PublicationItem key={note.publicationUrl} publication={note} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Preprints and Technical Articles">
+        <div className="publication-list">
+          {otherPublications.map((publication) => (
+            <PublicationItem key={publication.doi || publication.publicationUrl} publication={publication} />
           ))}
         </div>
       </Section>

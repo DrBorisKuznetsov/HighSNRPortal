@@ -214,21 +214,34 @@ test('legacy blog URL resolves without creating an indexable duplicate', async (
 });
 
 test('AN-002 is featured on the home page and keeps both notes accessible', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  await expect(page.getByRole('link', { name: 'Read the note' })).toHaveAttribute('href', '/application-notes/an-002/');
-  await page.getByRole('link', { name: 'Read the note' }).click();
+  const notesLink = page.getByRole('link', { name: 'Explore Application Notes' });
+  const featuredLink = page.getByRole('link', { name: 'Read AN-002' });
+  const artwork = page.locator('.home-hero-art');
+  await expect(artwork).toBeVisible();
+  await expect.poll(() => artwork.evaluate((img) => img.naturalWidth)).toBeGreaterThan(0);
+  await expect(notesLink).toBeInViewport();
+  await expect(featuredLink).toBeInViewport();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+
+  await expect(featuredLink).toHaveAttribute('href', '/application-notes/an-002/');
+  await featuredLink.click();
   await expect(page).toHaveURL('/application-notes/an-002/');
   await expect(page.getByRole('link', { name: 'Download AN-002', exact: true })).toHaveAttribute('href', '/application-notes/an-002/AN-002_RevA_en.pdf');
   await expect(page.getByRole('link', { name: /Related Application Note AN-001/ })).toHaveAttribute('href', '/application-notes/an-001/');
 
-  await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBeTruthy();
   const structuredData = JSON.parse(await page.locator('#structured-data').textContent());
   expect(structuredData['@graph'].find((entity) => entity['@type'] === 'TechArticle')).toMatchObject({ datePublished: '2026-10-22' });
 
-  await page.goto('/publications/');
-  await expect(page.locator('a[href="/application-notes/an-002/"]')).toBeVisible();
-  await expect(page.locator('a[href="/application-notes/an-001/"]').first()).toBeVisible();
+  await page.goto('/');
+  await notesLink.click();
+  await expect(page).toHaveURL('/publications/');
+  await expect(page.getByRole('heading', { level: 2 }).first()).toHaveText('Application Notes');
+  const notes = page.getByRole('article');
+  await expect(notes.nth(0).getByRole('link', { name: 'Publication page' })).toHaveAttribute('href', '/application-notes/an-002/');
+  await expect(notes.nth(1).getByRole('link', { name: 'Publication page' })).toHaveAttribute('href', '/application-notes/an-001/');
   await expect(page.getByRole('link', { name: 'Data and reproducibility package' })).toHaveAttribute('href', 'https://doi.org/10.5281/zenodo.23528005');
 });
 
