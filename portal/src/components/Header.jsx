@@ -6,7 +6,6 @@ import { Activity, Menu, X } from 'lucide-react';
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = usePortalLocation();
-  const videosHref = import.meta.env.DEV ? 'http://localhost:5174/videos_project/' : '/videos_project/';
 
   useEffect(() => {
     setMenuOpen(false);
@@ -32,13 +31,10 @@ export default function Header() {
         </button>
 
         <nav id="primary-navigation" className={`nav-links${menuOpen ? ' open' : ''}`} aria-label="Primary navigation">
+          <NavLink to="/application-notes" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Application Notes</NavLink>
+          <NavLink to="/publications" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Articles & Papers</NavLink>
           <NavLink to="/research" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Research</NavLink>
           <NavLink to="/tools" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Tools</NavLink>
-          <NavLink to="/publications" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Articles & Papers</NavLink>
-
-          <a href={videosHref} className="nav-link">Videos</a>
-          <NavLink to="/design-review" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Design Review</NavLink>
-          <NavLink to="/about" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>About</NavLink>
         </nav>
       </div>
     </header>

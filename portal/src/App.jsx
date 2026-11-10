@@ -22,14 +22,18 @@ import FixtureValidationNote from './pages/FixtureValidationNote';
 import AiDesignMethodology from './pages/AiDesignMethodology';
 import {
   About,
+  ApplicationNotes,
   Courses,
   DesignReview,
   EducationTools,
+  LabEquipment,
   LabNotes,
   NotFound,
   Publications,
   Research,
 } from './pages/ContentPages';
+
+const videosHref = import.meta.env.DEV ? 'http://localhost:5174/videos_project/' : '/videos_project/';
 
 function App() {
   const location = usePortalLocation();
@@ -99,6 +103,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/research" element={<Research />} />
+          <Route path="/equipment" element={<LabEquipment />} />
           <Route path="/research/adc-front-end-modeling" element={<Navigate to="/research" replace />} />
           <Route path="/research/nonlinear-passive-components" element={<Navigate to="/research" replace />} />
           <Route path="/tools" element={<ToolsCatalog />} />
@@ -108,6 +113,7 @@ function App() {
           <Route path="/publications" element={<Publications />} />
           <Route path="/articles/ai-design-methodology" element={<AiDesignMethodology />} />
           <Route path="/blog" element={<Publications />} />
+          <Route path="/application-notes" element={<ApplicationNotes />} />
           <Route path="/application-notes/an-001" element={<ApplicationNote001 />} />
           <Route path="/application-notes/an-002" element={<ApplicationNote002 />} />
           <Route path="/lab-notes" element={<LabNotes />} />
@@ -133,6 +139,7 @@ function App() {
           <nav className="footer-links" aria-label="Footer links">
             <a href="mailto:info@highsnr.org">info@highsnr.org</a>
             <Link to="/about">About & Contact</Link>
+            <a href={videosHref}>Video Library</a>
             <a href="https://github.com/DrBorisKuznetsov" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://www.youtube.com/@High_SNR_Channel" target="_blank" rel="noopener noreferrer">YouTube</a>
           </nav>

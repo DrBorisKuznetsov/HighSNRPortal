@@ -3,6 +3,7 @@ const defaultDescription = 'Independent electronics research, engineering tools,
 export const routeMetadata = [
   { path: '/', title: 'HighSNR Lab', description: defaultDescription },
   { path: '/research', title: 'Capacitor Research', description: 'Research on MLCC behavior, nonlinear capacitance, dielectric memory, distortion, and precision signal-chain errors.', schemaType: 'CollectionPage' },
+  { path: '/equipment', title: 'Lab Equipment', description: 'The QA403 analyzer, MLCC test fixture, and powered USB hub used in experimental research at HighSNR Lab.' },
   { path: '/research/adc-front-end-modeling', title: 'Capacitor Research', description: defaultDescription, canonicalPath: '/research', noIndex: true },
   { path: '/research/nonlinear-passive-components', title: 'Capacitor Research', description: defaultDescription, canonicalPath: '/research', noIndex: true },
   { path: '/tools', title: 'Engineering Tools', description: 'Interactive calculators and simulation models for nonlinearities, noise, settling, and signal degradation.', schemaType: 'CollectionPage' },
@@ -11,8 +12,8 @@ export const routeMetadata = [
   { path: '/tools/capacitor-distortion', title: 'Engineering Tools', description: defaultDescription, canonicalPath: '/tools', noIndex: true },
   {
     path: '/publications',
-    title: 'Electronics Research Papers & Application Notes',
-    description: 'HighSNR Lab publications on MLCC distortion, precision signal chains, ADC front ends, measurement methods, and practical electronics design.',
+    title: 'Electronics Articles & Research Papers',
+    description: 'HighSNR Lab articles and preprints on MLCC distortion, circuit modeling, precision signal chains, and electronics design.',
     schemaType: 'CollectionPage',
   },
   { path: '/blog', title: 'Articles & Papers', description: defaultDescription, canonicalPath: '/publications', noIndex: true },
@@ -29,6 +30,12 @@ export const routeMetadata = [
     author: 'Boris Kuznetsov',
     datePublished: '2026-11-07',
     dateModified: '2026-11-07',
+  },
+  {
+    path: '/application-notes',
+    title: 'Application Notes',
+    description: 'Practical HighSNR Lab application notes on precision circuits, with reproducible measurements, models, and worked examples.',
+    schemaType: 'CollectionPage',
   },
   {
     path: '/application-notes/an-001',

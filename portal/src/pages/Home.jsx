@@ -13,7 +13,7 @@ export default function Home() {
           Independent research on how real electronic components affect precision circuits.
           Our application notes turn measurements and physical models into practical design guidance.
         </p>
-        <Link to="/publications" className="btn btn-primary" analyticsContext="home_application_notes">
+        <Link to="/application-notes" className="btn btn-primary" analyticsContext="home_application_notes">
           Explore Application Notes <ArrowRight size={16} />
         </Link>
 
@@ -21,7 +21,7 @@ export default function Home() {
           <p className="home-note-label">Application Note AN-002 · Rev A</p>
           <h2 id="featured-note-title">X7R distortion at zero applied DC bias</h2>
           <p>
-            Measurements on ten 10 µF X7R capacitors and a circuit model for estimating distortion in an RC filter.
+            Measured third-harmonic distortion in ten 10 µF X7R capacitors.
           </p>
           <Link to="/application-notes/an-002" className="link-arrow" analyticsContext="home_application_notes">
             Read AN-002 <ArrowRight size={16} />

@@ -3,8 +3,10 @@ import { expect, test } from '@playwright/test';
 const publicPages = [
   ['/', 'HighSNR Engineering Lab', 'HighSNR Lab'],
   ['/research', 'Capacitor Research', 'Capacitor Research | HighSNR Lab'],
+  ['/equipment', 'Lab Equipment', 'Lab Equipment | HighSNR Lab'],
   ['/tools', 'Engineering Tools', 'Engineering Tools | HighSNR Lab'],
-  ['/publications', 'Articles, Preprints, and Technical Notes', 'Electronics Research Papers & Application Notes | HighSNR Lab'],
+  ['/publications', 'Articles & Papers', 'Electronics Articles & Research Papers | HighSNR Lab'],
+  ['/application-notes', 'Application Notes', 'Application Notes | HighSNR Lab'],
   ['/application-notes/an-001', 'Frequency-Dependent Distortion in Class II Ceramic Capacitors', 'AN-001: MLCC Distortion Near an RC Transition Band | HighSNR Lab'],
   ['/application-notes/an-002', 'Third Harmonic Distortion in a 10 µF X7R RC Filter at Zero Applied DC Bias', 'AN-002: X7R Distortion at Zero Applied DC Bias | HighSNR Lab'],
   ['/lab-notes', 'Research Log', 'Research Log | HighSNR Lab'],
@@ -172,8 +174,11 @@ test('internal navigation resets scroll position', async ({ page }) => {
 test('internal links use canonical trailing-slash URLs', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('link', { name: 'Design Review' })).toHaveAttribute('href', '/design-review/');
-  await expect(page.getByRole('link', { name: 'Research', exact: true })).toHaveAttribute('href', '/research/');
+  const navigation = page.getByRole('navigation', { name: 'Primary navigation' });
+  await expect(navigation.getByRole('link')).toHaveText(['Application Notes', 'Articles & Papers', 'Research', 'Tools']);
+  await expect(navigation.getByRole('link', { name: 'Application Notes' })).toHaveAttribute('href', '/application-notes/');
+  await expect(navigation.getByRole('link', { name: 'Research' })).toHaveAttribute('href', '/research/');
+  await expect(page.getByRole('link', { name: 'Video Library' })).toHaveAttribute('href', '/videos_project/');
 });
 
 test('publication hub exposes and measures related portal paths', async ({ page }) => {
@@ -205,7 +210,7 @@ test('publication hub exposes and measures related portal paths', async ({ page 
 test('legacy blog URL resolves without creating an indexable duplicate', async ({ page }) => {
   await page.goto('/blog/');
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Articles, Preprints, and Technical Notes' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Articles & Papers' })).toBeVisible();
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
@@ -237,12 +242,34 @@ test('AN-002 is featured on the home page and keeps both notes accessible', asyn
 
   await page.goto('/');
   await notesLink.click();
-  await expect(page).toHaveURL('/publications/');
-  await expect(page.getByRole('heading', { level: 2 }).first()).toHaveText('Application Notes');
+  await expect(page).toHaveURL('/application-notes/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Application Notes' })).toBeVisible();
   const notes = page.getByRole('article');
-  await expect(notes.nth(0).getByRole('link', { name: 'Publication page' })).toHaveAttribute('href', '/application-notes/an-002/');
+  await expect(notes.nth(0).getByRole('link', { name: 'Read AN-002' })).toHaveAttribute('href', '/application-notes/an-002/');
+  await expect(notes.nth(0).getByRole('img', { name: /Measured shunt-voltage spectra/ })).toBeVisible();
   await expect(notes.nth(1).getByRole('link', { name: 'Publication page' })).toHaveAttribute('href', '/application-notes/an-001/');
   await expect(page.getByRole('link', { name: 'Data and reproducibility package' })).toHaveAttribute('href', 'https://doi.org/10.5281/zenodo.23528005');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
+
+test('shared publication links retain their destinations and campaign parameters', async ({ page }) => {
+  const links = [
+    ['/application-notes/an-001/?utm_source=youtube&utm_medium=video&utm_campaign=an001_mlcc_distortion&utm_content=description', /Frequency-Dependent Distortion/],
+    ['/application-notes/an-001/?utm_source=linkedin&utm_medium=social&utm_campaign=an001_mlcc_distortion&utm_content=post', /Frequency-Dependent Distortion/],
+    ['/application-notes/an-002/?utm_source=linkedin&utm_medium=social', /Third Harmonic Distortion/],
+    ['/publications/?utm_source=linkedin&utm_medium=social&utm_campaign=profile&utm_content=featured_link', 'Articles & Papers'],
+  ];
+  for (const [path, heading] of links) {
+    const response = await page.goto(path);
+    expect(response?.ok()).toBeTruthy();
+    await expect(page).toHaveURL(path);
+    await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible();
+  }
+
+  await expect(page.getByRole('heading', { name: 'Preprints and Technical Articles' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Read AN-002' })).toHaveCount(0);
+  await page.getByRole('link', { name: 'Browse the Application Notes library' }).click();
+  await expect(page).toHaveURL('/application-notes/');
 });
 
 test('published PDF downloads are served as PDFs', async ({ request }) => {

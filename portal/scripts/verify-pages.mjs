@@ -123,7 +123,7 @@ for (const metadata of routeMetadata) {
 }
 
 const publicationsHtml = await readFile(join(distDir, 'publications', 'index.html'), 'utf8');
-if (!publicationsHtml.includes('Articles, Preprints, and Technical Notes')) {
+if (!publicationsHtml.includes('<h1>Articles &amp; Papers</h1>')) {
   throw new Error('/publications/ must expose its visible page heading in the generated HTML.');
 }
 

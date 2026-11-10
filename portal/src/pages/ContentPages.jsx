@@ -3,12 +3,47 @@ import { Link } from '../router';
 import { Activity, ArrowRight, Cpu, ExternalLink, Globe2, Mail } from 'lucide-react';
 import editorScreenshot from '../assets/editor-screenshot.png';
 import authorPortrait from '../assets/boris-kuznetsov-portrait.jpg';
+import fixtureView from '../assets/mlcc-fixture-studio.webp';
+import usbHubView from '../assets/usb-hub-cad.webp';
 import './EducationTools.css';
 import './Publications.css';
 
 const circuitBuilderHref = '/education-tools/highsnr-circuit-builder/app/index.html';
 const mlccResearchPlanHref = '/research/mlcc-research-directions-2026-07-16.md';
 const highSnrEmail = 'info@highsnr.org';
+
+const equipmentItems = [
+  {
+    title: 'QuantAsylum QA403',
+    description: 'The core measurement instrument across our experimental research. It generates test signals and captures the electrical response.',
+    image: 'https://quantasylum.com/cdn/shop/products/QA403ProductPage.2.png?v=1643679560&width=800',
+    imageClassName: 'equipment-view-product',
+    width: 800,
+    height: 800,
+    alt: 'QuantAsylum QA403 audio analyzer with its red front panel and eight BNC connectors',
+    caption: 'Product photo · QuantAsylum',
+    manufacturerUrl: 'https://quantasylum.com/products/qa403-audio-analyzer',
+  },
+  {
+    title: 'MLCC test fixture',
+    description: 'Holds the component under test in series with a sense resistor. The validation note describes resistor controls and repeated capacitor refits on the earlier breadboard fixture.',
+    image: fixtureView,
+    width: 1200,
+    height: 750,
+    alt: 'Assembled black MLCC test fixture with a screw clamp and three BNC connectors',
+    caption: 'Assembly illustration · HighSNR Lab',
+    link: { to: '/lab-notes/fixture-validation', label: 'See fixture validation' },
+  },
+  {
+    title: 'Powered USB hub',
+    description: 'Supplies USB power to the QA403 from an external power supply rated up to 4 A.',
+    image: usbHubView,
+    width: 1200,
+    height: 750,
+    alt: 'Three-quarter view of the rack-mounted USB hub with seven USB ports and a power input',
+    caption: 'CAD view · R2.1 enclosure',
+  },
+];
 
 const officialLinks = [
   {
@@ -39,23 +74,6 @@ const officialLinks = [
 
 const applicationNotes = [
   {
-    title: 'Third Harmonic Distortion in a 10 µF X7R RC Filter at Zero Applied DC Bias',
-    subtitle: 'Measured Results, Circuit Interpretation, and a Reproducible Test Method',
-    author: 'Boris Kuznetsov',
-    date: '2026-10-22',
-    status: 'Application Note AN-002 · Rev A',
-    venue: 'HighSNR Lab',
-    publicationUrl: '/application-notes/an-002',
-    pdfUrl: '/application-notes/an-002/AN-002_RevA_en.pdf',
-    summary:
-      'Reports a mean current H3 of −49.8 dBc across 29 complete runs on ten X7R capacitors at 19.8 Hz. Circuit calculations give −44.6 dBc, or 0.59%, across the capacitor at approximately 0.43 V RMS.',
-    topics: ['X7R', 'Harmonic distortion', 'Zero applied DC bias', 'Measurements'],
-    links: [
-      { label: 'Related Application Note AN-001', to: '/application-notes/an-001' },
-      { label: 'Data and reproducibility package', href: 'https://doi.org/10.5281/zenodo.23528005' },
-    ],
-  },
-  {
     title: 'Frequency-Dependent Distortion in Class II Ceramic Capacitors',
     subtitle: 'Why THD Peaks Near the RC Transition Band — and How Incorrect C(V) Simulation Creates False Harmonics',
     author: 'Boris Kuznetsov',
@@ -67,10 +85,6 @@ const applicationNotes = [
     summary:
       'Shows why THD from X7R and X5R capacitors can peak near an RC cutoff frequency, and separates physical nonlinear behavior from artifacts caused by poor C(V) simulation models.',
     topics: ['Class II capacitors', 'THD', 'RC filters', 'Simulation traps'],
-    links: [
-      { label: 'Research', to: '/research' },
-      { label: 'Tools', to: '/tools' },
-    ],
   },
 ];
 
@@ -85,7 +99,6 @@ const otherPublications = [
     publicationUrl: '/articles/ai-design-methodology',
     summary: 'A practical account of AI-assisted electronics design: persistent project files, requirements, simulation, KiCad schematics and routing, independent review, and the engineer’s responsibility for decisions. The control board awaits fabrication and bench testing.',
     topics: ['AI-assisted design', 'KiCad', 'Design review', 'Engineering methodology'],
-    links: [],
   },
   {
     title: 'An Analytical Theory of Harmonic Distortion in RC Networks with Voltage-Dependent Capacitance',
@@ -100,10 +113,6 @@ const otherPublications = [
     summary:
       'Develops a charge-conserving small-nonlinearity theory for harmonic distortion in first-order RC networks with voltage-dependent Class II ceramic capacitors, including closed-form and recursive results through the fifth harmonic.',
     topics: ['RC networks', 'MLCC', 'Harmonic distortion', 'Charge modeling'],
-    links: [
-      { label: 'Research', to: '/research' },
-      { label: 'Tools', to: '/tools' },
-    ],
   },
   {
     title: 'Voltage-Dependent Ceramic Capacitors as a Source of Dynamic Error in SAR ADC Front Ends',
@@ -118,10 +127,6 @@ const otherPublications = [
     summary:
       'Explains how voltage-dependent Class II ceramic capacitors create dynamic error in SAR ADC input paths and why charge-conserving Q(V) models are needed for credible ENOB estimates.',
     topics: ['SAR ADC', 'MLCC', 'ENOB', 'Charge modeling'],
-    links: [
-      { label: 'Research', to: '/research' },
-      { label: 'Tools', to: '/tools' },
-    ],
   },
   {
     title: 'Frequency-Dependent Distortion in Class II Ceramic Capacitors',
@@ -138,7 +143,6 @@ const otherPublications = [
     topics: ['Class II capacitors', 'THD', 'RC filters', 'Charge modeling'],
     links: [
       { label: 'Related Application Note', to: '/application-notes/an-001' },
-      { label: 'Research', to: '/research' },
     ],
   },
 ];
@@ -287,9 +291,9 @@ const labNotes = [
   },
 ];
 
-function PageShell({ title, summary, children }) {
+function PageShell({ title, summary, children, className = '' }) {
   return (
-    <div className="content-page">
+    <div className={`content-page ${className}`.trimEnd()}>
       <section className="page-hero">
         <div className="container page-hero-inner">
           <h1>{title}</h1>
@@ -382,7 +386,7 @@ function PublicationItem({ publication }) {
             Full PDF <ExternalLink size={14} />
           </a>
         )}
-        {publication.links.map((link) => link.href ? (
+        {publication.links?.map((link) => link.href ? (
           <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
             {link.label} <ExternalLink size={14} />
           </a>
@@ -446,6 +450,9 @@ export function Research() {
             </div>
           ))}
         </div>
+        <Link to="/equipment" className="research-plan-link" analyticsContext="research_equipment">
+          Lab Equipment <ArrowRight size={16} />
+        </Link>
       </Section>
 
       <Section title="Research Program Plan">
@@ -485,20 +492,171 @@ export function Research() {
   );
 }
 
-export function Publications() {
+export function LabEquipment() {
   return (
     <PageShell
-      title="Articles, Preprints, and Technical Notes"
-      summary="Start with our application notes for practical design guidance, worked examples, and links to the models or measurement data behind them."
+      className="wide-content-page"
+      title="Lab Equipment"
+      summary="The measurement path, instruments in use, and hardware in development at HighSNR Lab."
     >
-      <Section title="Application Notes">
+      <Section title="How the setup works">
+        <figure className="equipment-schematic">
+          <figcaption>Signal path for an MLCC distortion measurement</figcaption>
+          <ol className="equipment-signal-path" role="list">
+            <li>
+              <span className="equipment-step-label">01 · Stimulus</span>
+              <strong>QA403 output</strong>
+              <p>Drives the test circuit with a sine wave.</p>
+              <ArrowRight className="equipment-flow-arrow" size={20} aria-hidden="true" />
+            </li>
+            <li>
+              <span className="equipment-step-label">02 · Test circuit</span>
+              <strong>MLCC fixture</strong>
+              <p>Holds the capacitor in series with a sense resistor.</p>
+              <ArrowRight className="equipment-flow-arrow" size={20} aria-hidden="true" />
+            </li>
+            <li>
+              <span className="equipment-step-label">03 · Acquisition</span>
+              <strong>QA403 input</strong>
+              <p>Measures the voltage across the sense resistor to infer capacitor current.</p>
+            </li>
+          </ol>
+          <div className="equipment-power-path">
+            <span className="equipment-step-label">USB power</span>
+            <span>Powered USB hub</span>
+            <ArrowRight size={16} aria-hidden="true" />
+            <span>QA403</span>
+          </div>
+        </figure>
+      </Section>
+
+      <Section title="Equipment in use">
+        <div className="equipment-list">
+          {equipmentItems.map(({ title, description, image, imageClassName, width, height, alt, caption, link, manufacturerUrl }) => (
+            <article className="equipment-item" key={title}>
+              <figure className="equipment-view">
+                <img className={imageClassName} src={image} alt={alt} width={width} height={height} />
+                <figcaption>{caption}</figcaption>
+              </figure>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              {link && (
+                <Link to={link.to} className="link-arrow" analyticsContext="lab_equipment">
+                  {link.label} <ArrowRight size={16} />
+                </Link>
+              )}
+              {manufacturerUrl && (
+                <a className="link-arrow" href={manufacturerUrl} target="_blank" rel="noopener noreferrer">
+                  Manufacturer specifications <ExternalLink size={14} />
+                </a>
+              )}
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Hardware in development">
+        <p className="equipment-development-intro">
+          Three modules are being prepared for MLCC measurements under controlled DC bias.
+        </p>
+        <div className="research-plan-list equipment-development">
+          <article className="research-plan-item">
+            <div className="research-plan-heading"><h3>Analog front end</h3></div>
+            <p>Routes the AC measurement signals and applies a controlled DC bias to the capacitor under test.</p>
+            <Link to="/lab-notes/measurement-board-designed" className="link-arrow" analyticsContext="lab_equipment">
+              Measurement board design <ArrowRight size={16} />
+            </Link>
+          </article>
+          <article className="research-plan-item">
+            <div className="research-plan-heading"><h3>Control module</h3></div>
+            <p>Switches the front-end relays, sets and reads back the DC bias, and communicates with the host computer.</p>
+            <Link to="/articles/ai-design-methodology" className="link-arrow" analyticsContext="lab_equipment">
+              Control board design <ArrowRight size={16} />
+            </Link>
+          </article>
+          <article className="research-plan-item">
+            <div className="research-plan-heading"><h3>Dedicated power supply</h3></div>
+            <p>Provides separate supply outputs for the analog front end and the control module.</p>
+          </article>
+        </div>
+      </Section>
+    </PageShell>
+  );
+}
+
+export function ApplicationNotes() {
+  return (
+    <PageShell
+      className="wide-content-page"
+      title="Application Notes"
+      summary="Measurements, models, and design guidance for precision electronics."
+    >
+      <article className="content-section note-feature" aria-labelledby="note-feature-title">
+        <div className="container note-feature-inner">
+          <div>
+            <div className="publication-meta-row">
+              <span>AN-002 · Rev A</span>
+              <time dateTime="2026-10-22">22 Oct 2026</time>
+            </div>
+            <h2 id="note-feature-title">X7R distortion at zero applied DC bias</h2>
+            <p>
+              Third-harmonic current was measured in ten 10 µF X7R capacitors at 19.8 Hz.
+            </p>
+            <p className="note-feature-result">
+              <strong>−49.8 dBc</strong>
+              <span>Mean current H3/H1 across 29 complete runs</span>
+            </p>
+            <div className="note-feature-actions">
+              <Link to="/application-notes/an-002" className="btn btn-primary" analyticsContext="application_notes">
+                Read AN-002 <ArrowRight size={16} />
+              </Link>
+              <a className="link-arrow" href="/application-notes/an-002/AN-002_RevA_en.pdf" download>Download PDF</a>
+            </div>
+            <a className="note-feature-data" href="https://doi.org/10.5281/zenodo.23528005" target="_blank" rel="noopener noreferrer">
+              Data and reproducibility package <ExternalLink size={14} />
+            </a>
+          </div>
+
+          <figure className="note-feature-figure">
+            <img
+              src="/application-notes/an-002/fig1_spectrum.png"
+              alt="Measured shunt-voltage spectra for a 10 µF X7R capacitor and an 820 Ω resistor control"
+              width="1804"
+              height="994"
+            />
+            <figcaption>
+              In these representative traces, the capacitor’s third harmonic is about 70 dB above the resistor control.
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <Section title="More application notes">
         <div className="publication-list">
           {applicationNotes.map((note) => (
             <PublicationItem key={note.publicationUrl} publication={note} />
           ))}
         </div>
+        <Link to="/publications" className="link-arrow publication-index-link" analyticsContext="application_notes">
+          Browse Articles &amp; Papers <ArrowRight size={16} />
+        </Link>
       </Section>
+    </PageShell>
+  );
+}
 
+export function Publications() {
+  return (
+    <PageShell
+      className="wide-content-page"
+      title="Articles & Papers"
+      summary="Technical articles and research preprints on component behavior, circuit models, and electronics design."
+    >
+      <div className="container">
+        <Link to="/application-notes" className="link-arrow publication-index-link" analyticsContext="publication_hub">
+          Browse the Application Notes library <ArrowRight size={16} />
+        </Link>
+      </div>
       <Section title="Preprints and Technical Articles">
         <div className="publication-list">
           {otherPublications.map((publication) => (
