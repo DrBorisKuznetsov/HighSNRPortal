@@ -33,8 +33,6 @@ import {
   Research,
 } from './pages/ContentPages';
 
-const videosHref = import.meta.env.DEV ? 'http://localhost:5174/videos_project/' : '/videos_project/';
-
 function App() {
   const location = usePortalLocation();
 
@@ -139,7 +137,6 @@ function App() {
           <nav className="footer-links" aria-label="Footer links">
             <a href="mailto:info@highsnr.org">info@highsnr.org</a>
             <Link to="/about">About & Contact</Link>
-            <a href={videosHref}>Video Library</a>
             <a href="https://github.com/DrBorisKuznetsov" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://www.youtube.com/@High_SNR_Channel" target="_blank" rel="noopener noreferrer">YouTube</a>
           </nav>

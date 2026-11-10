@@ -175,10 +175,10 @@ test('internal links use canonical trailing-slash URLs', async ({ page }) => {
   await page.goto('/');
 
   const navigation = page.getByRole('navigation', { name: 'Primary navigation' });
-  await expect(navigation.getByRole('link')).toHaveText(['Application Notes', 'Articles & Papers', 'Research', 'Tools']);
+  await expect(navigation.getByRole('link')).toHaveText(['Application Notes', 'Articles & Papers', 'Research', 'Tools', 'Videos']);
   await expect(navigation.getByRole('link', { name: 'Application Notes' })).toHaveAttribute('href', '/application-notes/');
   await expect(navigation.getByRole('link', { name: 'Research' })).toHaveAttribute('href', '/research/');
-  await expect(page.getByRole('link', { name: 'Video Library' })).toHaveAttribute('href', '/videos_project/');
+  await expect(navigation.getByRole('link', { name: 'Videos' })).toHaveAttribute('href', '/videos_project/');
 });
 
 test('publication hub exposes and measures related portal paths', async ({ page }) => {
